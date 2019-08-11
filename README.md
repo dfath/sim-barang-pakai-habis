@@ -10,3 +10,7 @@
 - PDO PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
+
+## Dictionary
+- OPD: Organisasi Perangkat Daerah
+- Volume DPA: Volume Dokumen Pelaksanaan Anggaran
