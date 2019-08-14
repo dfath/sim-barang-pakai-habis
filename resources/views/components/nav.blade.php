@@ -3,7 +3,7 @@
         <div class="navbar-brand">
 
             <a class="navbar-item logo" href="{{ url('/') }}">
-                <img src="img/logo.png" width="28" height="28">
+                <img src="{{ asset('img/logo.png') }}" width="28" height="28">
                 <span>{{ config('app.name', 'Laravel') }}</span>
             </a>
 
@@ -17,32 +17,28 @@
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
                 @if (Auth::user())
-                    <a class="navbar-item">
-                        Dashboard
-                    </a>
-
-                    <a class="navbar-item">Barang Keluar</a>
-
-                    <a class="navbar-item">Barang Masuk</a>
+                    <a class="navbar-item" href="/home">Dashboard</a>
+                    <a class="navbar-item" href="/barang-keluar/board">Barang Keluar</a>
+                    <a class="navbar-item" href="/barang-masuk/board">Barang Masuk</a>
 
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">Master</a>
                         <div class="navbar-dropdown">
-                            <a class="navbar-item">Unit Kerja</a>
-                            <a class="navbar-item">Satuan</a>
-                            <a class="navbar-item">Kelompok Kegiatan</a>
-                            <a class="navbar-item">Kelompok Barang</a>
-                            <a class="navbar-item">Barang</a>
-                            <a class="navbar-item">Rekanan</a>
-                            <a class="navbar-item">Volume DPA</a>
+                            <a class="navbar-item" href="/unit-kerja/board">Unit Kerja</a>
+                            <a class="navbar-item" href="/satuan/board">Satuan</a>
+                            <a class="navbar-item" href="/kelompok-kegiatan/board">Kelompok Kegiatan</a>
+                            <a class="navbar-item" href="/kelompok-barang/board">Kelompok Barang</a>
+                            <a class="navbar-item" href="/barang/board">Barang</a>
+                            <a class="navbar-item" href="/rekanan/board">Rekanan</a>
+                            <a class="navbar-item" href="/volume-dpa/board">Volume DPA</a>
                         </div>
                     </div>
 
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">Sistem</a>
                         <div class="navbar-dropdown">
-                            <a class="navbar-item">Instansi</a>
-                            <a class="navbar-item">User</a>
+                            <a class="navbar-item" href="/instansi">Instansi</a>
+                            <a class="navbar-item" href="/user/board">User</a>
                         </div>
                     </div>
 

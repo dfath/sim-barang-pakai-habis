@@ -6,14 +6,12 @@
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">
-                    Primary title
+                    Barang Masuk
                 </h1>
-                <h2 class="subtitle">
-                    Primary subtitle
-                </h2>
             </div>
         </div>
     </section>
+
     <div class="container is-fluid">
         <div class="columns">
             <div class="column is-12">
