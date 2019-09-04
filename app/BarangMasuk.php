@@ -15,6 +15,6 @@ class BarangMasuk extends Model
         'tahun_anggaran',
         'tanggal_perolehan',
         'jenis_bukti',
-        'bukti_tansaksi'
+        'bukti_transaksi'
     ];
 }

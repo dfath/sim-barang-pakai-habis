@@ -22,7 +22,7 @@ class BarangMasukResource extends JsonResource
             'tahun_anggaran' => $this->tahun_anggaran,
             'tanggal_perolehan' => $this->tanggal_perolehan,
             'jenis_bukti' => $this->jenis_bukti,
-            'bukti_tansaksi' => $this->bukti_tansaksi,
+            'bukti_transaksi' => $this->bukti_transaksi,
         ];
     }
 }

@@ -5,8 +5,6 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-
 window.Vue = require('vue');
 
 window.Buefy = require('buefy');
@@ -22,6 +20,10 @@ Vue.use(Buefy);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('example-input', require('./components/ExampleInput.vue').default);
 Vue.component('range-date-picker', require('./components/RangeDatePicker.vue').default);
+Vue.component('passport-clients', require('./components/passport/Clients.vue').default);
+Vue.component('passport-authorized-clients', require('./components/passport/AuthorizedClients.vue').default);
+Vue.component('passport-personal-access-tokens', require('./components/passport/PersonalAccessTokens.vue').default);
+Vue.component('barang-masuk-board', require('./pages/barang-masuk/BarangMasukBoard.vue').default);
 
 const app = new Vue({
     el: '#app'

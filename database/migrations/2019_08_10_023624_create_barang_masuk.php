@@ -24,8 +24,8 @@ class CreateBarangMasuk extends Migration
             $table->year('tahun_anggaran');
             $table->date('tanggal_perolehan');
             $table->enum('jenis_bukti', ['nota', 'bon']);
-            $table->string('bukti_tansaksi', 50);
-            $table->unique('bukti_tansaksi');
+            $table->string('bukti_transaksi', 50);
+            $table->unique('bukti_transaksi');
             $table->timestamps();
         });
     }

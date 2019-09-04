@@ -10,7 +10,7 @@ use App\Instansi;
 use App\Http\Resources\InstansiResource;
 use App\Http\Resources\InstansiResourceCollection;
 
-class InstansiController extends Controller
+class InstansiController extends BaseController
 {
     /**
      * Display the specified resource.

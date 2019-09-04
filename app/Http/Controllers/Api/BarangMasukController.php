@@ -26,7 +26,7 @@ class BarangMasukController extends BaseController
             'tahun_anggaran',
             'tanggal_perolehan_mulai',
             'tanggal_perolehan_selesai',
-            'bukti_tansaksi'
+            'bukti_transaksi'
         ];
         $whereRaws = [
             'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
@@ -35,7 +35,7 @@ class BarangMasukController extends BaseController
             'tahun_anggaran' => 'tahun_anggaran = ?',
             'tanggal_perolehan_mulai' => 'tanggal_perolehan >= ?',
             'tanggal_perolehan_selesai' => 'tanggal_perolehan <= ?',
-            'bukti_tansaksi' => 'bukti_tansaksi = ?'
+            'bukti_transaksi' => 'bukti_transaksi = ?'
         ];
         $filter = $request->only($fields);
 
@@ -62,7 +62,7 @@ class BarangMasukController extends BaseController
             'tahun_anggaran' => $request->input('tahun_anggaran'),
             'tanggal_perolehan' => $request->input('tanggal_perolehan'),
             'jenis_bukti' => $request->input('jenis_bukti'),
-            'bukti_tansaksi' => $request->input('bukti_tansaksi')
+            'bukti_transaksi' => $request->input('bukti_transaksi')
         ];
         try {
             $query = BarangMasuk::create($input);
@@ -106,7 +106,7 @@ class BarangMasukController extends BaseController
             'tahun_anggaran' => $request->input('tahun_anggaran'),
             'tanggal_perolehan' => $request->input('tanggal_perolehan'),
             'jenis_bukti' => $request->input('jenis_bukti'),
-            'bukti_tansaksi' => $request->input('bukti_tansaksi')
+            'bukti_transaksi' => $request->input('bukti_transaksi')
         ];
         try {
             $query = BarangMasuk::findOrFail($id);

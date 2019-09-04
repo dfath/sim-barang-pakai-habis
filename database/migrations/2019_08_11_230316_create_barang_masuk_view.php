@@ -17,7 +17,7 @@ class CreateBarangMasukView extends Migration
         DB::statement("
         CREATE VIEW barang_masuk_view AS
         (
-            SELECT bm.bukti_tansaksi,
+            SELECT bm.bukti_transaksi,
                 bm.jenis_bukti,
                 bm.tahun_anggaran,
                 bm.tanggal_perolehan,

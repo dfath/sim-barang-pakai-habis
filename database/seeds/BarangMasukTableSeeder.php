@@ -23,7 +23,7 @@ class BarangMasukTableSeeder extends Seeder
                 'tahun_anggaran' => 2019,
                 'tanggal_perolehan' => date("Y-m-d", mktime(0, 0, 0, rand(1, 12), rand(1, 29), 2019)),
                 'jenis_bukti' => $jenisBukti[rand(0,1)],
-                'bukti_tansaksi' => Str::random(10),
+                'bukti_transaksi' => Str::random(10),
             ]);
             for ($j=1; $j <= 10; $j++) {
                 DB::table('barang_masuk_detil')->insert([
