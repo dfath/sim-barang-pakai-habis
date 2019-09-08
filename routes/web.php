@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/barang-masuk/board', 'BarangMasukController@index')->name('barang-masuk-board');
+
+Route::get('/unit-kerja/board', 'UnitKerjaController@index')->name('unit-kerja-board');

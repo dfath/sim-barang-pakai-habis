@@ -38,6 +38,10 @@
                 </form>
             </div>
             <div class="column is-9">
+                <br/>
+                <b-field grouped group-multiline>
+                    <b-button type="is-success" @click="openFormModal()">Tambah</b-button>
+                </b-field>
                 <div class="table-container">
                     <b-table
                         :data="barangMasukData"
@@ -52,13 +56,43 @@
                         aria-next-label="Next page"
                         aria-previous-label="Previous page"
                         aria-page-label="Page"
-                        aria-current-label="Current page"
+                        aria-current-label="Current page">
 
-                        :columns="barangMasukColumns">
-
-                        <b-notification :closable=false slot="empty">
+                        <b-notification v-if="!isLoading" :closable=false slot="empty">
                             Data tidak ditemukan.
                         </b-notification>
+
+                        <template slot-scope="props">
+                            <b-table-column field="nama_kelompok_kegiatan" label="Kelompok Kegiatan">
+                                {{ props.row.nama_kelompok_barang }}
+                            </b-table-column>
+
+                            <b-table-column field="nama_kelompok_barang" label="Kelompok Barang">
+                                {{ props.row.nama_kelompok_barang }}
+                            </b-table-column>
+
+                            <b-table-column field="nama_perusahaan" label="Nama Perusahaan">
+                                {{ props.row.nama_perusahaan }}
+                            </b-table-column>
+
+                            <b-table-column field="tahun_anggaran" label="Tahun Anggaran">
+                                {{ props.row.tahun_anggaran }}
+                            </b-table-column>
+
+                            <b-table-column field="teks_tanggal_perolehan" label="Tanggal Perolehan">
+                                {{ props.row.teks_tanggal_perolehan }}
+                            </b-table-column>
+
+                            <b-table-column field="bukti_transaksi" label="Bukti Transaksi">
+                                {{ props.row.bukti_transaksi }}
+                            </b-table-column>
+
+                            <b-table-column label="Aksi" width="90">
+                                <b-button type="is-danger" icon-right="pencil" size="is-small" />
+                                <b-button type="is-danger" icon-right="delete" size="is-small" />
+                            </b-table-column>
+
+                        </template>
 
                     </b-table>
                 </div>
@@ -69,8 +103,12 @@
 
 <script>
 import { fetchListBarangMasuk } from '../../network/api';
+import BarangMasukForm from '../../components/barang-masuk/BarangMasukForm';
 
 export default {
+    components: {
+        BarangMasukForm,
+    },
     data() {
         return {
             filterNamaKelompokBarang: null,
@@ -88,37 +126,7 @@ export default {
                 per_page: null,
                 current_page: null
             },
-            isLoading: false,
-            barangMasukColumns: [
-                {
-                    field: 'nama_kelompok_kegiatan',
-                    label: 'Kelompok Kegiatan',
-                },
-                {
-                    field: 'nama_kelompok_barang',
-                    label: 'Kelompok Barang',
-                },
-                {
-                    field: 'nama_perusahaan',
-                    label: 'Perusahaan',
-                },
-                {
-                    field: 'tahun_anggaran',
-                    label: 'Tahun Anggaran',
-                },
-                {
-                    field: 'teks_tanggal_perolehan',
-                    label: 'Tanggal Perolehan',
-                },
-                {
-                    field: 'jenis_bukti',
-                    label: 'Jenis Bukti',
-                },
-                {
-                    field: 'bukti_transaksi',
-                    label: 'Bukti Transaksi',
-                }
-            ]
+            isLoading: false
         }
     },
     computed: {
@@ -160,6 +168,15 @@ export default {
                     this.isLoading = false;
                     console.error(err);
                 });
+        },
+        openFormModal() {
+            this.$buefy.modal.open({
+                parent: this,
+                component: BarangMasukForm,
+                hasModalCard: true,
+                canCancel: false,
+                fullScreen: true,
+            })
         }
     },
     mounted() {

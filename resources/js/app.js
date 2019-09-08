@@ -24,6 +24,7 @@ Vue.component('passport-clients', require('./components/passport/Clients.vue').d
 Vue.component('passport-authorized-clients', require('./components/passport/AuthorizedClients.vue').default);
 Vue.component('passport-personal-access-tokens', require('./components/passport/PersonalAccessTokens.vue').default);
 Vue.component('barang-masuk-board', require('./pages/barang-masuk/BarangMasukBoard.vue').default);
+Vue.component('unit-kerja-board', require('./pages/unit-kerja/UnitKerjaBoard.vue').default);
 
 const app = new Vue({
     el: '#app'
