@@ -19,29 +19,55 @@ class BarangMasukController extends BaseController
      */
     public function index(Request $request)
     {
-        $fields = [
+        $numberFields = [
             'kelompok_kegiatan_id',
             'kelompok_barang_id',
             'perusahaan_id',
             'tahun_anggaran',
             'tanggal_perolehan_mulai',
             'tanggal_perolehan_selesai',
-            'bukti_transaksi'
         ];
-        $whereRaws = [
+        $textFields = [
+            'bukti_transaksi',
+            'nama_perusahaan',
+            'nama_kelompok_kegiatan',
+            'nama_kelompok_barang',
+        ];
+        $numberWhereRaws = [
             'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
             'kelompok_barang_id' => 'kelompok_kegiatan_id = ?',
             'perusahaan_id' => 'perusahaan_id = ?',
             'tahun_anggaran' => 'tahun_anggaran = ?',
             'tanggal_perolehan_mulai' => 'tanggal_perolehan >= ?',
             'tanggal_perolehan_selesai' => 'tanggal_perolehan <= ?',
-            'bukti_transaksi' => 'bukti_transaksi = ?'
         ];
-        $filter = $request->only($fields);
+        $textFieldMaps = [
+            'bukti_transaksi' => 'bukti_transaksi',
+            'nama_perusahaan' => 'perusahaan.nama',
+            'nama_kelompok_kegiatan' => 'kelompok_kegiatan.nama',
+            'nama_kelompok_barang' => 'kelompok_barang.nama',
+        ];
+        $numberFilter = $request->only($numberFields);
+        $textFilter = $request->only($textFields);
 
         $query = DB::table('barang_masuk');
-        foreach ($filter as $key => $value) {
-            $query->whereRaw($whereRaws[$key], [$value]);
+        $query->select('barang_masuk.*');
+        // perusahaan
+        $query->leftJoin('perusahaan', 'barang_masuk.perusahaan_id', '=', 'perusahaan.id');
+        $query->addSelect('perusahaan.nama as nama_perusahaan');
+        // kelompok kegiatan
+        $query->leftJoin('kelompok_kegiatan', 'barang_masuk.kelompok_kegiatan_id', '=', 'kelompok_kegiatan.id');
+        $query->addSelect('kelompok_kegiatan.nama as nama_kelompok_kegiatan');
+        // kelompok barang
+        $query->leftJoin('kelompok_barang', 'barang_masuk.kelompok_barang_id', '=', 'kelompok_barang.id');
+        $query->addSelect('kelompok_barang.nama as nama_kelompok_barang');
+
+        foreach ($numberFilter as $key => $value) {
+            $query->whereRaw($numberWhereRaws[$key], [$value]);
+        }
+
+        foreach ($textFilter as $key => $value) {
+            $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
         return new BarangMasukResourceCollection($query->paginate());

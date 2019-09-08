@@ -23,6 +23,10 @@ class BarangMasukResource extends JsonResource
             'tanggal_perolehan' => $this->tanggal_perolehan,
             'jenis_bukti' => $this->jenis_bukti,
             'bukti_transaksi' => $this->bukti_transaksi,
+            'teks_tanggal_perolehan' => date('d M Y', strtotime($this->tanggal_perolehan)),
+            'nama_perusahaan' => $this->nama_perusahaan,
+            'nama_kelompok_kegiatan' => $this->nama_kelompok_kegiatan,
+            'nama_kelompok_barang' => $this->nama_kelompok_barang,
         ];
     }
 }

@@ -49,7 +49,7 @@ class KelompokKegiatanTableSeeder extends Seeder
         ]);
         DB::table('kelompok_kegiatan')->insert([
             'id' => 10,
-            'nama' => 'enyediaan makanan dan minuman',
+            'nama' => 'Penyediaan makanan dan minuman',
         ]);
     }
 }
