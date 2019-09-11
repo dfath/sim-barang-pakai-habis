@@ -5,29 +5,45 @@
         </header>
         <section class="modal-card-body">
 
+            <b-message v-if="message" type="is-warning">
+                {{ message }}
+            </b-message>
+
             <b-field label="Nama">
                 <b-input
-                    :value="nama"
+                    v-model="submission.nama"
                     required>
                 </b-input>
             </b-field>
 
         </section>
         <footer class="modal-card-foot">
-            <button class="button" type="button" @click="$parent.close()">Close</button>
-            <button class="button is-primary">Submit</button>
+            <b-button type="is-dark" @click="$parent.close()">Close</b-button>
+            <b-button type="is-primary" @click="onClickButton" :disabled="isLoading" :loading="isLoading" >Submit</b-button>
         </footer>
     </div>
 </template>
 
 <script>
 export default {
+    props: {
+        id: Number,
+        nama: String,
+        isLoading: Boolean,
+        message: String
+    },
     data() {
         return {
-            id: null,
-            nama: null,
-            isLoading: false
+            submission: {
+                id: this.id,
+                nama: this.nama
+            }
+        };
+    },
+    methods: {
+        onClickButton() {
+            this.$emit('submitted', this.submission);
         }
     }
-}
+};
 </script>

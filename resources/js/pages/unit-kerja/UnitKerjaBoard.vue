@@ -12,7 +12,7 @@
                         <b-input v-model="filterNamaUnitKerja"></b-input>
                     </p>
                     <p class="control">
-                    <b-button class="button is-info" @click="applyFilter">Cari</b-button>
+                        <b-button class="button is-info" @click="applyFilter">Cari</b-button>
                     </p>
                 </div>
                 </div>
@@ -20,8 +20,18 @@
 
             <!-- Right side -->
             <div class="level-right">
-                <p class="level-item"><b-button type="is-success" @click="openFormModal()">Tambah</b-button></p>
+                <p class="level-item">
+                    <b-button type="is-success" @click="openFormModal()">Tambah</b-button>
+                </p>
             </div>
+
+            <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
+                <unit-kerja-form
+                    v-bind="formModalProps"
+                    @submitted="onSubmitTambah">
+                </unit-kerja-form>
+            </b-modal>
+
         </div>
 
         <div class="columns">
@@ -43,9 +53,9 @@
                         aria-page-label="Page"
                         aria-current-label="Current page">
 
-                        <b-notification v-if="!isLoading" :closable=false slot="empty">
+                        <b-message type="is-info" v-if="!isLoading" slot="empty">
                             Data tidak ditemukan.
-                        </b-notification>
+                        </b-message>
 
                         <template slot-scope="props">
                             <b-table-column field="nama" label="Nama">
@@ -67,7 +77,7 @@
 </template>
 
 <script>
-import { fetchListUnitKerja } from '../../network/api';
+import { readUnitKerjaCollection, createUnitKerja } from '../../network/api';
 import UnitKerjaForm from '../../components/unit-kerja/UnitKerjaForm';
 
 export default {
@@ -84,7 +94,14 @@ export default {
                 per_page: null,
                 current_page: null
             },
-            isLoading: false
+            isLoading: false,
+            isFormModalActive: false,
+            formModalProps: {
+                id: null,
+                nama: null,
+                isLoading: false,
+                message: null
+            }
         }
     },
     computed: {
@@ -105,13 +122,19 @@ export default {
         }
     },
     methods: {
+        snackbar(message, type) {
+            this.$buefy.snackbar.open({
+                message,
+                type,
+            });
+        },
         onPageChange(page) {
             this.filterPage = page;
             this.applyFilter();
         },
         applyFilter() {
             this.isLoading = true;
-            fetchListUnitKerja(this.params)
+            readUnitKerjaCollection(this.params)
                 .then(res => {
                     this.unitKerjaData = res.data;
                     this.unitKerjaMeta = res.meta;
@@ -119,16 +142,24 @@ export default {
                 })
                 .catch(err => {
                     this.isLoading = false;
-                    console.error(err);
                 });
         },
         openFormModal() {
-            this.$buefy.modal.open({
-                parent: this,
-                component: UnitKerjaForm,
-                hasModalCard: true,
-                canCancel: false,
-            })
+            this.isFormModalActive = true;
+        },
+        onSubmitTambah(submission) {
+            this.formModalProps.isLoading = true;
+            createUnitKerja(submission)
+                .then(res => {
+                    this.isFormModalActive = false;
+                    this.formModalProps.isLoading = false;
+                    this.snackbar(`Berhasil menambahkan data ${res.data.nama}`, 'is-success');
+                })
+                .catch(err => {
+                    this.formModalProps.isLoading = false;
+                    this.formModalProps.message = `Gagal menambahkan data ${submission.nama}`;
+                });
+            this.applyFilter();
         }
     },
     mounted() {

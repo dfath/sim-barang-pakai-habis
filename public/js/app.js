@@ -2629,13 +2629,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    id: Number,
+    nama: String,
+    isLoading: Boolean,
+    message: String
+  },
   data: function data() {
     return {
-      id: null,
-      nama: null,
-      isLoading: false
+      submission: {
+        id: this.id,
+        nama: this.nama
+      }
     };
+  },
+  methods: {
+    onClickButton: function onClickButton() {
+      this.$emit('submitted', this.submission);
+    }
   }
 });
 
@@ -2809,7 +2825,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.isLoading = true;
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["fetchListBarangMasuk"])(this.params).then(function (res) {
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readBarangMasukCollection"])(this.params).then(function (res) {
         _this.barangMasukData = res.data;
         _this.barangMasukMeta = res.meta;
         _this.isLoading = false;
@@ -2914,6 +2930,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2930,7 +2956,14 @@ __webpack_require__.r(__webpack_exports__);
         per_page: null,
         current_page: null
       },
-      isLoading: false
+      isLoading: false,
+      isFormModalActive: false,
+      formModalProps: {
+        id: null,
+        nama: null,
+        isLoading: false,
+        message: null
+      }
     };
   },
   computed: {
@@ -2951,6 +2984,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    snackbar: function snackbar(message, type) {
+      this.$buefy.snackbar.open({
+        message: message,
+        type: type
+      });
+    },
     onPageChange: function onPageChange(page) {
       this.filterPage = page;
       this.applyFilter();
@@ -2959,22 +2998,31 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.isLoading = true;
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["fetchListUnitKerja"])(this.params).then(function (res) {
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readUnitKerjaCollection"])(this.params).then(function (res) {
         _this.unitKerjaData = res.data;
         _this.unitKerjaMeta = res.meta;
         _this.isLoading = false;
       })["catch"](function (err) {
         _this.isLoading = false;
-        console.error(err);
       });
     },
     openFormModal: function openFormModal() {
-      this.$buefy.modal.open({
-        parent: this,
-        component: _components_unit_kerja_UnitKerjaForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-        hasModalCard: true,
-        canCancel: false
+      this.isFormModalActive = true;
+    },
+    onSubmitTambah: function onSubmitTambah(submission) {
+      var _this2 = this;
+
+      this.formModalProps.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createUnitKerja"])(submission).then(function (res) {
+        _this2.isFormModalActive = false;
+        _this2.formModalProps.isLoading = false;
+
+        _this2.snackbar("Berhasil menambahkan data ".concat(res.data.nama), 'is-success');
+      })["catch"](function (err) {
+        _this2.formModalProps.isLoading = false;
+        _this2.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama);
       });
+      this.applyFilter();
     }
   },
   mounted: function mounted() {
@@ -17136,33 +17184,65 @@ var render = function() {
         "section",
         { staticClass: "modal-card-body" },
         [
+          _vm.message
+            ? _c("b-message", { attrs: { type: "is-warning" } }, [
+                _vm._v("\n            " + _vm._s(_vm.message) + "\n        ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "b-field",
             { attrs: { label: "Nama" } },
-            [_c("b-input", { attrs: { value: _vm.nama, required: "" } })],
+            [
+              _c("b-input", {
+                attrs: { required: "" },
+                model: {
+                  value: _vm.submission.nama,
+                  callback: function($$v) {
+                    _vm.$set(_vm.submission, "nama", $$v)
+                  },
+                  expression: "submission.nama"
+                }
+              })
+            ],
             1
           )
         ],
         1
       ),
       _vm._v(" "),
-      _c("footer", { staticClass: "modal-card-foot" }, [
-        _c(
-          "button",
-          {
-            staticClass: "button",
-            attrs: { type: "button" },
-            on: {
-              click: function($event) {
-                return _vm.$parent.close()
+      _c(
+        "footer",
+        { staticClass: "modal-card-foot" },
+        [
+          _c(
+            "b-button",
+            {
+              attrs: { type: "is-dark" },
+              on: {
+                click: function($event) {
+                  return _vm.$parent.close()
+                }
               }
-            }
-          },
-          [_vm._v("Close")]
-        ),
-        _vm._v(" "),
-        _c("button", { staticClass: "button is-primary" }, [_vm._v("Submit")])
-      ])
+            },
+            [_vm._v("Close")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              attrs: {
+                type: "is-primary",
+                disabled: _vm.isLoading,
+                loading: _vm.isLoading
+              },
+              on: { click: _vm.onClickButton }
+            },
+            [_vm._v("Submit")]
+          )
+        ],
+        1
+      )
     ]
   )
 }
@@ -17547,68 +17627,101 @@ var render = function() {
   return _c("div", { staticClass: "container is-fluid" }, [
     _c("br"),
     _vm._v(" "),
-    _c("div", { staticClass: "level" }, [
-      _c("div", { staticClass: "level-left" }, [
-        _c("div", { staticClass: "level-item" }, [
-          _c("div", { staticClass: "field has-addons" }, [
-            _c(
-              "p",
-              { staticClass: "control" },
-              [
-                _c("b-input", {
-                  model: {
-                    value: _vm.filterNamaUnitKerja,
-                    callback: function($$v) {
-                      _vm.filterNamaUnitKerja = $$v
+    _c(
+      "div",
+      { staticClass: "level" },
+      [
+        _c("div", { staticClass: "level-left" }, [
+          _c("div", { staticClass: "level-item" }, [
+            _c("div", { staticClass: "field has-addons" }, [
+              _c(
+                "p",
+                { staticClass: "control" },
+                [
+                  _c("b-input", {
+                    model: {
+                      value: _vm.filterNamaUnitKerja,
+                      callback: function($$v) {
+                        _vm.filterNamaUnitKerja = $$v
+                      },
+                      expression: "filterNamaUnitKerja"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                { staticClass: "control" },
+                [
+                  _c(
+                    "b-button",
+                    {
+                      staticClass: "button is-info",
+                      on: { click: _vm.applyFilter }
                     },
-                    expression: "filterNamaUnitKerja"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "p",
-              { staticClass: "control" },
-              [
-                _c(
-                  "b-button",
-                  {
-                    staticClass: "button is-info",
-                    on: { click: _vm.applyFilter }
-                  },
-                  [_vm._v("Cari")]
-                )
-              ],
-              1
-            )
+                    [_vm._v("Cari")]
+                  )
+                ],
+                1
+              )
+            ])
           ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "level-right" }, [
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "level-right" }, [
+          _c(
+            "p",
+            { staticClass: "level-item" },
+            [
+              _c(
+                "b-button",
+                {
+                  attrs: { type: "is-success" },
+                  on: {
+                    click: function($event) {
+                      return _vm.openFormModal()
+                    }
+                  }
+                },
+                [_vm._v("Tambah")]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
         _c(
-          "p",
-          { staticClass: "level-item" },
+          "b-modal",
+          {
+            attrs: {
+              active: _vm.isFormModalActive,
+              "has-modal-card": "",
+              "can-cancel": false
+            },
+            on: {
+              "update:active": function($event) {
+                _vm.isFormModalActive = $event
+              }
+            }
+          },
           [
             _c(
-              "b-button",
-              {
-                attrs: { type: "is-success" },
-                on: {
-                  click: function($event) {
-                    return _vm.openFormModal()
-                  }
-                }
-              },
-              [_vm._v("Tambah")]
+              "unit-kerja-form",
+              _vm._b(
+                { on: { submitted: _vm.onSubmitTambah } },
+                "unit-kerja-form",
+                _vm.formModalProps,
+                false
+              )
             )
           ],
           1
         )
-      ])
-    ]),
+      ],
+      1
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "columns" }, [
       _c("div", { staticClass: "column" }, [
@@ -17680,9 +17793,9 @@ var render = function() {
               [
                 !_vm.isLoading
                   ? _c(
-                      "b-notification",
+                      "b-message",
                       {
-                        attrs: { slot: "empty", closable: false },
+                        attrs: { slot: "empty", type: "is-info" },
                         slot: "empty"
                       },
                       [
@@ -30476,26 +30589,30 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************!*\
   !*** ./resources/js/network/api.js ***!
   \*************************************/
-/*! exports provided: fetchListBarangMasuk, fetchListUnitKerja */
+/*! exports provided: readBarangMasukCollection, readUnitKerjaCollection, createUnitKerja */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchListBarangMasuk", function() { return fetchListBarangMasuk; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchListUnitKerja", function() { return fetchListUnitKerja; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readBarangMasukCollection", function() { return readBarangMasukCollection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readUnitKerjaCollection", function() { return readUnitKerjaCollection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUnitKerja", function() { return createUnitKerja; });
 /* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./request */ "./resources/js/network/request.js");
 
-var fetchListBarangMasuk = function fetchListBarangMasuk(params) {
+var readBarangMasukCollection = function readBarangMasukCollection(params) {
   var config = {
     params: params
   };
   return _request__WEBPACK_IMPORTED_MODULE_0__["default"].get('/api/barang_masuk', config);
 };
-var fetchListUnitKerja = function fetchListUnitKerja(params) {
+var readUnitKerjaCollection = function readUnitKerjaCollection(params) {
   var config = {
     params: params
   };
   return _request__WEBPACK_IMPORTED_MODULE_0__["default"].get('/api/unit_kerja', config);
+};
+var createUnitKerja = function createUnitKerja(submission) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/unit_kerja', submission);
 };
 
 /***/ }),

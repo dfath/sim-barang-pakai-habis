@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { fetchListBarangMasuk } from '../../network/api';
+import { readBarangMasukCollection } from '../../network/api';
 import BarangMasukForm from '../../components/barang-masuk/BarangMasukForm';
 
 export default {
@@ -158,7 +158,7 @@ export default {
         },
         applyFilter() {
             this.isLoading = true;
-            fetchListBarangMasuk(this.params)
+            readBarangMasukCollection(this.params)
                 .then(res => {
                     this.barangMasukData = res.data;
                     this.barangMasukMeta = res.meta;
