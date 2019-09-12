@@ -32,6 +32,13 @@
                 </unit-kerja-form>
             </b-modal>
 
+            <b-modal :active.sync="isDeleteModalActive" has-modal-card :can-cancel="false">
+                <delete-confirmation
+                    v-bind="deleteModalProps"
+                    v-on:confirmed="onConfirmed">
+                </delete-confirmation>
+            </b-modal>
+
         </div>
 
         <div class="columns">
@@ -68,7 +75,11 @@
                                         id: props.row.id,
                                         nama: props.row.nama
                                     })"/>
-                                <b-button type="is-danger" icon-right="delete" size="is-small" />
+                                <b-button type="is-danger" icon-right="delete" size="is-small"
+                                    @click="openDeleteConfirmationModal({
+                                        id: props.row.id,
+                                        nama: props.row.nama
+                                    })"/>
                             </b-table-column>
 
                         </template>
@@ -83,10 +94,12 @@
 <script>
 import { readUnitKerjaCollection, createUnitKerja, updateUnitKerja, deleteUnitKerja } from '../../network/api';
 import UnitKerjaForm from '../../components/unit-kerja/UnitKerjaForm';
+import DeleteConfirmation from '../../components/DeleteConfirmation';
 
 export default {
     components: {
         UnitKerjaForm,
+        DeleteConfirmation
     },
     data() {
         return {
@@ -105,6 +118,12 @@ export default {
                 nama: null,
                 isLoading: false,
                 message: null
+            },
+            isDeleteModalActive: false,
+            deleteModalProps: {
+                id: null,
+                nama: null,
+                isLoading: false
             }
         }
     },
@@ -169,6 +188,14 @@ export default {
             };
             this.isFormModalActive = true;
         },
+        openDeleteConfirmationModal(item) {
+            this.deleteModalProps = {
+                id: item.id,
+                nama: item.nama,
+                isLoading: false
+            };
+            this.isDeleteModalActive = true;
+        },
         onSubmitCreate(submission) {
             this.formModalProps.isLoading = true;
             createUnitKerja(submission)
@@ -205,6 +232,21 @@ export default {
             } else {
                 this.onSubmitUpdate(submission);
             }
+        },
+        onConfirmed(submission) {
+            this.deleteModalProps.isLoading = true;
+            deleteUnitKerja(submission.id)
+                .then(res => {
+                    this.isDeleteModalActive = false;
+                    this.deleteModalProps.isLoading = false;
+                    this.snackbar(`Berhasil menghapus data ${submission.nama}`, 'is-success');
+                })
+                .catch(err => {
+                    this.deleteModalProps.isLoading = false;
+                    const message = err.response.data.error.message;
+                    this.deleteModalProps.message = `Gagal menghapus data ${submission.nama}. ${message}`;
+                });
+            this.applyFilter();
         }
     },
     mounted() {
