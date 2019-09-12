@@ -2648,6 +2648,14 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  computed: {
+    isCreateAction: function isCreateAction() {
+      return this.id === null;
+    },
+    submitButtonLabel: function submitButtonLabel() {
+      return this.isCreateAction ? 'Tambah' : 'Ubah';
+    }
+  },
   methods: {
     onClickButton: function onClickButton() {
       this.$emit('submitted', this.submission);
@@ -2940,6 +2948,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2981,6 +2993,9 @@ __webpack_require__.r(__webpack_exports__);
         nama: this.filterNamaUnitKerja,
         page: this.filterPage
       };
+    },
+    isCreateTypeFormModal: function isCreateTypeFormModal() {
+      return this.formModalProps.id === null;
     }
   },
   methods: {
@@ -3006,10 +3021,25 @@ __webpack_require__.r(__webpack_exports__);
         _this.isLoading = false;
       });
     },
-    openFormModal: function openFormModal() {
+    openCreateFormModal: function openCreateFormModal() {
+      this.formModalProps = {
+        id: null,
+        nama: null,
+        isLoading: false,
+        message: null
+      };
       this.isFormModalActive = true;
     },
-    onSubmitTambah: function onSubmitTambah(submission) {
+    openUpdateFormModal: function openUpdateFormModal(item) {
+      this.formModalProps = {
+        id: item.id,
+        nama: item.nama,
+        isLoading: false,
+        message: null
+      };
+      this.isFormModalActive = true;
+    },
+    onSubmitCreate: function onSubmitCreate(submission) {
       var _this2 = this;
 
       this.formModalProps.isLoading = true;
@@ -3020,9 +3050,33 @@ __webpack_require__.r(__webpack_exports__);
         _this2.snackbar("Berhasil menambahkan data ".concat(res.data.nama), 'is-success');
       })["catch"](function (err) {
         _this2.formModalProps.isLoading = false;
-        _this2.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama);
+        var message = err.response.data.error.message;
+        _this2.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama, ". ").concat(message);
       });
       this.applyFilter();
+    },
+    onSubmitUpdate: function onSubmitUpdate(submission) {
+      var _this3 = this;
+
+      this.formModalProps.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateUnitKerja"])(submission.id, submission).then(function (res) {
+        _this3.isFormModalActive = false;
+        _this3.formModalProps.isLoading = false;
+
+        _this3.snackbar("Berhasil mengubah data ".concat(res.data.nama), 'is-success');
+      })["catch"](function (err) {
+        _this3.formModalProps.isLoading = false;
+        var message = err.response.data.error.message;
+        _this3.formModalProps.message = "Gagal mengubah data ".concat(submission.nama, ". ").concat(message);
+      });
+      this.applyFilter();
+    },
+    onSubmitted: function onSubmitted(submission) {
+      if (this.isCreateTypeFormModal) {
+        this.onSubmitCreate(submission);
+      } else {
+        this.onSubmitUpdate(submission);
+      }
     }
   },
   mounted: function mounted() {
@@ -17225,7 +17279,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("Close")]
+            [_vm._v("Batal")]
           ),
           _vm._v(" "),
           _c(
@@ -17238,7 +17292,7 @@ var render = function() {
               },
               on: { click: _vm.onClickButton }
             },
-            [_vm._v("Submit")]
+            [_vm._v(_vm._s(_vm.submitButtonLabel))]
           )
         ],
         1
@@ -17252,7 +17306,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("header", { staticClass: "modal-card-head" }, [
-      _c("p", { staticClass: "modal-card-title" }, [_vm._v("Unit Kerja")])
+      _c("p", { staticClass: "modal-card-title" }, [_vm._v("Form Unit Kerja")])
     ])
   }
 ]
@@ -17681,7 +17735,7 @@ var render = function() {
                   attrs: { type: "is-success" },
                   on: {
                     click: function($event) {
-                      return _vm.openFormModal()
+                      return _vm.openCreateFormModal()
                     }
                   }
                 },
@@ -17710,7 +17764,7 @@ var render = function() {
             _c(
               "unit-kerja-form",
               _vm._b(
-                { on: { submitted: _vm.onSubmitTambah } },
+                { on: { submitted: _vm.onSubmitted } },
                 "unit-kerja-form",
                 _vm.formModalProps,
                 false
@@ -17772,6 +17826,14 @@ var render = function() {
                                 type: "is-danger",
                                 "icon-right": "pencil",
                                 size: "is-small"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.openUpdateFormModal({
+                                    id: props.row.id,
+                                    nama: props.row.nama
+                                  })
+                                }
                               }
                             }),
                             _vm._v(" "),
@@ -30589,7 +30651,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************!*\
   !*** ./resources/js/network/api.js ***!
   \*************************************/
-/*! exports provided: readBarangMasukCollection, readUnitKerjaCollection, createUnitKerja */
+/*! exports provided: readBarangMasukCollection, readUnitKerjaCollection, createUnitKerja, updateUnitKerja, deleteUnitKerja */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30597,6 +30659,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readBarangMasukCollection", function() { return readBarangMasukCollection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readUnitKerjaCollection", function() { return readUnitKerjaCollection; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUnitKerja", function() { return createUnitKerja; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateUnitKerja", function() { return updateUnitKerja; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUnitKerja", function() { return deleteUnitKerja; });
 /* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./request */ "./resources/js/network/request.js");
 
 var readBarangMasukCollection = function readBarangMasukCollection(params) {
@@ -30613,6 +30677,12 @@ var readUnitKerjaCollection = function readUnitKerjaCollection(params) {
 };
 var createUnitKerja = function createUnitKerja(submission) {
   return _request__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/unit_kerja', submission);
+};
+var updateUnitKerja = function updateUnitKerja(id, submission) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].put("/api/unit_kerja/".concat(id), submission);
+};
+var deleteUnitKerja = function deleteUnitKerja(id) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/unit_kerja/".concat(id));
 };
 
 /***/ }),

@@ -21,14 +21,14 @@
             <!-- Right side -->
             <div class="level-right">
                 <p class="level-item">
-                    <b-button type="is-success" @click="openFormModal()">Tambah</b-button>
+                    <b-button type="is-success" @click="openCreateFormModal()">Tambah</b-button>
                 </p>
             </div>
 
             <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
                 <unit-kerja-form
                     v-bind="formModalProps"
-                    @submitted="onSubmitTambah">
+                    v-on:submitted="onSubmitted">
                 </unit-kerja-form>
             </b-modal>
 
@@ -63,7 +63,11 @@
                             </b-table-column>
 
                             <b-table-column label="Aksi" width="90">
-                                <b-button type="is-danger" icon-right="pencil" size="is-small" />
+                                <b-button type="is-danger" icon-right="pencil" size="is-small"
+                                    @click="openUpdateFormModal({
+                                        id: props.row.id,
+                                        nama: props.row.nama
+                                    })"/>
                                 <b-button type="is-danger" icon-right="delete" size="is-small" />
                             </b-table-column>
 
@@ -77,7 +81,7 @@
 </template>
 
 <script>
-import { readUnitKerjaCollection, createUnitKerja } from '../../network/api';
+import { readUnitKerjaCollection, createUnitKerja, updateUnitKerja, deleteUnitKerja } from '../../network/api';
 import UnitKerjaForm from '../../components/unit-kerja/UnitKerjaForm';
 
 export default {
@@ -119,6 +123,9 @@ export default {
                 nama: this.filterNamaUnitKerja,
                 page: this.filterPage,
             }
+        },
+        isCreateTypeFormModal() {
+            return this.formModalProps.id === null;
         }
     },
     methods: {
@@ -144,10 +151,25 @@ export default {
                     this.isLoading = false;
                 });
         },
-        openFormModal() {
+        openCreateFormModal() {
+            this.formModalProps = {
+                id: null,
+                nama: null,
+                isLoading: false,
+                message: null
+            };
             this.isFormModalActive = true;
         },
-        onSubmitTambah(submission) {
+        openUpdateFormModal(item) {
+            this.formModalProps = {
+                id: item.id,
+                nama: item.nama,
+                isLoading: false,
+                message: null
+            };
+            this.isFormModalActive = true;
+        },
+        onSubmitCreate(submission) {
             this.formModalProps.isLoading = true;
             createUnitKerja(submission)
                 .then(res => {
@@ -157,9 +179,32 @@ export default {
                 })
                 .catch(err => {
                     this.formModalProps.isLoading = false;
-                    this.formModalProps.message = `Gagal menambahkan data ${submission.nama}`;
+                    const message = err.response.data.error.message;
+                    this.formModalProps.message = `Gagal menambahkan data ${submission.nama}. ${message}`;
                 });
             this.applyFilter();
+        },
+        onSubmitUpdate(submission) {
+            this.formModalProps.isLoading = true;
+            updateUnitKerja(submission.id, submission)
+                .then(res => {
+                    this.isFormModalActive = false;
+                    this.formModalProps.isLoading = false;
+                    this.snackbar(`Berhasil mengubah data ${res.data.nama}`, 'is-success');
+                })
+                .catch(err => {
+                    this.formModalProps.isLoading = false;
+                    const message = err.response.data.error.message;
+                    this.formModalProps.message = `Gagal mengubah data ${submission.nama}. ${message}`;
+                });
+            this.applyFilter();
+        },
+        onSubmitted(submission) {
+            if (this.isCreateTypeFormModal) {
+                this.onSubmitCreate(submission);
+            } else {
+                this.onSubmitUpdate(submission);
+            }
         }
     },
     mounted() {

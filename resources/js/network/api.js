@@ -17,3 +17,11 @@ export const readUnitKerjaCollection = (params) => {
 export const createUnitKerja = (submission) => {
     return request.post('/api/unit_kerja', submission);
 };
+
+export const updateUnitKerja = (id, submission) => {
+    return request.put(`/api/unit_kerja/${id}`, submission);
+};
+
+export const deleteUnitKerja = (id) => {
+    return request.delete(`/api/unit_kerja/${id}`);
+};
