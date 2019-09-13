@@ -21,6 +21,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('example-input', require('./components/ExampleInput.vue').default);
 Vue.component('range-date-picker', require('./components/RangeDatePicker.vue').default);
 Vue.component('passport-clients', require('./components/passport/Clients.vue').default);
+Vue.component('delete-confirmation', require('./components/DeleteConfirmation.vue').default);
 Vue.component('passport-authorized-clients', require('./components/passport/AuthorizedClients.vue').default);
 Vue.component('passport-personal-access-tokens', require('./components/passport/PersonalAccessTokens.vue').default);
 Vue.component('barang-masuk-board', require('./pages/barang-masuk/BarangMasukBoard.vue').default);

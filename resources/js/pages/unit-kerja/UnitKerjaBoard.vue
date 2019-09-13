@@ -9,7 +9,7 @@
                 <div class="level-item">
                 <div class="field has-addons">
                     <p class="control">
-                        <b-input v-model="filterNamaUnitKerja"></b-input>
+                        <b-input v-model="filter.nama"></b-input>
                     </p>
                     <p class="control">
                         <b-button class="button is-info" @click="applyFilter">Cari</b-button>
@@ -46,21 +46,21 @@
 
                 <div class="table-container">
                     <b-table
-                        :data="unitKerjaData"
+                        :data="tableData"
 
                         striped
-                        :paginated="unitKerjaTotal > 0"
+                        :paginated="tableTotal > 0"
                         backend-pagination
-                        :loading="isLoading"
-                        :total="unitKerjaTotal"
-                        :per-page="unitKerjaPerPage"
+                        :loading="filter.isLoading"
+                        :total="tableTotal"
+                        :per-page="tablePerPage"
                         @page-change="onPageChange"
                         aria-next-label="Next page"
                         aria-previous-label="Previous page"
                         aria-page-label="Page"
                         aria-current-label="Current page">
 
-                        <b-message type="is-info" v-if="!isLoading" slot="empty">
+                        <b-message type="is-info" v-if="!filter.isLoading" slot="empty">
                             Data tidak ditemukan.
                         </b-message>
 
@@ -94,24 +94,24 @@
 <script>
 import { readUnitKerjaCollection, createUnitKerja, updateUnitKerja, deleteUnitKerja } from '../../network/api';
 import UnitKerjaForm from '../../components/unit-kerja/UnitKerjaForm';
-import DeleteConfirmation from '../../components/DeleteConfirmation';
 
 export default {
     components: {
-        UnitKerjaForm,
-        DeleteConfirmation
+        UnitKerjaForm
     },
     data() {
         return {
-            filterNamaUnitKerja: null,
-            filterPage: 1,
-            unitKerjaData: [],
-            unitKerjaMeta: {
+            filter: {
+                nama: null,
+                page: 1,
+                isLoading: false,
+            },
+            tableData: [],
+            tableMeta: {
                 total: null,
                 per_page: null,
                 current_page: null
             },
-            isLoading: false,
             isFormModalActive: false,
             formModalProps: {
                 id: null,
@@ -128,19 +128,19 @@ export default {
         }
     },
     computed: {
-        unitKerjaTotal() {
-            return this.unitKerjaMeta.total;
+        tableTotal() {
+            return this.tableMeta.total;
         },
-        unitKerjaPerPage() {
-            return this.unitKerjaMeta.per_page;
+        tablePerPage() {
+            return this.tableMeta.per_page;
         },
-        unitKerjaCurrentPage() {
-            return this.unitKerjaMeta.current_page;
+        tableCurrentPage() {
+            return this.tableMeta.current_page;
         },
-        params() {
+        filterParams() {
             return {
-                nama: this.filterNamaUnitKerja,
-                page: this.filterPage,
+                nama: this.filter.nama,
+                page: this.filter.page,
             }
         },
         isCreateTypeFormModal() {
@@ -155,19 +155,19 @@ export default {
             });
         },
         onPageChange(page) {
-            this.filterPage = page;
+            this.filter.page = page;
             this.applyFilter();
         },
         applyFilter() {
-            this.isLoading = true;
-            readUnitKerjaCollection(this.params)
+            this.filter.isLoading = true;
+            readUnitKerjaCollection(this.filterParams)
                 .then(res => {
-                    this.unitKerjaData = res.data;
-                    this.unitKerjaMeta = res.meta;
-                    this.isLoading = false;
+                    this.tableData = res.data;
+                    this.tableMeta = res.meta;
+                    this.filter.isLoading = false;
                 })
                 .catch(err => {
-                    this.isLoading = false;
+                    this.filter.isLoading = false;
                 });
         },
         openCreateFormModal() {

@@ -2921,7 +2921,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _network_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../network/api */ "./resources/js/network/api.js");
 /* harmony import */ var _components_unit_kerja_UnitKerjaForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/unit-kerja/UnitKerjaForm */ "./resources/js/components/unit-kerja/UnitKerjaForm.vue");
-/* harmony import */ var _components_DeleteConfirmation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/DeleteConfirmation */ "./resources/js/components/DeleteConfirmation.vue");
 //
 //
 //
@@ -3015,25 +3014,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    UnitKerjaForm: _components_unit_kerja_UnitKerjaForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    DeleteConfirmation: _components_DeleteConfirmation__WEBPACK_IMPORTED_MODULE_2__["default"]
+    UnitKerjaForm: _components_unit_kerja_UnitKerjaForm__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      filterNamaUnitKerja: null,
-      filterPage: 1,
-      unitKerjaData: [],
-      unitKerjaMeta: {
+      filter: {
+        nama: null,
+        page: 1,
+        isLoading: false
+      },
+      tableData: [],
+      tableMeta: {
         total: null,
         per_page: null,
         current_page: null
       },
-      isLoading: false,
       isFormModalActive: false,
       formModalProps: {
         id: null,
@@ -3050,19 +3049,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    unitKerjaTotal: function unitKerjaTotal() {
-      return this.unitKerjaMeta.total;
+    tableTotal: function tableTotal() {
+      return this.tableMeta.total;
     },
-    unitKerjaPerPage: function unitKerjaPerPage() {
-      return this.unitKerjaMeta.per_page;
+    tablePerPage: function tablePerPage() {
+      return this.tableMeta.per_page;
     },
-    unitKerjaCurrentPage: function unitKerjaCurrentPage() {
-      return this.unitKerjaMeta.current_page;
+    tableCurrentPage: function tableCurrentPage() {
+      return this.tableMeta.current_page;
     },
-    params: function params() {
+    filterParams: function filterParams() {
       return {
-        nama: this.filterNamaUnitKerja,
-        page: this.filterPage
+        nama: this.filter.nama,
+        page: this.filter.page
       };
     },
     isCreateTypeFormModal: function isCreateTypeFormModal() {
@@ -3077,19 +3076,19 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     onPageChange: function onPageChange(page) {
-      this.filterPage = page;
+      this.filter.page = page;
       this.applyFilter();
     },
     applyFilter: function applyFilter() {
       var _this = this;
 
-      this.isLoading = true;
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readUnitKerjaCollection"])(this.params).then(function (res) {
-        _this.unitKerjaData = res.data;
-        _this.unitKerjaMeta = res.meta;
-        _this.isLoading = false;
+      this.filter.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readUnitKerjaCollection"])(this.filterParams).then(function (res) {
+        _this.tableData = res.data;
+        _this.tableMeta = res.meta;
+        _this.filter.isLoading = false;
       })["catch"](function (err) {
-        _this.isLoading = false;
+        _this.filter.isLoading = false;
       });
     },
     openCreateFormModal: function openCreateFormModal() {
@@ -17878,11 +17877,11 @@ var render = function() {
                 [
                   _c("b-input", {
                     model: {
-                      value: _vm.filterNamaUnitKerja,
+                      value: _vm.filter.nama,
                       callback: function($$v) {
-                        _vm.filterNamaUnitKerja = $$v
+                        _vm.$set(_vm.filter, "nama", $$v)
                       },
-                      expression: "filterNamaUnitKerja"
+                      expression: "filter.nama"
                     }
                   })
                 ],
@@ -17999,13 +17998,13 @@ var render = function() {
               "b-table",
               {
                 attrs: {
-                  data: _vm.unitKerjaData,
+                  data: _vm.tableData,
                   striped: "",
-                  paginated: _vm.unitKerjaTotal > 0,
+                  paginated: _vm.tableTotal > 0,
                   "backend-pagination": "",
-                  loading: _vm.isLoading,
-                  total: _vm.unitKerjaTotal,
-                  "per-page": _vm.unitKerjaPerPage,
+                  loading: _vm.filter.isLoading,
+                  total: _vm.tableTotal,
+                  "per-page": _vm.tablePerPage,
                   "aria-next-label": "Next page",
                   "aria-previous-label": "Previous page",
                   "aria-page-label": "Page",
@@ -18073,7 +18072,7 @@ var render = function() {
                 ])
               },
               [
-                !_vm.isLoading
+                !_vm.filter.isLoading
                   ? _c(
                       "b-message",
                       {
@@ -30232,6 +30231,7 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 Vue.component('example-input', __webpack_require__(/*! ./components/ExampleInput.vue */ "./resources/js/components/ExampleInput.vue")["default"]);
 Vue.component('range-date-picker', __webpack_require__(/*! ./components/RangeDatePicker.vue */ "./resources/js/components/RangeDatePicker.vue")["default"]);
 Vue.component('passport-clients', __webpack_require__(/*! ./components/passport/Clients.vue */ "./resources/js/components/passport/Clients.vue")["default"]);
+Vue.component('delete-confirmation', __webpack_require__(/*! ./components/DeleteConfirmation.vue */ "./resources/js/components/DeleteConfirmation.vue")["default"]);
 Vue.component('passport-authorized-clients', __webpack_require__(/*! ./components/passport/AuthorizedClients.vue */ "./resources/js/components/passport/AuthorizedClients.vue")["default"]);
 Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./components/passport/PersonalAccessTokens.vue */ "./resources/js/components/passport/PersonalAccessTokens.vue")["default"]);
 Vue.component('barang-masuk-board', __webpack_require__(/*! ./pages/barang-masuk/BarangMasukBoard.vue */ "./resources/js/pages/barang-masuk/BarangMasukBoard.vue")["default"]);
