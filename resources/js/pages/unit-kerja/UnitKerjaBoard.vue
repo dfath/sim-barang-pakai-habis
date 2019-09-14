@@ -21,7 +21,7 @@
             <!-- Right side -->
             <div class="level-right">
                 <p class="level-item">
-                    <b-button type="is-success" @click="openCreateFormModal()">Tambah</b-button>
+                    <b-button type="is-info" @click="openCreateFormModal()">Tambah</b-button>
                 </p>
             </div>
 
@@ -148,12 +148,6 @@ export default {
         }
     },
     methods: {
-        snackbar(message, type) {
-            this.$buefy.snackbar.open({
-                message,
-                type,
-            });
-        },
         onPageChange(page) {
             this.filter.page = page;
             this.applyFilter();
@@ -202,7 +196,10 @@ export default {
                 .then(res => {
                     this.isFormModalActive = false;
                     this.formModalProps.isLoading = false;
-                    this.snackbar(`Berhasil menambahkan data ${res.data.nama}`, 'is-success');
+                    this.$buefy.notification.open({
+                        message: `Berhasil menambahkan data ${res.data.nama}`,
+                        type: 'is-success'
+                    });
                 })
                 .catch(err => {
                     this.formModalProps.isLoading = false;
@@ -217,7 +214,10 @@ export default {
                 .then(res => {
                     this.isFormModalActive = false;
                     this.formModalProps.isLoading = false;
-                    this.snackbar(`Berhasil mengubah data ${res.data.nama}`, 'is-success');
+                    this.$buefy.notification.open({
+                        message: `Berhasil mengubah data ${res.data.nama}`,
+                        type: 'is-success'
+                    });
                 })
                 .catch(err => {
                     this.formModalProps.isLoading = false;
@@ -239,13 +239,19 @@ export default {
                 .then(res => {
                     this.isDeleteModalActive = false;
                     this.deleteModalProps.isLoading = false;
-                    this.snackbar(`Berhasil menghapus data ${submission.nama}`, 'is-success');
+                    this.$buefy.notification.open({
+                        message: `Berhasil menghapus data ${submission.nama}`,
+                        type: 'is-success'
+                    })
                 })
                 .catch(err => {
                     this.isDeleteModalActive = false;
                     this.deleteModalProps.isLoading = false;
                     const message = err.response.data.error.message;
-                    this.snackbar(`Gagal menghapus data ${submission.nama}. ${message}`, 'is-danger');
+                    this.$buefy.notification.open({
+                        message: `Gagal menghapus data ${submission.nama}. ${message}`,
+                        type: 'is-danger'
+                    })
                 });
             this.applyFilter();
         }

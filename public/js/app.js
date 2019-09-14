@@ -3069,12 +3069,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    snackbar: function snackbar(message, type) {
-      this.$buefy.snackbar.open({
-        message: message,
-        type: type
-      });
-    },
     onPageChange: function onPageChange(page) {
       this.filter.page = page;
       this.applyFilter();
@@ -3125,7 +3119,10 @@ __webpack_require__.r(__webpack_exports__);
         _this2.isFormModalActive = false;
         _this2.formModalProps.isLoading = false;
 
-        _this2.snackbar("Berhasil menambahkan data ".concat(res.data.nama), 'is-success');
+        _this2.$buefy.notification.open({
+          message: "Berhasil menambahkan data ".concat(res.data.nama),
+          type: 'is-success'
+        });
       })["catch"](function (err) {
         _this2.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
@@ -3141,7 +3138,10 @@ __webpack_require__.r(__webpack_exports__);
         _this3.isFormModalActive = false;
         _this3.formModalProps.isLoading = false;
 
-        _this3.snackbar("Berhasil mengubah data ".concat(res.data.nama), 'is-success');
+        _this3.$buefy.notification.open({
+          message: "Berhasil mengubah data ".concat(res.data.nama),
+          type: 'is-success'
+        });
       })["catch"](function (err) {
         _this3.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
@@ -3164,13 +3164,19 @@ __webpack_require__.r(__webpack_exports__);
         _this4.isDeleteModalActive = false;
         _this4.deleteModalProps.isLoading = false;
 
-        _this4.snackbar("Berhasil menghapus data ".concat(submission.nama), 'is-success');
+        _this4.$buefy.notification.open({
+          message: "Berhasil menghapus data ".concat(submission.nama),
+          type: 'is-success'
+        });
       })["catch"](function (err) {
         _this4.isDeleteModalActive = false;
         _this4.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
 
-        _this4.snackbar("Gagal menghapus data ".concat(submission.nama, ". ").concat(message), 'is-danger');
+        _this4.$buefy.notification.open({
+          message: "Gagal menghapus data ".concat(submission.nama, ". ").concat(message),
+          type: 'is-danger'
+        });
       });
       this.applyFilter();
     }
@@ -17917,7 +17923,7 @@ var render = function() {
               _c(
                 "b-button",
                 {
-                  attrs: { type: "is-success" },
+                  attrs: { type: "is-info" },
                   on: {
                     click: function($event) {
                       return _vm.openCreateFormModal()
