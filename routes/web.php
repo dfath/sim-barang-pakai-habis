@@ -24,3 +24,5 @@ Route::get('/barang-masuk/board', 'BarangMasukController@index')->name('barang-m
 Route::get('/unit-kerja/board', 'UnitKerjaController@index')->name('unit-kerja-board');
 
 Route::get('/satuan/board', 'SatuanController@index')->name('satuan-board');
+
+Route::get('/kelompok-kegiatan/board', 'KelompokKegiatanController@index')->name('kelompok-kegiatan-board');

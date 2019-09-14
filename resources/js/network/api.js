@@ -44,3 +44,22 @@ export const updateSatuan = (id, submission) => {
 export const deleteSatuan = (id) => {
     return request.delete(`/api/satuan/${id}`);
 };
+
+export const readKelompokKegiatanCollection = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/kelompok_kegiatan', config);
+};
+
+export const createKelompokKegiatan = (submission) => {
+    return request.post('/api/kelompok_kegiatan', submission);
+};
+
+export const updateKelompokKegiatan = (id, submission) => {
+    return request.put(`/api/kelompok_kegiatan/${id}`, submission);
+};
+
+export const deleteKelompokKegiatan = (id) => {
+    return request.delete(`/api/kelompok_kegiatan/${id}`);
+};
