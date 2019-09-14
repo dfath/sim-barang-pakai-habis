@@ -3166,9 +3166,11 @@ __webpack_require__.r(__webpack_exports__);
 
         _this4.snackbar("Berhasil menghapus data ".concat(submission.nama), 'is-success');
       })["catch"](function (err) {
+        _this4.isDeleteModalActive = false;
         _this4.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
-        _this4.deleteModalProps.message = "Gagal menghapus data ".concat(submission.nama, ". ").concat(message);
+
+        _this4.snackbar("Gagal menghapus data ".concat(submission.nama, ". ").concat(message), 'is-danger');
       });
       this.applyFilter();
     }

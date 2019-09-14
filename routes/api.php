@@ -28,7 +28,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('/kelompok_barang', 'Api\KelompokBarangController');
 
-    // Route::apiResource('/barang', 'Api\BarangController');
+    Route::apiResource('/barang', 'Api\BarangController');
 
     Route::apiResource('/satuan', 'Api\SatuanController');
 

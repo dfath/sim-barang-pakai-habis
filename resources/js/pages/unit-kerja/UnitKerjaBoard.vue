@@ -242,9 +242,10 @@ export default {
                     this.snackbar(`Berhasil menghapus data ${submission.nama}`, 'is-success');
                 })
                 .catch(err => {
+                    this.isDeleteModalActive = false;
                     this.deleteModalProps.isLoading = false;
                     const message = err.response.data.error.message;
-                    this.deleteModalProps.message = `Gagal menghapus data ${submission.nama}. ${message}`;
+                    this.snackbar(`Gagal menghapus data ${submission.nama}. ${message}`, 'is-danger');
                 });
             this.applyFilter();
         }
