@@ -19,17 +19,17 @@ class SatuanController extends BaseController
      */
     public function index(Request $request)
     {
-        $fields = [
+        $textFields = [
             'nama'
         ];
-        $whereRaws = [
-            'nama' => 'nama = ?'
+        $textFieldMaps = [
+            'nama' => 'nama'
         ];
-        $filter = $request->only($fields);
+        $textFilter = $request->only($textFields);
 
         $query = DB::table('satuan');
-        foreach ($filter as $key => $value) {
-            $query->whereRaw($whereRaws[$key], [$value]);
+        foreach ($textFilter as $key => $value) {
+            $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
         return new SatuanResourceCollection($query->paginate());

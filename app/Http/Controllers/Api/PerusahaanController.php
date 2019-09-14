@@ -19,21 +19,21 @@ class PerusahaanController extends BaseController
      */
     public function index(Request $request)
     {
-        $fields = [
+        $textFields = [
             'nama',
             'alamat',
             'pimpinan'
         ];
-        $whereRaws = [
-            'nama' => 'nama = ?',
-            'alamat' => 'alamat = ?',
-            'pimpinan' => 'pimpinan = ?'
+        $textFieldMaps = [
+            'nama' => 'nama',
+            'alamat' => 'alamat',
+            'pimpinan' => 'pimpinan'
         ];
-        $filter = $request->only($fields);
+        $textFilter = $request->only($textFields);
 
         $query = DB::table('perusahaan');
-        foreach ($filter as $key => $value) {
-            $query->whereRaw($whereRaws[$key], [$value]);
+        foreach ($textFilter as $key => $value) {
+            $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
         return new PerusahaanResourceCollection($query->paginate());

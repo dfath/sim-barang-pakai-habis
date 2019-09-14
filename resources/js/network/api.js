@@ -63,3 +63,22 @@ export const updateKelompokKegiatan = (id, submission) => {
 export const deleteKelompokKegiatan = (id) => {
     return request.delete(`/api/kelompok_kegiatan/${id}`);
 };
+
+export const readKelompokBarangCollection = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/kelompok_barang', config);
+};
+
+export const createKelompokBarang = (submission) => {
+    return request.post('/api/kelompok_barang', submission);
+};
+
+export const updateKelompokBarang = (id, submission) => {
+    return request.put(`/api/kelompok_barang/${id}`, submission);
+};
+
+export const deleteKelompokBarang = (id) => {
+    return request.delete(`/api/kelompok_barang/${id}`);
+};

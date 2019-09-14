@@ -19,19 +19,22 @@ class KelompokBarangController extends BaseController
      */
     public function index(Request $request)
     {
-        $fields = [
-            'kelompok_kegiatan_id',
+        $textFields = [
             'nama'
         ];
-        $whereRaws = [
-            'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
-            'nama' => 'nama = ?'
+        $textFieldMaps = [
+            'nama' => 'kelompok_barang.nama'
         ];
-        $filter = $request->only($fields);
+        $textFilter = $request->only($textFields);
 
         $query = DB::table('kelompok_barang');
-        foreach ($filter as $key => $value) {
-            $query->whereRaw($whereRaws[$key], [$value]);
+        $query->select('kelompok_barang.*');
+        // kelompok kegiatan
+        $query->leftJoin('kelompok_kegiatan', 'kelompok_barang.kelompok_kegiatan_id', '=', 'kelompok_kegiatan.id');
+        $query->addSelect('kelompok_kegiatan.nama as nama_kelompok_kegiatan');
+
+        foreach ($textFilter as $key => $value) {
+            $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
         return new KelompokBarangResourceCollection($query->paginate());

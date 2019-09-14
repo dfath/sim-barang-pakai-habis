@@ -17,7 +17,8 @@ class KelompokBarangResource extends JsonResource
         return [
             'id' => $this->id,
             'kelompok_kegiatan_id' => $this->kelompok_kegiatan_id,
-            'nama' => $this->nama
+            'nama' => $this->nama,
+            'nama_kelompok_kegiatan' => $this->nama_kelompok_kegiatan,
         ];
     }
 }
