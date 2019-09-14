@@ -17,15 +17,16 @@ Vue.use(Buefy);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('example-input', require('./components/ExampleInput.vue').default);
-Vue.component('range-date-picker', require('./components/RangeDatePicker.vue').default);
+// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Vue.component('example-input', require('./components/ExampleInput.vue').default);
+// Vue.component('range-date-picker', require('./components/RangeDatePicker.vue').default);
 Vue.component('passport-clients', require('./components/passport/Clients.vue').default);
 Vue.component('delete-confirmation', require('./components/DeleteConfirmation.vue').default);
 Vue.component('passport-authorized-clients', require('./components/passport/AuthorizedClients.vue').default);
 Vue.component('passport-personal-access-tokens', require('./components/passport/PersonalAccessTokens.vue').default);
 Vue.component('barang-masuk-board', require('./pages/barang-masuk/BarangMasukBoard.vue').default);
 Vue.component('unit-kerja-board', require('./pages/unit-kerja/UnitKerjaBoard.vue').default);
+Vue.component('satuan-board', require('./pages/satuan/SatuanBoard.vue').default);
 
 const app = new Vue({
     el: '#app'
