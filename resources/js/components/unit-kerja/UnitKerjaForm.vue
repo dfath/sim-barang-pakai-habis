@@ -18,8 +18,8 @@
 
         </section>
         <footer class="modal-card-foot">
-            <b-button type="is-dark" @click="$parent.close()">Batal</b-button>
-            <b-button type="is-primary" @click="onClickButton" :disabled="isLoading" :loading="isLoading" >{{ submitButtonLabel }}</b-button>
+            <b-button @click="$parent.close()">Batal</b-button>
+            <b-button type="is-info" @click="onClickButton" :disabled="isLoading" :loading="isLoading" >{{ submitButtonLabel }}</b-button>
         </footer>
     </div>
 </template>

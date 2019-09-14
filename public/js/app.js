@@ -16088,7 +16088,6 @@ var render = function() {
           _c(
             "b-button",
             {
-              attrs: { type: "is-dark" },
               on: {
                 click: function($event) {
                   return _vm.$parent.close()
@@ -16102,7 +16101,7 @@ var render = function() {
             "b-button",
             {
               attrs: {
-                type: "is-primary",
+                type: "is-info",
                 disabled: _vm.isLoading,
                 loading: _vm.isLoading
               },
@@ -17463,7 +17462,6 @@ var render = function() {
           _c(
             "b-button",
             {
-              attrs: { type: "is-dark" },
               on: {
                 click: function($event) {
                   return _vm.$parent.close()
@@ -17477,7 +17475,7 @@ var render = function() {
             "b-button",
             {
               attrs: {
-                type: "is-primary",
+                type: "is-info",
                 disabled: _vm.isLoading,
                 loading: _vm.isLoading
               },
