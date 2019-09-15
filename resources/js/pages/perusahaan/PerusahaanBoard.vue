@@ -26,13 +26,10 @@
             </div>
 
             <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
-                <barang-form
+                <perusahaan-form
                     v-bind="formModalProps"
-                    :satuanCollection="reference.satuanCollection"
-                    :kelompokKegiatanCollection="reference.kelompokKegiatanCollection"
-                    :kelompokBarangCollection="reference.kelompokBarangCollection"
                     v-on:submitted="onSubmitted">
-                </barang-form>
+                </perusahaan-form>
             </b-modal>
 
             <b-modal :active.sync="isDeleteModalActive" has-modal-card :can-cancel="false">
@@ -68,20 +65,12 @@
                         </b-message>
 
                         <template slot-scope="props">
-                            <b-table-column field="nama_kelompok_kegiatan" label="Kelompok Kegiatan">
-                                {{ props.row.nama_kelompok_kegiatan }}
-                            </b-table-column>
-
-                            <b-table-column field="nama_kelompok_barang" label="Kelompok Barang">
-                                {{ props.row.nama_kelompok_barang }}
-                            </b-table-column>
-
                             <b-table-column field="nama" label="Nama">
                                 {{ props.row.nama }}
                             </b-table-column>
 
-                            <b-table-column field="nama_satuan" label="Satuan">
-                                {{ props.row.nama_satuan }}
+                            <b-table-column field="pimpinan" label="Pimpinan">
+                                {{ props.row.pimpinan }}
                             </b-table-column>
 
                             <b-table-column label="Aksi" width="90">
@@ -89,9 +78,8 @@
                                     @click="openUpdateFormModal({
                                         id: props.row.id,
                                         nama: props.row.nama,
-                                        kelompokKegiatanId: props.row.kelompok_kegiatan_id,
-                                        kelompokBarangId: props.row.kelompok_barang_id,
-                                        satuanId: props.row.satuan_id,
+                                        pimpinan: props.row.pimpinan,
+                                        alamat: props.row.alamat
                                     })"/>
                                 <b-button type="is-danger" icon-right="delete" size="is-small"
                                     @click="openDeleteConfirmationModal({
@@ -110,12 +98,12 @@
 </template>
 
 <script>
-import { readSatuanCollection, readKelompokKegiatanCollection, readKelompokBarangCollection, readBarangCollection, createBarang, updateBarang, deleteBarang } from '../../network/api';
-import BarangForm from '../../components/barang/BarangForm';
+import { readPerusahaanCollection, createPerusahaan, updatePerusahaan, deletePerusahaan } from '../../network/api';
+import PerusahaanForm from '../../components/perusahaan/PerusahaanForm';
 
 export default {
     components: {
-        BarangForm
+        PerusahaanForm
     },
     data() {
         return {
@@ -123,11 +111,6 @@ export default {
                 nama: null,
                 page: 1,
                 isLoading: false,
-            },
-            reference: {
-                kelompokKegiatanCollection: null,
-                kelompokBarangCollection: null,
-                satuanCollection: null,
             },
             tableData: [],
             tableMeta: {
@@ -139,11 +122,10 @@ export default {
             formModalProps: {
                 id: null,
                 nama: null,
-                kelompokKegiatanId: null,
-                kelompokBarangId: null,
-                satuanId: null,
+                pimpinan: null,
+                alamat: null,
                 isLoading: false,
-                message: null,
+                message: null
             },
             isDeleteModalActive: false,
             deleteModalProps: {
@@ -174,36 +156,13 @@ export default {
         }
     },
     methods: {
-        loadReference() {
-            readKelompokKegiatanCollection({all: true})
-                .then(res => {
-                    this.reference.kelompokKegiatanCollection = res.data;
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            readKelompokBarangCollection({all: true})
-                .then(res => {
-                    this.reference.kelompokBarangCollection = res.data;
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            readSatuanCollection({all: true})
-                .then(res => {
-                    this.reference.satuanCollection = res.data;
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
         onPageChange(page) {
             this.filter.page = page;
             this.applyFilter();
         },
         applyFilter() {
             this.filter.isLoading = true;
-            readBarangCollection(this.filterParams)
+            readPerusahaanCollection(this.filterParams)
                 .then(res => {
                     this.tableData = res.data;
                     this.tableMeta = res.meta;
@@ -217,9 +176,8 @@ export default {
             this.formModalProps = {
                 id: null,
                 nama: null,
-                kelompokKegiatanId: null,
-                kelompokBarangId: null,
-                satuanId: null,
+                pimpinan: null,
+                alamat: null,
                 isLoading: false,
                 message: null
             };
@@ -229,9 +187,8 @@ export default {
             this.formModalProps = {
                 id: item.id,
                 nama: item.nama,
-                kelompokKegiatanId: item.kelompokKegiatanId,
-                kelompokBarangId: item.kelompokBarangId,
-                satuanId: item.satuanId,
+                pimpinan: item.pimpinan,
+                alamat: item.alamat,
                 isLoading: false,
                 message: null
             };
@@ -247,7 +204,7 @@ export default {
         },
         onSubmitCreate(submission) {
             this.formModalProps.isLoading = true;
-            createBarang(submission)
+            createPerusahaan(submission)
                 .then(res => {
                     this.isFormModalActive = false;
                     this.formModalProps.isLoading = false;
@@ -265,7 +222,7 @@ export default {
         },
         onSubmitUpdate(submission) {
             this.formModalProps.isLoading = true;
-            updateBarang(submission.id, submission)
+            updatePerusahaan(submission.id, submission)
                 .then(res => {
                     this.isFormModalActive = false;
                     this.formModalProps.isLoading = false;
@@ -290,7 +247,7 @@ export default {
         },
         onConfirmed(submission) {
             this.deleteModalProps.isLoading = true;
-            deleteBarang(submission.id)
+            deletePerusahaan(submission.id)
                 .then(res => {
                     this.isDeleteModalActive = false;
                     this.deleteModalProps.isLoading = false;
@@ -311,8 +268,7 @@ export default {
             this.applyFilter();
         }
     },
-    beforeMount() {
-        this.loadReference();
+    mounted() {
         this.applyFilter();
     }
 }

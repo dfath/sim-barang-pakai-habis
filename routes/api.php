@@ -32,6 +32,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('/satuan', 'Api\SatuanController');
 
+    Route::apiResource('/perusahaan', 'Api\PerusahaanController');
+
     Route::apiResource('/unit_kerja', 'Api\UnitKerjaController');
 
     Route::apiResource('/instansi', 'Api\InstansiController')->only([

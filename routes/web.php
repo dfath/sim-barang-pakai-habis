@@ -33,4 +33,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/barang/board', 'BarangController@index')->name('barang-board');
 
+    Route::get('/perusahaan/board', 'PerusahaanController@index')->name('perusahaan-board');
+
 });

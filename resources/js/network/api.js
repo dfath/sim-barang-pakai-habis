@@ -101,3 +101,22 @@ export const updateBarang = (id, submission) => {
 export const deleteBarang = (id) => {
     return request.delete(`/api/barang/${id}`);
 };
+
+export const readPerusahaanCollection = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/perusahaan', config);
+};
+
+export const createPerusahaan = (submission) => {
+    return request.post('/api/perusahaan', submission);
+};
+
+export const updatePerusahaan = (id, submission) => {
+    return request.put(`/api/perusahaan/${id}`, submission);
+};
+
+export const deletePerusahaan = (id) => {
+    return request.delete(`/api/perusahaan/${id}`);
+};

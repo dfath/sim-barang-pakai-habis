@@ -66,7 +66,7 @@
                         </b-message>
 
                         <template slot-scope="props">
-                            <b-table-column field="nama" label="Kelompok Kegiatan">
+                            <b-table-column field="nama_kelompok_kegiatan" label="Kelompok Kegiatan">
                                 {{ props.row.nama_kelompok_kegiatan }}
                             </b-table-column>
 
