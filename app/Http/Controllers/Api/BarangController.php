@@ -23,9 +23,9 @@ class BarangController extends BaseController
             'kelompok_kegiatan_id',
             'kelompok_barang_id',
             'satuan_id',
-            'nama',
         ];
         $textFields = [
+            'nama',
             'nama_satuan',
             'nama_kelompok_kegiatan',
             'nama_kelompok_barang',
@@ -34,9 +34,9 @@ class BarangController extends BaseController
             'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
             'kelompok_barang_id' => 'kelompok_kegiatan_id = ?',
             'satuan_id' => 'satuan_id = ?',
-            'nama' => 'nama = ?',
         ];
         $textFieldMaps = [
+            'nama' => 'barang.nama',
             'nama_satuan' => 'satuan.nama',
             'nama_kelompok_kegiatan' => 'kelompok_kegiatan.nama',
             'nama_kelompok_barang' => 'kelompok_barang.nama',

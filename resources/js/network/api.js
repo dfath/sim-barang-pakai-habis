@@ -82,3 +82,22 @@ export const updateKelompokBarang = (id, submission) => {
 export const deleteKelompokBarang = (id) => {
     return request.delete(`/api/kelompok_barang/${id}`);
 };
+
+export const readBarangCollection = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/barang', config);
+};
+
+export const createBarang = (submission) => {
+    return request.post('/api/barang', submission);
+};
+
+export const updateBarang = (id, submission) => {
+    return request.put(`/api/barang/${id}`, submission);
+};
+
+export const deleteBarang = (id) => {
+    return request.delete(`/api/barang/${id}`);
+};

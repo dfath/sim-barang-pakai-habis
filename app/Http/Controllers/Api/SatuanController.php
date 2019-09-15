@@ -32,7 +32,9 @@ class SatuanController extends BaseController
             $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
-        return new SatuanResourceCollection($query->paginate());
+        $data = $request->input('all') ? $query->get() : $query->paginate();
+
+        return new SatuanResourceCollection($data);
     }
 
     /**

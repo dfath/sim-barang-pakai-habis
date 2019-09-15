@@ -29,6 +29,7 @@ Vue.component('unit-kerja-board', require('./pages/unit-kerja/UnitKerjaBoard.vue
 Vue.component('satuan-board', require('./pages/satuan/SatuanBoard.vue').default);
 Vue.component('kelompok-kegiatan-board', require('./pages/kelompok-kegiatan/KelompokKegiatanBoard.vue').default);
 Vue.component('kelompok-barang-board', require('./pages/kelompok-barang/KelompokBarangBoard.vue').default);
+Vue.component('barang-board', require('./pages/barang/BarangBoard.vue').default);
 
 const app = new Vue({
     el: '#app'

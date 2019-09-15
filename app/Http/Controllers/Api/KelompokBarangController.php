@@ -37,7 +37,9 @@ class KelompokBarangController extends BaseController
             $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
-        return new KelompokBarangResourceCollection($query->paginate());
+        $data = $request->input('all') ? $query->get() : $query->paginate();
+
+        return new KelompokBarangResourceCollection($data);
     }
 
     /**

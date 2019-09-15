@@ -31,4 +31,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/kelompok-barang/board', 'KelompokBarangController@index')->name('kelompok-barang-board');
 
+    Route::get('/barang/board', 'BarangController@index')->name('barang-board');
+
 });
