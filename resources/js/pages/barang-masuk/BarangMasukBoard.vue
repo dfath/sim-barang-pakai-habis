@@ -165,8 +165,10 @@ export default {
                     this.isLoading = false;
                 })
                 .catch(err => {
+                    throw err;
+                })
+                .finally(() => {
                     this.isLoading = false;
-                    console.error(err);
                 });
         },
         openFormModal() {

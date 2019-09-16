@@ -158,9 +158,11 @@ export default {
                 .then(res => {
                     this.tableData = res.data;
                     this.tableMeta = res.meta;
-                    this.filter.isLoading = false;
                 })
                 .catch(err => {
+                    throw err;
+                })
+                .finally(() => {
                     this.filter.isLoading = false;
                 });
         },
@@ -195,16 +197,17 @@ export default {
             createUnitKerja(submission)
                 .then(res => {
                     this.isFormModalActive = false;
-                    this.formModalProps.isLoading = false;
                     this.$buefy.notification.open({
                         message: `Berhasil menambahkan data ${res.data.nama}`,
                         type: 'is-success'
                     });
                 })
                 .catch(err => {
-                    this.formModalProps.isLoading = false;
                     const message = err.response.data.error.message;
                     this.formModalProps.message = `Gagal menambahkan data ${submission.nama}. ${message}`;
+                })
+                .finally(() => {
+                    this.formModalProps.isLoading = false;
                 });
             this.applyFilter();
         },
@@ -213,16 +216,17 @@ export default {
             updateUnitKerja(submission.id, submission)
                 .then(res => {
                     this.isFormModalActive = false;
-                    this.formModalProps.isLoading = false;
                     this.$buefy.notification.open({
                         message: `Berhasil mengubah data ${res.data.nama}`,
                         type: 'is-success'
                     });
                 })
                 .catch(err => {
-                    this.formModalProps.isLoading = false;
                     const message = err.response.data.error.message;
                     this.formModalProps.message = `Gagal mengubah data ${submission.nama}. ${message}`;
+                })
+                .finally(() => {
+                    this.formModalProps.isLoading = false;
                 });
             this.applyFilter();
         },
@@ -237,21 +241,21 @@ export default {
             this.deleteModalProps.isLoading = true;
             deleteUnitKerja(submission.id)
                 .then(res => {
-                    this.isDeleteModalActive = false;
-                    this.deleteModalProps.isLoading = false;
                     this.$buefy.notification.open({
                         message: `Berhasil menghapus data ${submission.nama}`,
                         type: 'is-success'
                     })
                 })
                 .catch(err => {
-                    this.isDeleteModalActive = false;
-                    this.deleteModalProps.isLoading = false;
                     const message = err.response.data.error.message;
                     this.$buefy.notification.open({
                         message: `Gagal menghapus data ${submission.nama}. ${message}`,
                         type: 'is-danger'
                     })
+                })
+                .finally(() => {
+                    this.isDeleteModalActive = false;
+                    this.deleteModalProps.isLoading = false;
                 });
             this.applyFilter();
         }

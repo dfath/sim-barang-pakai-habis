@@ -116,7 +116,7 @@ export default {
                     throw err;
                 })
                 .finally(() => {
-                    this.isFetching = false
+                    this.isFetching = false;
                 });
         },
         onSelectBarang(option) {

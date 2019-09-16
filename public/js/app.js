@@ -3359,8 +3359,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.barangMasukMeta = res.meta;
         _this.isLoading = false;
       })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
         _this.isLoading = false;
-        console.error(err);
       });
     },
     openFormModal: function openFormModal() {
@@ -3573,21 +3574,21 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this.reference.kelompokKegiatanCollection = res.data;
       })["catch"](function (err) {
-        console.log(err);
+        throw err;
       });
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokBarangCollection"])({
         all: true
       }).then(function (res) {
         _this.reference.kelompokBarangCollection = res.data;
       })["catch"](function (err) {
-        console.log(err);
+        throw err;
       });
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readSatuanCollection"])({
         all: true
       }).then(function (res) {
         _this.reference.satuanCollection = res.data;
       })["catch"](function (err) {
-        console.log(err);
+        throw err;
       });
     },
     onPageChange: function onPageChange(page) {
@@ -3601,8 +3602,9 @@ __webpack_require__.r(__webpack_exports__);
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readBarangCollection"])(this.filterParams).then(function (res) {
         _this2.tableData = res.data;
         _this2.tableMeta = res.meta;
-        _this2.filter.isLoading = false;
       })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
         _this2.filter.isLoading = false;
       });
     },
@@ -3644,16 +3646,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createBarang"])(submission).then(function (res) {
         _this3.isFormModalActive = false;
-        _this3.formModalProps.isLoading = false;
 
         _this3.$buefy.notification.open({
           message: "Berhasil menambahkan data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this3.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this3.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this3.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -3663,16 +3665,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateBarang"])(submission.id, submission).then(function (res) {
         _this4.isFormModalActive = false;
-        _this4.formModalProps.isLoading = false;
 
         _this4.$buefy.notification.open({
           message: "Berhasil mengubah data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this4.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this4.formModalProps.message = "Gagal mengubah data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this4.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -3688,22 +3690,20 @@ __webpack_require__.r(__webpack_exports__);
 
       this.deleteModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deleteBarang"])(submission.id).then(function (res) {
-        _this5.isDeleteModalActive = false;
-        _this5.deleteModalProps.isLoading = false;
-
         _this5.$buefy.notification.open({
           message: "Berhasil menghapus data ".concat(submission.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this5.isDeleteModalActive = false;
-        _this5.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
 
         _this5.$buefy.notification.open({
           message: "Gagal menghapus data ".concat(submission.nama, ". ").concat(message),
           type: 'is-danger'
         });
+      })["finally"](function () {
+        _this5.isDeleteModalActive = false;
+        _this5.deleteModalProps.isLoading = false;
       });
       this.applyFilter();
     }
@@ -3893,7 +3893,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this.reference.kelompokKegiatanCollection = res.data;
       })["catch"](function (err) {
-        console.log(err);
+        throw err;
       });
     },
     onPageChange: function onPageChange(page) {
@@ -3907,8 +3907,9 @@ __webpack_require__.r(__webpack_exports__);
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokBarangCollection"])(this.filterParams).then(function (res) {
         _this2.tableData = res.data;
         _this2.tableMeta = res.meta;
-        _this2.filter.isLoading = false;
       })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
         _this2.filter.isLoading = false;
       });
     },
@@ -3946,16 +3947,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createKelompokBarang"])(submission).then(function (res) {
         _this3.isFormModalActive = false;
-        _this3.formModalProps.isLoading = false;
 
         _this3.$buefy.notification.open({
           message: "Berhasil menambahkan data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this3.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this3.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this3.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -3965,16 +3966,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateKelompokBarang"])(submission.id, submission).then(function (res) {
         _this4.isFormModalActive = false;
-        _this4.formModalProps.isLoading = false;
 
         _this4.$buefy.notification.open({
           message: "Berhasil mengubah data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this4.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this4.formModalProps.message = "Gagal mengubah data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this4.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -3990,22 +3991,20 @@ __webpack_require__.r(__webpack_exports__);
 
       this.deleteModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deleteKelompokBarang"])(submission.id).then(function (res) {
-        _this5.isDeleteModalActive = false;
-        _this5.deleteModalProps.isLoading = false;
-
         _this5.$buefy.notification.open({
           message: "Berhasil menghapus data ".concat(submission.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this5.isDeleteModalActive = false;
-        _this5.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
 
         _this5.$buefy.notification.open({
           message: "Gagal menghapus data ".concat(submission.nama, ". ").concat(message),
           type: 'is-danger'
         });
+      })["finally"](function () {
+        _this5.isDeleteModalActive = false;
+        _this5.deleteModalProps.isLoading = false;
       });
       this.applyFilter();
     }
@@ -4188,8 +4187,9 @@ __webpack_require__.r(__webpack_exports__);
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokKegiatanCollection"])(this.filterParams).then(function (res) {
         _this.tableData = res.data;
         _this.tableMeta = res.meta;
-        _this.filter.isLoading = false;
       })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
         _this.filter.isLoading = false;
       });
     },
@@ -4225,16 +4225,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createKelompokKegiatan"])(submission).then(function (res) {
         _this2.isFormModalActive = false;
-        _this2.formModalProps.isLoading = false;
 
         _this2.$buefy.notification.open({
           message: "Berhasil menambahkan data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this2.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this2.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this2.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -4244,16 +4244,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateKelompokKegiatan"])(submission.id, submission).then(function (res) {
         _this3.isFormModalActive = false;
-        _this3.formModalProps.isLoading = false;
 
         _this3.$buefy.notification.open({
           message: "Berhasil mengubah data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this3.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this3.formModalProps.message = "Gagal mengubah data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this3.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -4269,22 +4269,20 @@ __webpack_require__.r(__webpack_exports__);
 
       this.deleteModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deleteKelompokKegiatan"])(submission.id).then(function (res) {
-        _this4.isDeleteModalActive = false;
-        _this4.deleteModalProps.isLoading = false;
-
         _this4.$buefy.notification.open({
           message: "Berhasil menghapus data ".concat(submission.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this4.isDeleteModalActive = false;
-        _this4.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
 
         _this4.$buefy.notification.open({
           message: "Gagal menghapus data ".concat(submission.nama, ". ").concat(message),
           type: 'is-danger'
         });
+      })["finally"](function () {
+        _this4.isDeleteModalActive = false;
+        _this4.deleteModalProps.isLoading = false;
       });
       this.applyFilter();
     }
@@ -4476,6 +4474,8 @@ __webpack_require__.r(__webpack_exports__);
         _this.tableMeta = res.meta;
         _this.filter.isLoading = false;
       })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
         _this.filter.isLoading = false;
       });
     },
@@ -4515,16 +4515,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createPerusahaan"])(submission).then(function (res) {
         _this2.isFormModalActive = false;
-        _this2.formModalProps.isLoading = false;
 
         _this2.$buefy.notification.open({
           message: "Berhasil menambahkan data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this2.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this2.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this2.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -4534,16 +4534,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updatePerusahaan"])(submission.id, submission).then(function (res) {
         _this3.isFormModalActive = false;
-        _this3.formModalProps.isLoading = false;
 
         _this3.$buefy.notification.open({
           message: "Berhasil mengubah data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this3.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this3.formModalProps.message = "Gagal mengubah data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this3.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -4559,22 +4559,20 @@ __webpack_require__.r(__webpack_exports__);
 
       this.deleteModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deletePerusahaan"])(submission.id).then(function (res) {
-        _this4.isDeleteModalActive = false;
-        _this4.deleteModalProps.isLoading = false;
-
         _this4.$buefy.notification.open({
           message: "Berhasil menghapus data ".concat(submission.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this4.isDeleteModalActive = false;
-        _this4.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
 
         _this4.$buefy.notification.open({
           message: "Gagal menghapus data ".concat(submission.nama, ". ").concat(message),
           type: 'is-danger'
         });
+      })["finally"](function () {
+        _this4.isDeleteModalActive = false;
+        _this4.deleteModalProps.isLoading = false;
       });
       this.applyFilter();
     }
@@ -4756,8 +4754,9 @@ __webpack_require__.r(__webpack_exports__);
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readSatuanCollection"])(this.filterParams).then(function (res) {
         _this.tableData = res.data;
         _this.tableMeta = res.meta;
-        _this.filter.isLoading = false;
       })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
         _this.filter.isLoading = false;
       });
     },
@@ -4793,16 +4792,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createSatuan"])(submission).then(function (res) {
         _this2.isFormModalActive = false;
-        _this2.formModalProps.isLoading = false;
 
         _this2.$buefy.notification.open({
           message: "Berhasil menambahkan data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this2.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this2.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this2.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -4812,16 +4811,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateSatuan"])(submission.id, submission).then(function (res) {
         _this3.isFormModalActive = false;
-        _this3.formModalProps.isLoading = false;
 
         _this3.$buefy.notification.open({
           message: "Berhasil mengubah data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this3.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this3.formModalProps.message = "Gagal mengubah data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this3.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -4837,22 +4836,20 @@ __webpack_require__.r(__webpack_exports__);
 
       this.deleteModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deleteSatuan"])(submission.id).then(function (res) {
-        _this4.isDeleteModalActive = false;
-        _this4.deleteModalProps.isLoading = false;
-
         _this4.$buefy.notification.open({
           message: "Berhasil menghapus data ".concat(submission.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this4.isDeleteModalActive = false;
-        _this4.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
 
         _this4.$buefy.notification.open({
           message: "Gagal menghapus data ".concat(submission.nama, ". ").concat(message),
           type: 'is-danger'
         });
+      })["finally"](function () {
+        _this4.isDeleteModalActive = false;
+        _this4.deleteModalProps.isLoading = false;
       });
       this.applyFilter();
     }
@@ -5034,8 +5031,9 @@ __webpack_require__.r(__webpack_exports__);
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readUnitKerjaCollection"])(this.filterParams).then(function (res) {
         _this.tableData = res.data;
         _this.tableMeta = res.meta;
-        _this.filter.isLoading = false;
       })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
         _this.filter.isLoading = false;
       });
     },
@@ -5071,16 +5069,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createUnitKerja"])(submission).then(function (res) {
         _this2.isFormModalActive = false;
-        _this2.formModalProps.isLoading = false;
 
         _this2.$buefy.notification.open({
           message: "Berhasil menambahkan data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this2.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this2.formModalProps.message = "Gagal menambahkan data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this2.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -5090,16 +5088,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateUnitKerja"])(submission.id, submission).then(function (res) {
         _this3.isFormModalActive = false;
-        _this3.formModalProps.isLoading = false;
 
         _this3.$buefy.notification.open({
           message: "Berhasil mengubah data ".concat(res.data.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this3.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this3.formModalProps.message = "Gagal mengubah data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this3.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -5115,22 +5113,20 @@ __webpack_require__.r(__webpack_exports__);
 
       this.deleteModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deleteUnitKerja"])(submission.id).then(function (res) {
-        _this4.isDeleteModalActive = false;
-        _this4.deleteModalProps.isLoading = false;
-
         _this4.$buefy.notification.open({
           message: "Berhasil menghapus data ".concat(submission.nama),
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this4.isDeleteModalActive = false;
-        _this4.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
 
         _this4.$buefy.notification.open({
           message: "Gagal menghapus data ".concat(submission.nama, ". ").concat(message),
           type: 'is-danger'
         });
+      })["finally"](function () {
+        _this4.isDeleteModalActive = false;
+        _this4.deleteModalProps.isLoading = false;
       });
       this.applyFilter();
     }
@@ -5342,14 +5338,14 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this.reference.kelompokKegiatanCollection = res.data;
       })["catch"](function (err) {
-        console.log(err);
+        throw err;
       });
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokBarangCollection"])({
         all: true
       }).then(function (res) {
         _this.reference.kelompokBarangCollection = res.data;
       })["catch"](function (err) {
-        console.log(err);
+        throw err;
       });
     },
     onPageChange: function onPageChange(page) {
@@ -5363,8 +5359,9 @@ __webpack_require__.r(__webpack_exports__);
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readVolumeDpaCollection"])(this.filterParams).then(function (res) {
         _this2.tableData = res.data;
         _this2.tableMeta = res.meta;
-        _this2.filter.isLoading = false;
       })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
         _this2.filter.isLoading = false;
       });
     },
@@ -5408,16 +5405,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createVolumeDpa"])(submission).then(function (res) {
         _this3.isFormModalActive = false;
-        _this3.formModalProps.isLoading = false;
 
         _this3.$buefy.notification.open({
           message: "Berhasil menambahkan data",
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this3.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this3.formModalProps.message = "Gagal menambahkan data. ".concat(message);
+      })["finally"](function () {
+        _this3.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -5427,16 +5424,16 @@ __webpack_require__.r(__webpack_exports__);
       this.formModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateVolumeDpa"])(submission.id, submission).then(function (res) {
         _this4.isFormModalActive = false;
-        _this4.formModalProps.isLoading = false;
 
         _this4.$buefy.notification.open({
           message: "Berhasil mengubah data",
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this4.formModalProps.isLoading = false;
         var message = err.response.data.error.message;
         _this4.formModalProps.message = "Gagal mengubah data. ".concat(message);
+      })["finally"](function () {
+        _this4.formModalProps.isLoading = false;
       });
       this.applyFilter();
     },
@@ -5452,22 +5449,20 @@ __webpack_require__.r(__webpack_exports__);
 
       this.deleteModalProps.isLoading = true;
       Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deleteVolumeDpa"])(submission.id).then(function (res) {
-        _this5.isDeleteModalActive = false;
-        _this5.deleteModalProps.isLoading = false;
-
         _this5.$buefy.notification.open({
           message: "Berhasil menghapus data",
           type: 'is-success'
         });
       })["catch"](function (err) {
-        _this5.isDeleteModalActive = false;
-        _this5.deleteModalProps.isLoading = false;
         var message = err.response.data.error.message;
 
         _this5.$buefy.notification.open({
           message: "Gagal menghapus data. ".concat(message),
           type: 'is-danger'
         });
+      })["finally"](function () {
+        _this5.isDeleteModalActive = false;
+        _this5.deleteModalProps.isLoading = false;
       });
       this.applyFilter();
     }
