@@ -19,27 +19,52 @@ class VolumeDpaController extends BaseController
      */
     public function index(Request $request)
     {
-        $fields = [
+        $numberFields = [
             'barang_id',
             'tahun_anggaran',
             'volume_min',
             'volume_max',
             'harga_satuan_min',
-            'harga_satuan_max'
+            'harga_satuan_max',
+            'kelompok_kegiatan_id',
+            'kelompok_barang_id',
         ];
-        $whereRaws = [
+        $textFields = [
+            'nama_barang',
+        ];
+        $numberWhereRaws = [
             'barang_id' => 'barang_id = ?',
             'tahun_anggaran' => 'tahun_anggaran = ?',
             'volume_min' => 'volume_min >= ?',
             'volume_max' => 'volume_max <= ?',
             'harga_satuan_min' => 'harga_satuan_min >= ?',
-            'harga_satuan_max' => 'harga_satuan_max <= ?'
+            'harga_satuan_max' => 'harga_satuan_max <= ?',
+            'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
+            'kelompok_barang_id' => 'kelompok_barang_id = ?',
         ];
-        $filter = $request->only($fields);
+        $textFieldMaps = [
+            'nama_barang' => 'barang.nama',
+        ];
+        $numberFilter = $request->only($numberFields);
+        $textFilter = $request->only($textFields);
 
         $query = DB::table('volume_dpa');
-        foreach ($filter as $key => $value) {
-            $query->whereRaw($whereRaws[$key], [$value]);
+        $query->select('volume_dpa.*');
+        // barang
+        $query->leftJoin('barang', 'volume_dpa.barang_id', '=', 'barang.id');
+        $query->addSelect('barang.nama as nama_barang');
+        // kelompok kegiatan
+        $query->leftJoin('kelompok_kegiatan', 'barang.kelompok_kegiatan_id', '=', 'kelompok_kegiatan.id');
+        $query->addSelect('kelompok_kegiatan.nama as nama_kelompok_kegiatan');
+        // kelompok barang
+        $query->leftJoin('kelompok_barang', 'barang.kelompok_barang_id', '=', 'kelompok_barang.id');
+        $query->addSelect('kelompok_barang.nama as nama_kelompok_barang');
+
+        foreach ($numberFilter as $key => $value) {
+            $query->whereRaw($numberWhereRaws[$key], [$value]);
+        }
+        foreach ($textFilter as $key => $value) {
+            $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
         return new VolumeDpaResourceCollection($query->paginate());
@@ -53,19 +78,20 @@ class VolumeDpaController extends BaseController
      */
     public function store(Request $request)
     {
-        $input = [
-            'barang_id' => $request->input('barang_id'),
-            'tahun_anggaran' => $request->input('tahun_anggaran'),
-            'volume' => $request->input('volume'),
-            'harga_satuan' => $request->input('harga_satuan')
-        ];
         try {
-            $query = VolumeDpa::create($input);
+            $query = VolumeDpa::updateOrCreate([
+                    'barang_id' => $request->input('barang_id'),
+                    'tahun_anggaran' => $request->input('tahun_anggaran')
+                ],
+                [
+                    'volume' => $request->input('volume'),
+                    'harga_satuan' => $request->input('harga_satuan')
+                ]);
 
             return new VolumeDpaResource($query);
 
         } catch (Throwable $th) {
-            return $this->errorBadRequest();
+            return $this->errorBadRequest($th->getMessage());
         }
 
     }

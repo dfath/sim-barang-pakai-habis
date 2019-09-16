@@ -36,6 +36,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('/unit_kerja', 'Api\UnitKerjaController');
 
+    Route::apiResource('/volume_dpa', 'Api\VolumeDpaController');
+
     Route::apiResource('/instansi', 'Api\InstansiController')->only([
         'show', 'update'
     ]);

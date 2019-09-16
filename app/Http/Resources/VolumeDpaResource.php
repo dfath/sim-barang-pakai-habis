@@ -19,7 +19,10 @@ class VolumeDpaResource extends JsonResource
             'barang_id' => $this->barang_id,
             'tahun_anggaran' => $this->tahun_anggaran,
             'volume' => $this->volume,
-            'harga_satuan' => $this->harga_satuan
+            'harga_satuan' => $this->harga_satuan,
+            'nama_barang' => $this->nama_barang,
+            'nama_kelompok_kegiatan' => $this->nama_kelompok_kegiatan,
+            'nama_kelompok_barang' => $this->nama_kelompok_barang,
         ];
     }
 }

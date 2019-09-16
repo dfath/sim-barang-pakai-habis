@@ -3046,6 +3046,146 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _network_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../network/api */ "./resources/js/network/api.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils */ "./resources/js/utils/index.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    id: Number,
+    barangId: Number,
+    namaBarang: String,
+    tahunAnggaran: Number,
+    volume: Number,
+    hargaSatuan: Number,
+    isLoading: Boolean,
+    message: String
+  },
+  data: function data() {
+    return {
+      isFetching: false,
+      labelBarang: this.namaBarang,
+      barangCollection: [],
+      submission: {
+        id: this.id,
+        barang_id: this.barangId,
+        tahun_anggaran: this.tahunAnggaran,
+        volume: this.volume,
+        harga_satuan: this.hargaSatuan
+      },
+      years: Object(_utils__WEBPACK_IMPORTED_MODULE_1__["years"])(2018)
+    };
+  },
+  computed: {
+    isCreateAction: function isCreateAction() {
+      return this.id === null;
+    },
+    submitButtonLabel: function submitButtonLabel() {
+      return this.isCreateAction ? 'Tambah' : 'Ubah';
+    }
+  },
+  methods: {
+    onClickButton: function onClickButton() {
+      this.$emit('submitted', this.submission);
+    },
+    fetchBarang: function fetchBarang(nama) {
+      var _this = this;
+
+      this.isFetching = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readBarangCollection"])({
+        nama: nama
+      }).then(function (res) {
+        _this.barangCollection = res.data;
+      })["catch"](function (err) {
+        throw err;
+      })["finally"](function () {
+        _this.isFetching = false;
+      });
+    },
+    onSelectBarang: function onSelectBarang(option) {
+      this.labelBarang = option.nama;
+      this.submission.barang_id = option.id;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/barang-masuk/BarangMasukBoard.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/barang-masuk/BarangMasukBoard.vue?vue&type=script&lang=js& ***!
@@ -3376,9 +3516,9 @@ __webpack_require__.r(__webpack_exports__);
         isLoading: false
       },
       reference: {
-        kelompokKegiatanCollection: null,
-        kelompokBarangCollection: null,
-        satuanCollection: null
+        kelompokKegiatanCollection: [],
+        kelompokBarangCollection: [],
+        satuanCollection: []
       },
       tableData: [],
       tableMeta: {
@@ -3700,7 +3840,7 @@ __webpack_require__.r(__webpack_exports__);
         isLoading: false
       },
       reference: {
-        kelompokKegiatanCollection: null
+        kelompokKegiatanCollection: []
       },
       tableData: [],
       tableMeta: {
@@ -4996,6 +5136,344 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    this.applyFilter();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _network_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../network/api */ "./resources/js/network/api.js");
+/* harmony import */ var _components_volume_dpa_VolumeDpaForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/volume-dpa/VolumeDpaForm */ "./resources/js/components/volume-dpa/VolumeDpaForm.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    VolumeDpaForm: _components_volume_dpa_VolumeDpaForm__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      filter: {
+        tahunAnggaran: null,
+        namaBarang: null,
+        page: 1,
+        isLoading: false
+      },
+      reference: {
+        kelompokKegiatanCollection: [],
+        kelompokBarangCollection: []
+      },
+      tableData: [],
+      tableMeta: {
+        total: null,
+        per_page: null,
+        current_page: null
+      },
+      isFormModalActive: false,
+      formModalProps: {
+        id: null,
+        barangId: null,
+        tahunAnggaran: null,
+        volume: null,
+        hargaSatuan: null,
+        namaBarang: null,
+        isLoading: false,
+        message: null
+      },
+      isDeleteModalActive: false,
+      deleteModalProps: {
+        id: null,
+        nama: null,
+        isLoading: false
+      }
+    };
+  },
+  computed: {
+    tableTotal: function tableTotal() {
+      return this.tableMeta.total;
+    },
+    tablePerPage: function tablePerPage() {
+      return this.tableMeta.per_page;
+    },
+    tableCurrentPage: function tableCurrentPage() {
+      return this.tableMeta.current_page;
+    },
+    filterParams: function filterParams() {
+      return {
+        nama_barang: this.filter.namaBarang,
+        page: this.filter.page
+      };
+    },
+    isCreateTypeFormModal: function isCreateTypeFormModal() {
+      return this.formModalProps.id === null;
+    }
+  },
+  methods: {
+    loadReference: function loadReference() {
+      var _this = this;
+
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokKegiatanCollection"])({
+        all: true
+      }).then(function (res) {
+        _this.reference.kelompokKegiatanCollection = res.data;
+      })["catch"](function (err) {
+        console.log(err);
+      });
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokBarangCollection"])({
+        all: true
+      }).then(function (res) {
+        _this.reference.kelompokBarangCollection = res.data;
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    onPageChange: function onPageChange(page) {
+      this.filter.page = page;
+      this.applyFilter();
+    },
+    applyFilter: function applyFilter() {
+      var _this2 = this;
+
+      this.filter.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readVolumeDpaCollection"])(this.filterParams).then(function (res) {
+        _this2.tableData = res.data;
+        _this2.tableMeta = res.meta;
+        _this2.filter.isLoading = false;
+      })["catch"](function (err) {
+        _this2.filter.isLoading = false;
+      });
+    },
+    openCreateFormModal: function openCreateFormModal() {
+      this.formModalProps = {
+        id: null,
+        barangId: null,
+        volume: null,
+        hargaSatuan: null,
+        tahunAnggaran: null,
+        namaBarang: null,
+        isLoading: false,
+        message: null
+      };
+      this.isFormModalActive = true;
+    },
+    openUpdateFormModal: function openUpdateFormModal(item) {
+      this.formModalProps = {
+        id: item.id,
+        barangId: item.barangId,
+        volume: item.volume,
+        hargaSatuan: item.hargaSatuan,
+        tahunAnggaran: item.tahunAnggaran,
+        namaBarang: item.namaBarang,
+        isLoading: false,
+        message: null
+      };
+      this.isFormModalActive = true;
+    },
+    openDeleteConfirmationModal: function openDeleteConfirmationModal(item) {
+      this.deleteModalProps = {
+        id: item.id,
+        nama: item.namaBarang,
+        isLoading: false
+      };
+      this.isDeleteModalActive = true;
+    },
+    onSubmitCreate: function onSubmitCreate(submission) {
+      var _this3 = this;
+
+      this.formModalProps.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["createVolumeDpa"])(submission).then(function (res) {
+        _this3.isFormModalActive = false;
+        _this3.formModalProps.isLoading = false;
+
+        _this3.$buefy.notification.open({
+          message: "Berhasil menambahkan data",
+          type: 'is-success'
+        });
+      })["catch"](function (err) {
+        _this3.formModalProps.isLoading = false;
+        var message = err.response.data.error.message;
+        _this3.formModalProps.message = "Gagal menambahkan data. ".concat(message);
+      });
+      this.applyFilter();
+    },
+    onSubmitUpdate: function onSubmitUpdate(submission) {
+      var _this4 = this;
+
+      this.formModalProps.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateVolumeDpa"])(submission.id, submission).then(function (res) {
+        _this4.isFormModalActive = false;
+        _this4.formModalProps.isLoading = false;
+
+        _this4.$buefy.notification.open({
+          message: "Berhasil mengubah data",
+          type: 'is-success'
+        });
+      })["catch"](function (err) {
+        _this4.formModalProps.isLoading = false;
+        var message = err.response.data.error.message;
+        _this4.formModalProps.message = "Gagal mengubah data. ".concat(message);
+      });
+      this.applyFilter();
+    },
+    onSubmitted: function onSubmitted(submission) {
+      if (this.isCreateTypeFormModal) {
+        this.onSubmitCreate(submission);
+      } else {
+        this.onSubmitUpdate(submission);
+      }
+    },
+    onConfirmed: function onConfirmed(submission) {
+      var _this5 = this;
+
+      this.deleteModalProps.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deleteVolumeDpa"])(submission.id).then(function (res) {
+        _this5.isDeleteModalActive = false;
+        _this5.deleteModalProps.isLoading = false;
+
+        _this5.$buefy.notification.open({
+          message: "Berhasil menghapus data",
+          type: 'is-success'
+        });
+      })["catch"](function (err) {
+        _this5.isDeleteModalActive = false;
+        _this5.deleteModalProps.isLoading = false;
+        var message = err.response.data.error.message;
+
+        _this5.$buefy.notification.open({
+          message: "Gagal menghapus data. ".concat(message),
+          type: 'is-danger'
+        });
+      });
+      this.applyFilter();
+    }
+  },
+  beforeMount: function beforeMount() {
+    this.loadReference();
     this.applyFilter();
   }
 });
@@ -19896,6 +20374,205 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=template&id=1e357a3d&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=template&id=1e357a3d& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "modal-card", staticStyle: { width: "auto" } },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "section",
+        { staticClass: "modal-card-body" },
+        [
+          _vm.message
+            ? _c("b-message", { attrs: { type: "is-warning" } }, [
+                _vm._v("\n            " + _vm._s(_vm.message) + "\n        ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "b-field",
+            { attrs: { label: "Barang" } },
+            [
+              _c(
+                "b-autocomplete",
+                {
+                  attrs: {
+                    data: _vm.barangCollection,
+                    placeholder: "Ketik nama barang",
+                    field: "barang_id",
+                    loading: _vm.isFetching,
+                    value: _vm.labelBarang
+                  },
+                  on: { typing: _vm.fetchBarang, select: _vm.onSelectBarang },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "default",
+                      fn: function(props) {
+                        return [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(props.option.nama) +
+                                "\n                    "
+                            )
+                          ])
+                        ]
+                      }
+                    }
+                  ])
+                },
+                [
+                  _vm._v(" "),
+                  _c("template", { slot: "empty" }, [
+                    _vm._v("No results found")
+                  ])
+                ],
+                2
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-field",
+            { attrs: { label: "Tahun Anggaran" } },
+            [
+              _c(
+                "b-select",
+                {
+                  attrs: { placeholder: "Pilih tahun anggaran", required: "" },
+                  model: {
+                    value: _vm.submission.tahun_anggaran,
+                    callback: function($$v) {
+                      _vm.$set(_vm.submission, "tahun_anggaran", $$v)
+                    },
+                    expression: "submission.tahun_anggaran"
+                  }
+                },
+                _vm._l(_vm.years, function(option) {
+                  return _c(
+                    "option",
+                    { key: option, domProps: { value: option } },
+                    [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(option) +
+                          "\n                "
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-field",
+            { attrs: { label: "Volume" } },
+            [
+              _c("b-numberinput", {
+                attrs: { min: "0", required: "" },
+                model: {
+                  value: _vm.submission.volume,
+                  callback: function($$v) {
+                    _vm.$set(_vm.submission, "volume", $$v)
+                  },
+                  expression: "submission.volume"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-field",
+            { attrs: { label: "Harga satuan" } },
+            [
+              _c("b-numberinput", {
+                attrs: { min: "0", step: "1000", required: "" },
+                model: {
+                  value: _vm.submission.harga_satuan,
+                  callback: function($$v) {
+                    _vm.$set(_vm.submission, "harga_satuan", $$v)
+                  },
+                  expression: "submission.harga_satuan"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "footer",
+        { staticClass: "modal-card-foot" },
+        [
+          _c(
+            "b-button",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.$parent.close()
+                }
+              }
+            },
+            [_vm._v("Batal")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            {
+              attrs: {
+                type: "is-info",
+                disabled: _vm.isLoading,
+                loading: _vm.isLoading
+              },
+              on: { click: _vm.onClickButton }
+            },
+            [_vm._v(_vm._s(_vm.submitButtonLabel))]
+          )
+        ],
+        1
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("header", { staticClass: "modal-card-head" }, [
+      _c("p", { staticClass: "modal-card-title" }, [_vm._v("Volume DPA")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/barang-masuk/BarangMasukBoard.vue?vue&type=template&id=1aa901bf&":
 /*!***************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/barang-masuk/BarangMasukBoard.vue?vue&type=template&id=1aa901bf& ***!
@@ -21840,6 +22517,352 @@ var render = function() {
                                   return _vm.openDeleteConfirmationModal({
                                     id: props.row.id,
                                     nama: props.row.nama
+                                  })
+                                }
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ])
+              },
+              [
+                !_vm.filter.isLoading
+                  ? _c(
+                      "b-message",
+                      {
+                        attrs: { slot: "empty", type: "is-info" },
+                        slot: "empty"
+                      },
+                      [
+                        _vm._v(
+                          "\n                        Data tidak ditemukan.\n                    "
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=template&id=eeca6f42&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=template&id=eeca6f42& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container is-fluid" }, [
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "level" },
+      [
+        _c("div", { staticClass: "level-left" }, [
+          _c("div", { staticClass: "level-item" }, [
+            _c("div", { staticClass: "field has-addons" }, [
+              _c(
+                "p",
+                { staticClass: "control" },
+                [
+                  _c("b-input", {
+                    model: {
+                      value: _vm.filter.namaBarang,
+                      callback: function($$v) {
+                        _vm.$set(_vm.filter, "namaBarang", $$v)
+                      },
+                      expression: "filter.namaBarang"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                { staticClass: "control" },
+                [
+                  _c(
+                    "b-button",
+                    {
+                      staticClass: "button is-info",
+                      on: { click: _vm.applyFilter }
+                    },
+                    [_vm._v("Cari")]
+                  )
+                ],
+                1
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "level-right" }, [
+          _c(
+            "p",
+            { staticClass: "level-item" },
+            [
+              _c(
+                "b-button",
+                {
+                  attrs: { type: "is-info" },
+                  on: {
+                    click: function($event) {
+                      return _vm.openCreateFormModal()
+                    }
+                  }
+                },
+                [_vm._v("Tambah")]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "b-modal",
+          {
+            attrs: {
+              active: _vm.isFormModalActive,
+              "has-modal-card": "",
+              "can-cancel": false
+            },
+            on: {
+              "update:active": function($event) {
+                _vm.isFormModalActive = $event
+              }
+            }
+          },
+          [
+            _c(
+              "volume-dpa-form",
+              _vm._b(
+                { on: { submitted: _vm.onSubmitted } },
+                "volume-dpa-form",
+                _vm.formModalProps,
+                false
+              )
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-modal",
+          {
+            attrs: {
+              active: _vm.isDeleteModalActive,
+              "has-modal-card": "",
+              "can-cancel": false
+            },
+            on: {
+              "update:active": function($event) {
+                _vm.isDeleteModalActive = $event
+              }
+            }
+          },
+          [
+            _c(
+              "delete-confirmation",
+              _vm._b(
+                { on: { confirmed: _vm.onConfirmed } },
+                "delete-confirmation",
+                _vm.deleteModalProps,
+                false
+              )
+            )
+          ],
+          1
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "columns" }, [
+      _c("div", { staticClass: "column" }, [
+        _c(
+          "div",
+          { staticClass: "table-container" },
+          [
+            _c(
+              "b-table",
+              {
+                attrs: {
+                  data: _vm.tableData,
+                  striped: "",
+                  paginated: _vm.tableTotal > 0,
+                  "backend-pagination": "",
+                  loading: _vm.filter.isLoading,
+                  total: _vm.tableTotal,
+                  "per-page": _vm.tablePerPage,
+                  "aria-next-label": "Next page",
+                  "aria-previous-label": "Previous page",
+                  "aria-page-label": "Page",
+                  "aria-current-label": "Current page"
+                },
+                on: { "page-change": _vm.onPageChange },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(props) {
+                      return [
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "tahun_anggaran",
+                              label: "Tahun Anggaran"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.tahun_anggaran) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "nama_kelompok_kegiatan",
+                              label: "Kelompok Kegiatan"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.nama_kelompok_kegiatan) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "nama_kelompok_barang",
+                              label: "Kelompok Barang"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.nama_kelompok_barang) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "nama_barang",
+                              label: "Nama Barang"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.nama_barang) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          { attrs: { field: "volume", label: "Volume" } },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.volume) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "harga_satuan",
+                              label: "Harga Satuan"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.harga_satuan) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          { attrs: { label: "Aksi", width: "90" } },
+                          [
+                            _c("b-button", {
+                              attrs: {
+                                type: "is-danger",
+                                "icon-right": "pencil",
+                                size: "is-small"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.openUpdateFormModal({
+                                    id: props.row.id,
+                                    barangId: props.row.barang_id,
+                                    namaBarang: props.row.nama_barang,
+                                    tahunAnggaran: props.row.tahun_anggaran,
+                                    volume: props.row.volume,
+                                    hargaSatuan: props.row.harga_satuan
+                                  })
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("b-button", {
+                              attrs: {
+                                type: "is-danger",
+                                "icon-right": "delete",
+                                size: "is-small"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.openDeleteConfirmationModal({
+                                    id: props.row.id,
+                                    namaBarang: props.row.nama_barang
                                   })
                                 }
                               }
@@ -34022,6 +35045,7 @@ Vue.component('kelompok-kegiatan-board', __webpack_require__(/*! ./pages/kelompo
 Vue.component('kelompok-barang-board', __webpack_require__(/*! ./pages/kelompok-barang/KelompokBarangBoard.vue */ "./resources/js/pages/kelompok-barang/KelompokBarangBoard.vue")["default"]);
 Vue.component('barang-board', __webpack_require__(/*! ./pages/barang/BarangBoard.vue */ "./resources/js/pages/barang/BarangBoard.vue")["default"]);
 Vue.component('perusahaan-board', __webpack_require__(/*! ./pages/perusahaan/PerusahaanBoard.vue */ "./resources/js/pages/perusahaan/PerusahaanBoard.vue")["default"]);
+Vue.component('volume-dpa-board', __webpack_require__(/*! ./pages/volume-dpa/VolumeDpaBoard.vue */ "./resources/js/pages/volume-dpa/VolumeDpaBoard.vue")["default"]);
 var app = new Vue({
   el: '#app'
 }); // Bulma NavBar Burger Script
@@ -34860,11 +35884,80 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/volume-dpa/VolumeDpaForm.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/volume-dpa/VolumeDpaForm.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _VolumeDpaForm_vue_vue_type_template_id_1e357a3d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VolumeDpaForm.vue?vue&type=template&id=1e357a3d& */ "./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=template&id=1e357a3d&");
+/* harmony import */ var _VolumeDpaForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VolumeDpaForm.vue?vue&type=script&lang=js& */ "./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _VolumeDpaForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _VolumeDpaForm_vue_vue_type_template_id_1e357a3d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _VolumeDpaForm_vue_vue_type_template_id_1e357a3d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/volume-dpa/VolumeDpaForm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./VolumeDpaForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=template&id=1e357a3d&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=template&id=1e357a3d& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaForm_vue_vue_type_template_id_1e357a3d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./VolumeDpaForm.vue?vue&type=template&id=1e357a3d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/volume-dpa/VolumeDpaForm.vue?vue&type=template&id=1e357a3d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaForm_vue_vue_type_template_id_1e357a3d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaForm_vue_vue_type_template_id_1e357a3d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/network/api.js":
 /*!*************************************!*\
   !*** ./resources/js/network/api.js ***!
   \*************************************/
-/*! exports provided: readBarangMasukCollection, readUnitKerjaCollection, createUnitKerja, updateUnitKerja, deleteUnitKerja, readSatuanCollection, createSatuan, updateSatuan, deleteSatuan, readKelompokKegiatanCollection, createKelompokKegiatan, updateKelompokKegiatan, deleteKelompokKegiatan, readKelompokBarangCollection, createKelompokBarang, updateKelompokBarang, deleteKelompokBarang, readBarangCollection, createBarang, updateBarang, deleteBarang, readPerusahaanCollection, createPerusahaan, updatePerusahaan, deletePerusahaan */
+/*! exports provided: readBarangMasukCollection, readUnitKerjaCollection, createUnitKerja, updateUnitKerja, deleteUnitKerja, readSatuanCollection, createSatuan, updateSatuan, deleteSatuan, readKelompokKegiatanCollection, createKelompokKegiatan, updateKelompokKegiatan, deleteKelompokKegiatan, readKelompokBarangCollection, createKelompokBarang, updateKelompokBarang, deleteKelompokBarang, readBarangCollection, createBarang, updateBarang, deleteBarang, readPerusahaanCollection, createPerusahaan, updatePerusahaan, deletePerusahaan, readVolumeDpaCollection, createVolumeDpa, updateVolumeDpa, deleteVolumeDpa */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -34894,6 +35987,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPerusahaan", function() { return createPerusahaan; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updatePerusahaan", function() { return updatePerusahaan; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deletePerusahaan", function() { return deletePerusahaan; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readVolumeDpaCollection", function() { return readVolumeDpaCollection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createVolumeDpa", function() { return createVolumeDpa; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateVolumeDpa", function() { return updateVolumeDpa; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteVolumeDpa", function() { return deleteVolumeDpa; });
 /* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./request */ "./resources/js/network/request.js");
 
 var readBarangMasukCollection = function readBarangMasukCollection(params) {
@@ -34991,6 +36088,21 @@ var updatePerusahaan = function updatePerusahaan(id, submission) {
 };
 var deletePerusahaan = function deletePerusahaan(id) {
   return _request__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/perusahaan/".concat(id));
+};
+var readVolumeDpaCollection = function readVolumeDpaCollection(params) {
+  var config = {
+    params: params
+  };
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].get('/api/volume_dpa', config);
+};
+var createVolumeDpa = function createVolumeDpa(submission) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/volume_dpa', submission);
+};
+var updateVolumeDpa = function updateVolumeDpa(id, submission) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].put("/api/volume_dpa/".concat(id), submission);
+};
+var deleteVolumeDpa = function deleteVolumeDpa(id) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/volume_dpa/".concat(id));
 };
 
 /***/ }),
@@ -35522,6 +36634,99 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UnitKerjaBoard_vue_vue_type_template_id_8ef5352a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/pages/volume-dpa/VolumeDpaBoard.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/pages/volume-dpa/VolumeDpaBoard.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _VolumeDpaBoard_vue_vue_type_template_id_eeca6f42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VolumeDpaBoard.vue?vue&type=template&id=eeca6f42& */ "./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=template&id=eeca6f42&");
+/* harmony import */ var _VolumeDpaBoard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VolumeDpaBoard.vue?vue&type=script&lang=js& */ "./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _VolumeDpaBoard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _VolumeDpaBoard_vue_vue_type_template_id_eeca6f42___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _VolumeDpaBoard_vue_vue_type_template_id_eeca6f42___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/pages/volume-dpa/VolumeDpaBoard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaBoard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./VolumeDpaBoard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaBoard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=template&id=eeca6f42&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=template&id=eeca6f42& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaBoard_vue_vue_type_template_id_eeca6f42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./VolumeDpaBoard.vue?vue&type=template&id=eeca6f42& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/volume-dpa/VolumeDpaBoard.vue?vue&type=template&id=eeca6f42&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaBoard_vue_vue_type_template_id_eeca6f42___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VolumeDpaBoard_vue_vue_type_template_id_eeca6f42___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/utils/index.js":
+/*!*************************************!*\
+  !*** ./resources/js/utils/index.js ***!
+  \*************************************/
+/*! exports provided: years */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "years", function() { return years; });
+var years = function years(startYear) {
+  var currentYear = new Date().getFullYear(),
+      years = [];
+  startYear = startYear || 1980;
+
+  while (startYear <= currentYear) {
+    years.push(startYear++);
+  }
+
+  return years;
+};
 
 /***/ }),
 

@@ -9,7 +9,7 @@
                 <div class="level-item">
                 <div class="field has-addons">
                     <p class="control">
-                        <b-input v-model="filter.nama"></b-input>
+                        <b-input v-model="filter.namaBarang"></b-input>
                     </p>
                     <p class="control">
                         <b-button class="button is-info" @click="applyFilter">Cari</b-button>
@@ -26,13 +26,10 @@
             </div>
 
             <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
-                <barang-form
+                <volume-dpa-form
                     v-bind="formModalProps"
-                    :satuanCollection="reference.satuanCollection"
-                    :kelompokKegiatanCollection="reference.kelompokKegiatanCollection"
-                    :kelompokBarangCollection="reference.kelompokBarangCollection"
                     v-on:submitted="onSubmitted">
-                </barang-form>
+                </volume-dpa-form>
             </b-modal>
 
             <b-modal :active.sync="isDeleteModalActive" has-modal-card :can-cancel="false">
@@ -68,6 +65,10 @@
                         </b-message>
 
                         <template slot-scope="props">
+                            <b-table-column field="tahun_anggaran" label="Tahun Anggaran">
+                                {{ props.row.tahun_anggaran }}
+                            </b-table-column>
+
                             <b-table-column field="nama_kelompok_kegiatan" label="Kelompok Kegiatan">
                                 {{ props.row.nama_kelompok_kegiatan }}
                             </b-table-column>
@@ -76,27 +77,32 @@
                                 {{ props.row.nama_kelompok_barang }}
                             </b-table-column>
 
-                            <b-table-column field="nama" label="Nama">
-                                {{ props.row.nama }}
+                            <b-table-column field="nama_barang" label="Nama Barang">
+                                {{ props.row.nama_barang }}
                             </b-table-column>
 
-                            <b-table-column field="nama_satuan" label="Satuan">
-                                {{ props.row.nama_satuan }}
+                            <b-table-column field="volume" label="Volume">
+                                {{ props.row.volume }}
+                            </b-table-column>
+
+                            <b-table-column field="harga_satuan" label="Harga Satuan">
+                                {{ props.row.harga_satuan }}
                             </b-table-column>
 
                             <b-table-column label="Aksi" width="90">
                                 <b-button type="is-danger" icon-right="pencil" size="is-small"
                                     @click="openUpdateFormModal({
                                         id: props.row.id,
-                                        nama: props.row.nama,
-                                        kelompokKegiatanId: props.row.kelompok_kegiatan_id,
-                                        kelompokBarangId: props.row.kelompok_barang_id,
-                                        satuanId: props.row.satuan_id,
+                                        barangId: props.row.barang_id,
+                                        namaBarang: props.row.nama_barang,
+                                        tahunAnggaran: props.row.tahun_anggaran,
+                                        volume: props.row.volume,
+                                        hargaSatuan: props.row.harga_satuan,
                                     })"/>
                                 <b-button type="is-danger" icon-right="delete" size="is-small"
                                     @click="openDeleteConfirmationModal({
                                         id: props.row.id,
-                                        nama: props.row.nama
+                                        namaBarang: props.row.nama_barang
                                     })"/>
                             </b-table-column>
 
@@ -110,24 +116,24 @@
 </template>
 
 <script>
-import { readSatuanCollection, readKelompokKegiatanCollection, readKelompokBarangCollection, readBarangCollection, createBarang, updateBarang, deleteBarang } from '../../network/api';
-import BarangForm from '../../components/barang/BarangForm';
+import { readKelompokKegiatanCollection, readKelompokBarangCollection, readVolumeDpaCollection, createVolumeDpa, updateVolumeDpa, deleteVolumeDpa } from '../../network/api';
+import VolumeDpaForm from '../../components/volume-dpa/VolumeDpaForm';
 
 export default {
     components: {
-        BarangForm
+        VolumeDpaForm
     },
     data() {
         return {
             filter: {
-                nama: null,
+                tahunAnggaran: null,
+                namaBarang: null,
                 page: 1,
                 isLoading: false,
             },
             reference: {
                 kelompokKegiatanCollection: [],
                 kelompokBarangCollection: [],
-                satuanCollection: [],
             },
             tableData: [],
             tableMeta: {
@@ -138,10 +144,11 @@ export default {
             isFormModalActive: false,
             formModalProps: {
                 id: null,
-                nama: null,
-                kelompokKegiatanId: null,
-                kelompokBarangId: null,
-                satuanId: null,
+                barangId: null,
+                tahunAnggaran: null,
+                volume: null,
+                hargaSatuan: null,
+                namaBarang: null,
                 isLoading: false,
                 message: null,
             },
@@ -165,7 +172,7 @@ export default {
         },
         filterParams() {
             return {
-                nama: this.filter.nama,
+                nama_barang: this.filter.namaBarang,
                 page: this.filter.page,
             }
         },
@@ -189,13 +196,6 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
-            readSatuanCollection({all: true})
-                .then(res => {
-                    this.reference.satuanCollection = res.data;
-                })
-                .catch(err => {
-                    console.log(err);
-                });
         },
         onPageChange(page) {
             this.filter.page = page;
@@ -203,7 +203,7 @@ export default {
         },
         applyFilter() {
             this.filter.isLoading = true;
-            readBarangCollection(this.filterParams)
+            readVolumeDpaCollection(this.filterParams)
                 .then(res => {
                     this.tableData = res.data;
                     this.tableMeta = res.meta;
@@ -216,10 +216,11 @@ export default {
         openCreateFormModal() {
             this.formModalProps = {
                 id: null,
-                nama: null,
-                kelompokKegiatanId: null,
-                kelompokBarangId: null,
-                satuanId: null,
+                barangId: null,
+                volume: null,
+                hargaSatuan: null,
+                tahunAnggaran: null,
+                namaBarang: null,
                 isLoading: false,
                 message: null
             };
@@ -228,10 +229,11 @@ export default {
         openUpdateFormModal(item) {
             this.formModalProps = {
                 id: item.id,
-                nama: item.nama,
-                kelompokKegiatanId: item.kelompokKegiatanId,
-                kelompokBarangId: item.kelompokBarangId,
-                satuanId: item.satuanId,
+                barangId: item.barangId,
+                volume: item.volume,
+                hargaSatuan: item.hargaSatuan,
+                tahunAnggaran: item.tahunAnggaran,
+                namaBarang: item.namaBarang,
                 isLoading: false,
                 message: null
             };
@@ -240,44 +242,44 @@ export default {
         openDeleteConfirmationModal(item) {
             this.deleteModalProps = {
                 id: item.id,
-                nama: item.nama,
+                nama: item.namaBarang,
                 isLoading: false
             };
             this.isDeleteModalActive = true;
         },
         onSubmitCreate(submission) {
             this.formModalProps.isLoading = true;
-            createBarang(submission)
+            createVolumeDpa(submission)
                 .then(res => {
                     this.isFormModalActive = false;
                     this.formModalProps.isLoading = false;
                     this.$buefy.notification.open({
-                        message: `Berhasil menambahkan data ${res.data.nama}`,
+                        message: `Berhasil menambahkan data`,
                         type: 'is-success'
                     });
                 })
                 .catch(err => {
                     this.formModalProps.isLoading = false;
                     const message = err.response.data.error.message;
-                    this.formModalProps.message = `Gagal menambahkan data ${submission.nama}. ${message}`;
+                    this.formModalProps.message = `Gagal menambahkan data. ${message}`;
                 });
             this.applyFilter();
         },
         onSubmitUpdate(submission) {
             this.formModalProps.isLoading = true;
-            updateBarang(submission.id, submission)
+            updateVolumeDpa(submission.id, submission)
                 .then(res => {
                     this.isFormModalActive = false;
                     this.formModalProps.isLoading = false;
                     this.$buefy.notification.open({
-                        message: `Berhasil mengubah data ${res.data.nama}`,
+                        message: `Berhasil mengubah data`,
                         type: 'is-success'
                     });
                 })
                 .catch(err => {
                     this.formModalProps.isLoading = false;
                     const message = err.response.data.error.message;
-                    this.formModalProps.message = `Gagal mengubah data ${submission.nama}. ${message}`;
+                    this.formModalProps.message = `Gagal mengubah data. ${message}`;
                 });
             this.applyFilter();
         },
@@ -290,12 +292,12 @@ export default {
         },
         onConfirmed(submission) {
             this.deleteModalProps.isLoading = true;
-            deleteBarang(submission.id)
+            deleteVolumeDpa(submission.id)
                 .then(res => {
                     this.isDeleteModalActive = false;
                     this.deleteModalProps.isLoading = false;
                     this.$buefy.notification.open({
-                        message: `Berhasil menghapus data ${submission.nama}`,
+                        message: `Berhasil menghapus data`,
                         type: 'is-success'
                     })
                 })
@@ -304,7 +306,7 @@ export default {
                     this.deleteModalProps.isLoading = false;
                     const message = err.response.data.error.message;
                     this.$buefy.notification.open({
-                        message: `Gagal menghapus data ${submission.nama}. ${message}`,
+                        message: `Gagal menghapus data. ${message}`,
                         type: 'is-danger'
                     })
                 });

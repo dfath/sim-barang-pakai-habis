@@ -113,7 +113,7 @@ export default {
                 isLoading: false,
             },
             reference: {
-                kelompokKegiatanCollection: null,
+                kelompokKegiatanCollection: [],
             },
             tableData: [],
             tableMeta: {

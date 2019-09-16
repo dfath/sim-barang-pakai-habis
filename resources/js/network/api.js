@@ -120,3 +120,22 @@ export const updatePerusahaan = (id, submission) => {
 export const deletePerusahaan = (id) => {
     return request.delete(`/api/perusahaan/${id}`);
 };
+
+export const readVolumeDpaCollection = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/volume_dpa', config);
+};
+
+export const createVolumeDpa = (submission) => {
+    return request.post('/api/volume_dpa', submission);
+};
+
+export const updateVolumeDpa = (id, submission) => {
+    return request.put(`/api/volume_dpa/${id}`, submission);
+};
+
+export const deleteVolumeDpa = (id) => {
+    return request.delete(`/api/volume_dpa/${id}`);
+};

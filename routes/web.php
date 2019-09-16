@@ -35,4 +35,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/perusahaan/board', 'PerusahaanController@index')->name('perusahaan-board');
 
+    Route::get('/volume-dpa/board', 'VolumeDpaController@index')->name('volume-dpa-board');
+
 });
