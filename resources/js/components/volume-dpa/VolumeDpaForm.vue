@@ -29,7 +29,7 @@
             </b-field>
 
             <b-field label="Tahun Anggaran">
-                <b-select placeholder="Pilih tahun anggaran" v-model="submission.tahun_anggaran" required>
+                <b-select expanded placeholder="Pilih tahun anggaran" v-model="submission.tahun_anggaran" required>
                     <option
                         v-for="option in years"
                         :value="option"
@@ -66,7 +66,7 @@
 
 <script>
 import { readBarangCollection } from '../../network/api';
-import {years} from '../../utils';
+import { years } from '../../utils';
 
 export default {
     props: {
@@ -91,7 +91,7 @@ export default {
                 volume: this.volume,
                 harga_satuan: this.hargaSatuan,
             },
-            years: years(2018),
+            years: years(),
         };
     },
     computed: {

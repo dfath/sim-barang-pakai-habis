@@ -5,28 +5,39 @@
                 <form class="forms">
                     <div class="form-container">
 
+                        <b-field label="Tahun Anggaran">
+                            <b-select expanded placeholder="Pilih tahun anggaran" v-model="filter.tahunAnggaran">
+                                <option
+                                    v-for="option in years"
+                                    :value="option"
+                                    :key="option">
+                                    {{ option }}
+                                </option>
+                            </b-select>
+                        </b-field>
+
                         <b-field label="Kelompok Kegiatan">
-                            <b-input v-model="filterNamaKelompokKegiatan"></b-input>
+                            <b-input v-model="filter.namaKelompokKegiatan"></b-input>
                         </b-field>
 
                         <b-field label="Kelompok Barang">
-                            <b-input v-model="filterNamaKelompokBarang"></b-input>
+                            <b-input v-model="filter.namaKelompokBarang"></b-input>
                         </b-field>
 
                         <b-field label="Perusahaan Rekanan">
-                            <b-input v-model="filterNamaPerusahaan"></b-input>
+                            <b-input v-model="filter.namaPerusahaan"></b-input>
                         </b-field>
 
                         <b-field label="Tanggal Perolehan">
                             <b-datepicker
                                 placeholder="Click to select..."
-                                v-model="filterTanggalPerolehan"
+                                v-model="filter.tanggalPerolehan"
                                 range>
                             </b-datepicker>
                         </b-field>
 
                         <b-field label="Bukti Transaksi">
-                            <b-input v-model="filterBuktiTransaksi"></b-input>
+                            <b-input v-model="filter.buktiTransaksi"></b-input>
                         </b-field>
 
                         <div class="field">
@@ -40,29 +51,45 @@
             <div class="column is-9">
                 <br/>
                 <b-field grouped group-multiline>
-                    <b-button type="is-success" @click="openFormModal()">Tambah</b-button>
+                    <b-button type="is-info" @click="openCreateFormModal()">Tambah</b-button>
                 </b-field>
+
+                <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
+                    <barang-masuk-form
+                        v-bind="formModalProps"
+                        :perusahaanCollection="reference.perusahaanCollection"
+                        :kelompokKegiatanCollection="reference.kelompokKegiatanCollection"
+                        :kelompokBarangCollection="reference.kelompokBarangCollection"
+                        v-on:submitted="onSubmitted">
+                    </barang-masuk-form>
+                </b-modal>
+
                 <div class="table-container">
                     <b-table
-                        :data="barangMasukData"
+                        :data="tableData"
 
                         striped
                         paginated
                         backend-pagination
-                        :loading="isLoading"
-                        :total="barangMasukTotal"
-                        :per-page="barangMasukPerPage"
+                        :loading="filter.isLoading"
+                        :total="tableTotal"
+                        :per-page="tablePerPage"
                         @page-change="onPageChange"
                         aria-next-label="Next page"
                         aria-previous-label="Previous page"
                         aria-page-label="Page"
                         aria-current-label="Current page">
 
-                        <b-notification v-if="!isLoading" :closable=false slot="empty">
+                        <b-notification v-if="!filter.isLoading" :closable=false slot="empty">
                             Data tidak ditemukan.
                         </b-notification>
 
                         <template slot-scope="props">
+
+                            <b-table-column field="tahun_anggaran" label="Tahun Anggaran">
+                                {{ props.row.tahun_anggaran }}
+                            </b-table-column>
+
                             <b-table-column field="nama_kelompok_kegiatan" label="Kelompok Kegiatan">
                                 {{ props.row.nama_kelompok_barang }}
                             </b-table-column>
@@ -75,10 +102,6 @@
                                 {{ props.row.nama_perusahaan }}
                             </b-table-column>
 
-                            <b-table-column field="tahun_anggaran" label="Tahun Anggaran">
-                                {{ props.row.tahun_anggaran }}
-                            </b-table-column>
-
                             <b-table-column field="teks_tanggal_perolehan" label="Tanggal Perolehan">
                                 {{ props.row.teks_tanggal_perolehan }}
                             </b-table-column>
@@ -89,7 +112,6 @@
 
                             <b-table-column label="Aksi" width="90">
                                 <b-button type="is-danger" icon-right="pencil" size="is-small" />
-                                <b-button type="is-danger" icon-right="delete" size="is-small" />
                             </b-table-column>
 
                         </template>
@@ -102,8 +124,9 @@
 </template>
 
 <script>
-import { readBarangMasukCollection } from '../../network/api';
+import { readPerusahaanCollection, readKelompokKegiatanCollection, readKelompokBarangCollection, readBarangMasukCollection, createBarangMasuk } from '../../network/api';
 import BarangMasukForm from '../../components/barang-masuk/BarangMasukForm';
+import { years } from '../../utils';
 
 export default {
     components: {
@@ -111,77 +134,150 @@ export default {
     },
     data() {
         return {
-            filterNamaKelompokBarang: null,
-            filterNamaKelompokKegiatan: null,
-            filterNamaPerusahaan: null,
-            filterTanggalPerolehan: [
-                new Date(new Date().getFullYear(), 0, 1),
-                new Date()
-            ],
-            filterBuktiTransaksi: null,
-            filterPage: 1,
-            barangMasukData: [],
-            barangMasukMeta: {
+            filter: {
+                tahunAnggaran: null,
+                namaKelompokBarang: null,
+                namaKelompokKegiatan: null,
+                namaPerusahaan: null,
+                tanggalPerolehan: [
+                    new Date(new Date().getFullYear(), 0, 1),
+                    new Date()
+                ],
+                buktiTransaksi: null,
+                page: 1,
+                isLoading: false
+            },
+            reference: {
+                kelompokKegiatanCollection: [],
+                kelompokBarangCollection: [],
+                perusahaanCollection: [],
+            },
+            tableData: [],
+            tableMeta: {
                 total: null,
                 per_page: null,
                 current_page: null
             },
-            isLoading: false
+            isFormModalActive: false,
+            formModalProps: {
+                id: null,
+                perusahaanId: null,
+                kelompokKegiatanId: null,
+                kelompokBarangId: null,
+                tahunAnggaran: null,
+                tanggalPerolehan: null,
+                jenisBukti: null,
+                buktiTransaksi: null,
+                isLoading: false,
+                message: null,
+            },
+            years: years()
         }
     },
     computed: {
-        barangMasukTotal() {
-            return this.barangMasukMeta.total;
+        tableTotal() {
+            return this.tableMeta.total;
         },
-        barangMasukPerPage() {
-            return this.barangMasukMeta.per_page;
+        tablePerPage() {
+            return this.tableMeta.per_page;
         },
-        barangMasukCurrentPage() {
-            return this.barangMasukMeta.current_page;
+        tableCurrentPage() {
+            return this.tableMeta.current_page;
         },
-        params() {
+        filterParams() {
             return {
-                nama_perusahaan: this.filterNamaPerusahaan,
-                nama_kelompok_kegiatan: this.filterNamaKelompokKegiatan,
-                nama_kelompok_barang: this.filterNamaKelompokBarang,
-                tanggal_perolehan_mulai: this.filterTanggalPerolehan[0].toISOString().split('T')[0],
-                tanggal_perolehan_selesai: this.filterTanggalPerolehan[1].toISOString().split('T')[0],
-                bukti_transaksi: this.filterBuktiTransaksi,
-                page: this.filterPage,
+                tahun_anggaran: this.filter.tahunAnggaran,
+                nama_perusahaan: this.filter.namaPerusahaan,
+                nama_kelompok_kegiatan: this.filter.amaKelompokKegiatan,
+                nama_kelompok_barang: this.filter.amaKelompokBarang,
+                tanggal_perolehan_mulai: this.filter.tanggalPerolehan[0].toISOString().split('T')[0],
+                tanggal_perolehan_selesai: this.filter.tanggalPerolehan[1].toISOString().split('T')[0],
+                bukti_transaksi: this.filter.buktiTransaksi,
+                page: this.filter.page,
             }
         }
     },
     methods: {
+        loadReference() {
+            readKelompokKegiatanCollection({all: true})
+                .then(res => {
+                    this.reference.kelompokKegiatanCollection = res.data;
+                })
+                .catch(err => {
+                    throw err;
+                });
+            readKelompokBarangCollection({all: true})
+                .then(res => {
+                    this.reference.kelompokBarangCollection = res.data;
+                })
+                .catch(err => {
+                    throw err;
+                });
+            readPerusahaanCollection({all: true})
+                .then(res => {
+                    this.reference.perusahaanCollection = res.data;
+                })
+                .catch(err => {
+                    throw err;
+                });
+        },
         onPageChange(page) {
-            this.filterPage = page;
+            this.filter.page = page;
             this.applyFilter();
         },
         applyFilter() {
-            this.isLoading = true;
-            readBarangMasukCollection(this.params)
+            this.filter.isLoading = true;
+            readBarangMasukCollection(this.filterParams)
                 .then(res => {
-                    this.barangMasukData = res.data;
-                    this.barangMasukMeta = res.meta;
-                    this.isLoading = false;
+                    this.tableData = res.data;
+                    this.tableMeta = res.meta;
+                    this.filter.isLoading = false;
                 })
                 .catch(err => {
                     throw err;
                 })
                 .finally(() => {
-                    this.isLoading = false;
+                    this.filter.isLoading = false;
                 });
         },
-        openFormModal() {
-            this.$buefy.modal.open({
-                parent: this,
-                component: BarangMasukForm,
-                hasModalCard: true,
-                canCancel: false,
-                fullScreen: true,
-            })
-        }
+        openCreateFormModal() {
+            this.formModalProps = {
+                id: null,
+                perusahaanId: null,
+                kelompokKegiatanId: null,
+                kelompokBarangId: null,
+                tahunAnggaran: null,
+                tanggalPerolehan: null,
+                jenisBukti: null,
+                buktiTransaksi: null,
+                isLoading: false,
+                message: null
+            };
+            this.isFormModalActive = true;
+        },
+        onSubmitted(submission) {
+            this.formModalProps.isLoading = true;
+            createBarangMasuk(submission)
+                .then(res => {
+                    this.isFormModalActive = false;
+                    this.$buefy.notification.open({
+                        message: `Berhasil menambahkan data ${res.data.nama}`,
+                        type: 'is-success'
+                    });
+                })
+                .catch(err => {
+                    console.warn(err);
+                    const message = err.response.data.error.message;
+                    this.formModalProps.message = `Gagal menambahkan data ${submission.nama}. ${message}`;
+                })
+                .finally(() => {
+                    this.formModalProps.isLoading = false;
+                });
+            this.applyFilter();
+        },
     },
     mounted() {
+        this.loadReference();
         this.applyFilter();
     }
 }

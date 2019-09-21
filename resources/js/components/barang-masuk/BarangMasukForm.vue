@@ -4,41 +4,142 @@
             <p class="modal-card-title">Barang Masuk</p>
         </header>
         <section class="modal-card-body">
+
+            <b-message v-if="message" type="is-warning">
+                {{ message }}
+            </b-message>
+
+            <b-field label="Tahun Anggaran">
+                <b-select expanded placeholder="Pilih tahun anggaran" v-model="submission.tahun_anggaran" required>
+                    <option
+                        v-for="option in years"
+                        :value="option"
+                        :key="option">
+                        {{ option }}
+                    </option>
+                </b-select>
+            </b-field>
+
             <b-field label="Kelompok Kegiatan">
+                <b-select expanded placeholder="Pilih kelompok kegiatan" v-model="submission.kelompok_kegiatan_id" required>
+                    <option
+                        v-for="option in kelompokKegiatanCollection"
+                        :value="option.id"
+                        :key="option.id">
+                        {{ option.nama }}
+                    </option>
+                </b-select>
+            </b-field>
+
+            <b-field label="Kelompok Barang">
+                <b-select expanded placeholder="Pilih kelompok barang" v-model="submission.kelompok_barang_id" required>
+                    <option
+                        v-for="option in kelompokBarangCollection"
+                        :value="option.id"
+                        :key="option.id">
+                        {{ option.nama }}
+                    </option>
+                </b-select>
+            </b-field>
+
+            <b-field label="Perusahaan">
+                <b-select expanded placeholder="Pilih perusahaan" v-model="submission.perusahaan_id" required>
+                    <option
+                        v-for="option in perusahaanCollection"
+                        :value="option.id"
+                        :key="option.id">
+                        {{ option.nama }}
+                    </option>
+                </b-select>
+            </b-field>
+
+            <b-field label="Jenis Bukti">
+                <b-select expanded placeholder="Pilih bukti transaksi" v-model="submission.jenis_bukti" required>
+                    <option
+                        v-for="option in jenisBuktiTransaksi"
+                        :value="option"
+                        :key="option">
+                        {{ option }}
+                    </option>
+                </b-select>
+            </b-field>
+
+            <b-field label="Bukti Transaksi">
                 <b-input
-                    :value="kelompok_kegiatan_id"
+                    v-model="submission.bukti_transaksi"
                     required>
                 </b-input>
             </b-field>
 
-            <b-field label="Kelompok Kegiatan">
-                <b-input
-                    :value="kelompok_barang_id"
+            <b-field label="Tanggal perolehan">
+                <b-datepicker
+                    placeholder="Pilih tanggal perolehan"
+                    v-model="submission.tanggal_perolehan"
+                    icon="calendar-today"
                     required>
-                </b-input>
+                </b-datepicker>
             </b-field>
 
         </section>
         <footer class="modal-card-foot">
-            <button class="button" type="button" @click="$parent.close()">Close</button>
-            <button class="button is-primary">Submit</button>
+            <b-button @click="$parent.close()">Batal</b-button>
+            <b-button type="is-info" @click="onClickButton" :disabled="isLoading" :loading="isLoading" >{{ submitButtonLabel }}</b-button>
         </footer>
     </div>
 </template>
 
 <script>
+import { years, jenisBuktiTransaksi } from '../../utils';
+
 export default {
+    props: {
+        id: Number,
+        kelompokKegiatanId: Number,
+        kelompokKegiatanCollection: Array,
+        kelompokBarangId: Number,
+        kelompokBarangCollection: Array,
+        perusahaanId: Number,
+        perusahaanCollection: Array,
+        tahunAnggaran: Number,
+        tanggalPerolehan: Date,
+        jenisBukti: String,
+        buktiTransaksi: String,
+        isLoading: Boolean,
+        message: String
+    },
     data() {
         return {
-            id: null,
-            kelompok_kegiatan_id: null,
-            kelompok_barang_id: null,
-            perusahaan_id: null,
-            tahun_anggaran: null,
-            tanggal_perolehan: null,
-            jenis_bukti: null,
-            bukti_transaksi: null,
-            isLoading: false
+            submission: {
+                id: this.id,
+                kelompok_kegiatan_id: this.kelompokKegiatanId,
+                kelompok_barang_id: this.kelompokBarangId,
+                perusahaan_id: this.perusahaanId,
+                tahun_anggaran: this.tahunAnggaran,
+                tanggal_perolehan: this.tanggalPerolehan,
+                jenis_bukti: this.jenisBukti,
+                bukti_transaksi: this.buktiTransaksi,
+            },
+            years: years(),
+            jenisBuktiTransaksi: jenisBuktiTransaksi()
+        }
+    },
+    computed: {
+        isCreateAction() {
+            return this.id === null;
+        },
+        submitButtonLabel() {
+            return this.isCreateAction ? 'Tambah' : 'Ubah';
+        },
+        finalSubmission() {
+            const date = {
+                tanggal_perolehan: new Date(this.submission.tanggal_perolehan).toISOString().split('T')[0],
+            };
+            return {...this.submission, ...date};
+        },
+    },
+    methods: {
+        onClickButton() {
+            this.$emit('submitted', this.finalSubmission);
         }
     }
 }

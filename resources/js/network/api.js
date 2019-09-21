@@ -1,12 +1,5 @@
 import request from './request';
 
-export const readBarangMasukCollection = (params) => {
-    const config = {
-        params,
-    };
-    return request.get('/api/barang_masuk', config);
-};
-
 export const readUnitKerjaCollection = (params) => {
     const config = {
         params,
@@ -138,4 +131,23 @@ export const updateVolumeDpa = (id, submission) => {
 
 export const deleteVolumeDpa = (id) => {
     return request.delete(`/api/volume_dpa/${id}`);
+};
+
+export const readBarangMasukCollection = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/barang_masuk', config);
+};
+
+export const createBarangMasuk = (submission) => {
+    return request.post('/api/barang_masuk', submission);
+};
+
+export const updateBarangMasuk = (id, submission) => {
+    return request.put(`/api/barang_masuk/${id}`, submission);
+};
+
+export const deleteBarangMasuk = (id) => {
+    return request.delete(`/api/barang_masuk/${id}`);
 };

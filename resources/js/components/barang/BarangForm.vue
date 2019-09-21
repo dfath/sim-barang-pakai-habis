@@ -10,7 +10,7 @@
             </b-message>
 
             <b-field label="Kelompok Kegiatan">
-                <b-select placeholder="Pilih kelompok kegiatan" v-model="submission.kelompok_kegiatan_id" required>
+                <b-select expanded placeholder="Pilih kelompok kegiatan" v-model="submission.kelompok_kegiatan_id" required>
                     <option
                         v-for="option in kelompokKegiatanCollection"
                         :value="option.id"
@@ -21,7 +21,7 @@
             </b-field>
 
             <b-field label="Kelompok Barang">
-                <b-select placeholder="Pilih kelompok barang" v-model="submission.kelompok_barang_id" required>
+                <b-select expanded placeholder="Pilih kelompok barang" v-model="submission.kelompok_barang_id" required>
                     <option
                         v-for="option in kelompokBarangCollection"
                         :value="option.id"
@@ -39,7 +39,7 @@
             </b-field>
 
             <b-field label="Satuan">
-                <b-select placeholder="Pilih satuan" v-model="submission.satuan_id" required>
+                <b-select expanded placeholder="Pilih satuan" v-model="submission.satuan_id" required>
                     <option
                         v-for="option in satuanCollection"
                         :value="option.id"

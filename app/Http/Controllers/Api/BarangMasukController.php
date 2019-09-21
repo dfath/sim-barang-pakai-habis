@@ -96,7 +96,7 @@ class BarangMasukController extends BaseController
             return new BarangMasukResource($query);
 
         } catch (Throwable $th) {
-            return $this->errorBadRequest();
+            return $this->errorBadRequest($th->getMessage());
         }
 
     }
