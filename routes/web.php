@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/barang-masuk/board', 'BarangMasukController@index')->name('barang-masuk-board');
 
+    Route::get('/barang-masuk/{id}', 'BarangMasukController@edit')->name('barang-masuk-edit')->where('id', '[0-9]+');
+
     Route::get('/unit-kerja/board', 'UnitKerjaController@index')->name('unit-kerja-board');
 
     Route::get('/satuan/board', 'SatuanController@index')->name('satuan-board');

@@ -1,5 +1,15 @@
 <template>
     <div class="container is-fluid">
+        <br/>
+        <div class="level">
+            <div class="level-left" />
+            <div class="level-right">
+                 <div class="level-item">
+                    <b-button type="is-info" @click="openCreateFormModal()">Tambah</b-button>
+                 </div>
+            </div>
+        </div>
+
         <div class="columns">
             <div class="column is-3">
                 <form class="forms">
@@ -49,12 +59,7 @@
                 </form>
             </div>
             <div class="column is-9">
-                <br/>
-                <b-field grouped group-multiline>
-                    <b-button type="is-info" @click="openCreateFormModal()">Tambah</b-button>
-                </b-field>
-
-                <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
+                <b-modal :active.sync="isFormModalActive" has-modal-card>
                     <barang-masuk-form
                         v-bind="formModalProps"
                         :perusahaanCollection="reference.perusahaanCollection"
@@ -111,7 +116,7 @@
                             </b-table-column>
 
                             <b-table-column label="Aksi" width="90">
-                                <b-button type="is-danger" icon-right="pencil" size="is-small" />
+                                <b-button tag="a" :href="`/barang-masuk/${props.row.id}`" type="is-danger" icon-right="pencil" size="is-small" />
                             </b-table-column>
 
                         </template>
@@ -135,7 +140,7 @@ export default {
     data() {
         return {
             filter: {
-                tahunAnggaran: null,
+                tahunAnggaran: new Date().getFullYear(),
                 namaKelompokBarang: null,
                 namaKelompokKegiatan: null,
                 namaPerusahaan: null,
@@ -231,7 +236,6 @@ export default {
                 .then(res => {
                     this.tableData = res.data;
                     this.tableMeta = res.meta;
-                    this.filter.isLoading = false;
                 })
                 .catch(err => {
                     throw err;
@@ -261,14 +265,13 @@ export default {
                 .then(res => {
                     this.isFormModalActive = false;
                     this.$buefy.notification.open({
-                        message: `Berhasil menambahkan data ${res.data.nama}`,
+                        message: `Berhasil menambahkan data ${res.data.bukti_transaksi}`,
                         type: 'is-success'
                     });
                 })
                 .catch(err => {
-                    console.warn(err);
                     const message = err.response.data.error.message;
-                    this.formModalProps.message = `Gagal menambahkan data ${submission.nama}. ${message}`;
+                    this.formModalProps.message = `Gagal menambahkan data ${submission.bukti_transaksi}. ${message}`;
                 })
                 .finally(() => {
                     this.formModalProps.isLoading = false;

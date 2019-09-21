@@ -25,7 +25,7 @@
                 </p>
             </div>
 
-            <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
+            <b-modal :active.sync="isFormModalActive" has-modal-card>
                 <barang-form
                     v-bind="formModalProps"
                     :satuanCollection="reference.satuanCollection"

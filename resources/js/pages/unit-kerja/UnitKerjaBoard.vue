@@ -25,7 +25,7 @@
                 </p>
             </div>
 
-            <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
+            <b-modal :active.sync="isFormModalActive" has-modal-card>
                 <unit-kerja-form
                     v-bind="formModalProps"
                     v-on:submitted="onSubmitted">

@@ -25,6 +25,7 @@ Vue.component('delete-confirmation', require('./components/DeleteConfirmation.vu
 Vue.component('passport-authorized-clients', require('./components/passport/AuthorizedClients.vue').default);
 Vue.component('passport-personal-access-tokens', require('./components/passport/PersonalAccessTokens.vue').default);
 Vue.component('barang-masuk-board', require('./pages/barang-masuk/BarangMasukBoard.vue').default);
+Vue.component('barang-masuk-edit', require('./pages/barang-masuk/BarangMasukEdit.vue').default);
 Vue.component('unit-kerja-board', require('./pages/unit-kerja/UnitKerjaBoard.vue').default);
 Vue.component('satuan-board', require('./pages/satuan/SatuanBoard.vue').default);
 Vue.component('kelompok-kegiatan-board', require('./pages/kelompok-kegiatan/KelompokKegiatanBoard.vue').default);

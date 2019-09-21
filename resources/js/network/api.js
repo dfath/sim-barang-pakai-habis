@@ -151,3 +151,7 @@ export const updateBarangMasuk = (id, submission) => {
 export const deleteBarangMasuk = (id) => {
     return request.delete(`/api/barang_masuk/${id}`);
 };
+
+export const readBarangMasuk = (id) => {
+    return request.get(`/api/barang_masuk/${id}`);
+};

@@ -25,7 +25,7 @@
                 </p>
             </div>
 
-            <b-modal :active.sync="isFormModalActive" has-modal-card :can-cancel="false">
+            <b-modal :active.sync="isFormModalActive" has-modal-card>
                 <kelompok-barang-form
                     v-bind="formModalProps"
                     :kelompokKegiatanCollection="reference.kelompokKegiatanCollection"

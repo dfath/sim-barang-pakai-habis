@@ -1,15 +1,15 @@
 <template>
-    <div class="modal-card" style="width: auto">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Barang Masuk</p>
+    <div :class="{ 'modal-card' : isModal, 'card' : !isModal }" style="width: auto">
+        <header :class="{ 'modal-card-head' : isModal, 'card-header' : !isModal }">
+            <p :class="{ 'modal-card-title' : isModal, 'card-header-title' : !isModal }">Barang Masuk</p>
         </header>
-        <section class="modal-card-body">
+        <section :class="{ 'modal-card-body' : isModal, 'card-content' : !isModal }">
 
             <b-message v-if="message" type="is-warning">
                 {{ message }}
             </b-message>
 
-            <b-field label="Tahun Anggaran">
+            <b-field horizontal label="Tahun Anggaran">
                 <b-select expanded placeholder="Pilih tahun anggaran" v-model="submission.tahun_anggaran" required>
                     <option
                         v-for="option in years"
@@ -20,7 +20,7 @@
                 </b-select>
             </b-field>
 
-            <b-field label="Kelompok Kegiatan">
+            <b-field horizontal label="Kelompok Kegiatan">
                 <b-select expanded placeholder="Pilih kelompok kegiatan" v-model="submission.kelompok_kegiatan_id" required>
                     <option
                         v-for="option in kelompokKegiatanCollection"
@@ -31,7 +31,7 @@
                 </b-select>
             </b-field>
 
-            <b-field label="Kelompok Barang">
+            <b-field horizontal label="Kelompok Barang">
                 <b-select expanded placeholder="Pilih kelompok barang" v-model="submission.kelompok_barang_id" required>
                     <option
                         v-for="option in kelompokBarangCollection"
@@ -42,7 +42,7 @@
                 </b-select>
             </b-field>
 
-            <b-field label="Perusahaan">
+            <b-field horizontal label="Perusahaan">
                 <b-select expanded placeholder="Pilih perusahaan" v-model="submission.perusahaan_id" required>
                     <option
                         v-for="option in perusahaanCollection"
@@ -53,7 +53,7 @@
                 </b-select>
             </b-field>
 
-            <b-field label="Jenis Bukti">
+            <b-field horizontal label="Jenis Bukti">
                 <b-select expanded placeholder="Pilih bukti transaksi" v-model="submission.jenis_bukti" required>
                     <option
                         v-for="option in jenisBuktiTransaksi"
@@ -64,14 +64,14 @@
                 </b-select>
             </b-field>
 
-            <b-field label="Bukti Transaksi">
+            <b-field horizontal label="Bukti Transaksi">
                 <b-input
                     v-model="submission.bukti_transaksi"
                     required>
                 </b-input>
             </b-field>
 
-            <b-field label="Tanggal perolehan">
+            <b-field horizontal label="Tanggal perolehan">
                 <b-datepicker
                     placeholder="Pilih tanggal perolehan"
                     v-model="submission.tanggal_perolehan"
@@ -82,7 +82,6 @@
 
         </section>
         <footer class="modal-card-foot">
-            <b-button @click="$parent.close()">Batal</b-button>
             <b-button type="is-info" @click="onClickButton" :disabled="isLoading" :loading="isLoading" >{{ submitButtonLabel }}</b-button>
         </footer>
     </div>
@@ -105,7 +104,11 @@ export default {
         jenisBukti: String,
         buktiTransaksi: String,
         isLoading: Boolean,
-        message: String
+        message: String,
+        isModal: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         return {
