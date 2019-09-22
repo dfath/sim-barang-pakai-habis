@@ -3431,6 +3431,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -3596,130 +3598,165 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _network_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../network/api */ "./resources/js/network/api.js");
-/* harmony import */ var _components_barang_masuk_BarangMasukForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/barang-masuk/BarangMasukForm */ "./resources/js/components/barang-masuk/BarangMasukForm.vue");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils */ "./resources/js/utils/index.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    BarangMasukForm: _components_barang_masuk_BarangMasukForm__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
+  components: {},
   props: {
     id: Number
   },
   data: function data() {
     return {
       barangMasuk: {
-        id: this.id,
-        perusahaanId: null,
-        kelompokKegiatanId: null,
-        kelompokBarangId: null,
-        tahunAnggaran: null,
-        tanggalPerolehan: null,
-        jenisBukti: null,
-        buktiTransaksi: null,
-        isLoading: false,
-        message: null
+        isLoading: false
       },
+      barangMasukData: {},
       barangMasukDetil: {
         isLoading: false
       },
-      reference: {
-        kelompokKegiatanCollection: [],
-        kelompokBarangCollection: [],
-        perusahaanCollection: []
-      },
-      years: Object(_utils__WEBPACK_IMPORTED_MODULE_2__["years"])()
+      barangMasukDetilData: []
     };
   },
   computed: {},
   methods: {
-    loadReference: function loadReference() {
+    loadBarangMasuk: function loadBarangMasuk() {
       var _this = this;
 
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokKegiatanCollection"])({
-        all: true
-      }).then(function (res) {
-        _this.reference.kelompokKegiatanCollection = res.data;
+      this.barangMasuk.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readBarangMasuk"])(this.id).then(function (res) {
+        _this.barangMasukData = _objectSpread({}, _this.barangMasukData, {}, res.data);
       })["catch"](function (err) {
         throw err;
-      });
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokBarangCollection"])({
-        all: true
-      }).then(function (res) {
-        _this.reference.kelompokBarangCollection = res.data;
-      })["catch"](function (err) {
-        throw err;
-      });
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readPerusahaanCollection"])({
-        all: true
-      }).then(function (res) {
-        _this.reference.perusahaanCollection = res.data;
-      })["catch"](function (err) {
-        throw err;
+      })["finally"](function () {
+        _this.barangMasuk.isLoading = false;
       });
     },
-    loadBarangMasuk: function loadBarangMasuk() {
+    loadBarangMasukDetil: function loadBarangMasukDetil() {
       var _this2 = this;
 
-      this.barangMasuk.isLoading = true;
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readBarangMasuk"])(this.barangMasuk.id).then(function (res) {
-        _this2.barangMasuk.id = res.data.id;
-        _this2.barangMasuk.perusahaanId = res.data.perusahaan_id;
-        _this2.barangMasuk.kelompokKegiatanId = res.data.kelompok_kegiatan_id;
-        _this2.barangMasuk.kelompokBarangId = res.data.kelompok_barang_id;
-        _this2.barangMasuk.tahunAnggaran = res.data.tahun_anggaran;
-        _this2.barangMasuk.tanggalPerolehan = new Date(res.data.tanggal_perolehan);
-        _this2.barangMasuk.jenisBukti = res.data.jenis_bukti;
-        _this2.barangMasuk.buktiTransaksi = res.data.bukti_transaksi;
+      this.barangMasukDetil.isLoading = true;
+      var filter = {
+        all: true,
+        barang_masuk_id: this.id
+      };
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readBarangMasukDetilCollection"])(filter).then(function (res) {
+        _this2.barangMasukDetilData = res.data;
       })["catch"](function (err) {
         throw err;
       })["finally"](function () {
-        _this2.barangMasuk.isLoading = false;
-      });
-    },
-    onBarangMasukSubmitted: function onBarangMasukSubmitted(submission) {
-      var _this3 = this;
-
-      this.barangMasuk.isLoading = true;
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateBarangMasuk"])(submission.id, submission).then(function (res) {
-        _this3.$buefy.notification.open({
-          message: "Berhasil mengubah data ".concat(res.data.bukti_transaksi),
-          type: 'is-success'
-        });
-      })["catch"](function (err) {
-        var message = err.response.data.error.message;
-        _this3.barangMasuk.message = "Gagal mengubah data ".concat(submission.bukti_transaksi, ". ").concat(message);
-      })["finally"](function () {
-        _this3.barangMasuk.isLoading = false;
+        _this2.barangMasukDetil.isLoading = false;
       });
     }
   },
   mounted: function mounted() {
-    this.loadReference();
     this.loadBarangMasuk();
+    this.loadBarangMasukDetil();
   }
 });
 
@@ -4649,6 +4686,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _network_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../network/api */ "./resources/js/network/api.js");
 /* harmony import */ var _components_perusahaan_PerusahaanForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/perusahaan/PerusahaanForm */ "./resources/js/components/perusahaan/PerusahaanForm.vue");
+//
 //
 //
 //
@@ -21261,7 +21299,7 @@ var render = function() {
                     _c(
                       "b-button",
                       {
-                        staticClass: "button is-info is-rounded is-fullwidth",
+                        staticClass: "button is-info is-fullwidth",
                         on: { click: _vm.applyFilter }
                       },
                       [_vm._v("Cari")]
@@ -21315,7 +21353,6 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "table-container" },
             [
               _c(
                 "b-table",
@@ -21443,14 +21480,30 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "b-table-column",
-                            { attrs: { label: "Aksi", width: "90" } },
+                            { attrs: { label: "Aksi", width: "120" } },
                             [
+                              _c("b-button", {
+                                attrs: {
+                                  type: "is-danger",
+                                  "icon-right": "pencil",
+                                  size: "is-small"
+                                }
+                              }),
+                              _vm._v(" "),
                               _c("b-button", {
                                 attrs: {
                                   tag: "a",
                                   href: "/barang-masuk/" + props.row.id,
                                   type: "is-danger",
-                                  "icon-right": "pencil",
+                                  "icon-right": "file-document-edit",
+                                  size: "is-small"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("b-button", {
+                                attrs: {
+                                  type: "is-danger",
+                                  "icon-right": "delete",
                                   size: "is-small"
                                 }
                               })
@@ -21515,34 +21568,201 @@ var render = function() {
     _c("br"),
     _vm._v(" "),
     _c("div", { staticClass: "columns" }, [
-      _c(
-        "div",
-        { staticClass: "column is-three-quarters" },
-        [
-          _vm.barangMasuk.tahunAnggaran
-            ? _c(
-                "barang-masuk-form",
-                _vm._b(
+      _c("div", { staticClass: "column is-half" }, [
+        _c("table", { staticClass: "table is-fullwidth" }, [
+          _c("tbody", [
+            _c("tr", [
+              _c("td", [_vm._v("Tahun Anggaran")]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.barangMasukData.tahun_anggaran))])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("Kelompok Kegiatan")]),
+              _vm._v(" "),
+              _c("td", [
+                _vm._v(_vm._s(_vm.barangMasukData.nama_kelompok_kegiatan))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("Kelompok Barang")]),
+              _vm._v(" "),
+              _c("td", [
+                _vm._v(_vm._s(_vm.barangMasukData.nama_kelompok_barang))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("Nama Perusahaan")]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.barangMasukData.nama_perusahaan))])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("Tanggal Perolehan")]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.barangMasukData.tanggal_perolehan))])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("Jenis Bukti")]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.barangMasukData.jenis_bukti))])
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("td", [_vm._v("Bukti Transaksi")]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(_vm.barangMasukData.bukti_transaksi))])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "columns" }, [
+      _c("div", { staticClass: "column is-four-fifths" }, [
+        _c("div", { staticClass: "level" }, [
+          _c("div", { staticClass: "level-left" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "level-right" }, [
+            _c(
+              "div",
+              { staticClass: "level-item" },
+              [
+                _c("b-button", { attrs: { type: "is-info" } }, [
+                  _vm._v("Tambah")
+                ])
+              ],
+              1
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          [
+            _c(
+              "b-table",
+              {
+                attrs: {
+                  data: _vm.barangMasukDetilData,
+                  striped: "",
+                  loading: _vm.barangMasukDetil.isLoading
+                },
+                scopedSlots: _vm._u([
                   {
-                    attrs: {
-                      perusahaanCollection: _vm.reference.perusahaanCollection,
-                      kelompokKegiatanCollection:
-                        _vm.reference.kelompokKegiatanCollection,
-                      kelompokBarangCollection:
-                        _vm.reference.kelompokBarangCollection,
-                      isModal: false
-                    },
-                    on: { submitted: _vm.onBarangMasukSubmitted }
-                  },
-                  "barang-masuk-form",
-                  _vm.barangMasuk,
-                  false
-                )
-              )
-            : _vm._e()
-        ],
-        1
-      )
+                    key: "default",
+                    fn: function(props) {
+                      return [
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "nama_barang",
+                              label: "Nama Barang"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.nama_barang) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          { attrs: { field: "volume", label: "Volume" } },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.volume) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "harga_satuan",
+                              label: "Harga Satuan"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.harga_satuan) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          { attrs: { field: "total", label: "Total" } },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.total) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          { attrs: { label: "Aksi", width: "90" } },
+                          [
+                            _c("b-button", {
+                              attrs: {
+                                type: "is-danger",
+                                "icon-right": "pencil",
+                                size: "is-small"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("b-button", {
+                              attrs: {
+                                type: "is-danger",
+                                "icon-right": "delete",
+                                size: "is-small"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ])
+              },
+              [
+                !_vm.barangMasukDetil.isLoading
+                  ? _c(
+                      "b-notification",
+                      {
+                        attrs: { slot: "empty", closable: false },
+                        slot: "empty"
+                      },
+                      [
+                        _vm._v(
+                          "\n                        Data tidak ditemukan.\n                    "
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ])
     ])
   ])
 }
@@ -21704,7 +21924,6 @@ var render = function() {
       _c("div", { staticClass: "column" }, [
         _c(
           "div",
-          { staticClass: "table-container" },
           [
             _c(
               "b-table",
@@ -22014,7 +22233,6 @@ var render = function() {
       _c("div", { staticClass: "column" }, [
         _c(
           "div",
-          { staticClass: "table-container" },
           [
             _c(
               "b-table",
@@ -22286,7 +22504,6 @@ var render = function() {
       _c("div", { staticClass: "column" }, [
         _c(
           "div",
-          { staticClass: "table-container" },
           [
             _c(
               "b-table",
@@ -22415,131 +22632,130 @@ var render = function() {
   return _c("div", { staticClass: "container is-fluid" }, [
     _c("br"),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "level" },
-      [
-        _c("div", { staticClass: "level-left" }, [
-          _c("div", { staticClass: "level-item" }, [
-            _c("div", { staticClass: "field has-addons" }, [
+    _c("div", { staticClass: "columns" }, [
+      _c("div", { staticClass: "column" }, [
+        _c(
+          "div",
+          { staticClass: "level" },
+          [
+            _c("div", { staticClass: "level-left" }, [
+              _c("div", { staticClass: "level-item" }, [
+                _c("div", { staticClass: "field has-addons" }, [
+                  _c(
+                    "p",
+                    { staticClass: "control" },
+                    [
+                      _c("b-input", {
+                        model: {
+                          value: _vm.filter.nama,
+                          callback: function($$v) {
+                            _vm.$set(_vm.filter, "nama", $$v)
+                          },
+                          expression: "filter.nama"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    { staticClass: "control" },
+                    [
+                      _c(
+                        "b-button",
+                        {
+                          staticClass: "button is-info",
+                          on: { click: _vm.applyFilter }
+                        },
+                        [_vm._v("Cari")]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "level-right" }, [
               _c(
                 "p",
-                { staticClass: "control" },
-                [
-                  _c("b-input", {
-                    model: {
-                      value: _vm.filter.nama,
-                      callback: function($$v) {
-                        _vm.$set(_vm.filter, "nama", $$v)
-                      },
-                      expression: "filter.nama"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "p",
-                { staticClass: "control" },
+                { staticClass: "level-item" },
                 [
                   _c(
                     "b-button",
                     {
-                      staticClass: "button is-info",
-                      on: { click: _vm.applyFilter }
+                      attrs: { type: "is-info" },
+                      on: {
+                        click: function($event) {
+                          return _vm.openCreateFormModal()
+                        }
+                      }
                     },
-                    [_vm._v("Cari")]
+                    [_vm._v("Tambah")]
                   )
                 ],
                 1
               )
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "level-right" }, [
-          _c(
-            "p",
-            { staticClass: "level-item" },
-            [
-              _c(
-                "b-button",
-                {
-                  attrs: { type: "is-info" },
-                  on: {
-                    click: function($event) {
-                      return _vm.openCreateFormModal()
-                    }
-                  }
-                },
-                [_vm._v("Tambah")]
-              )
-            ],
-            1
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "b-modal",
-          {
-            attrs: { active: _vm.isFormModalActive, "has-modal-card": "" },
-            on: {
-              "update:active": function($event) {
-                _vm.isFormModalActive = $event
-              }
-            }
-          },
-          [
+            ]),
+            _vm._v(" "),
             _c(
-              "perusahaan-form",
-              _vm._b(
-                { on: { submitted: _vm.onSubmitted } },
-                "perusahaan-form",
-                _vm.formModalProps,
-                false
-              )
+              "b-modal",
+              {
+                attrs: { active: _vm.isFormModalActive, "has-modal-card": "" },
+                on: {
+                  "update:active": function($event) {
+                    _vm.isFormModalActive = $event
+                  }
+                }
+              },
+              [
+                _c(
+                  "perusahaan-form",
+                  _vm._b(
+                    { on: { submitted: _vm.onSubmitted } },
+                    "perusahaan-form",
+                    _vm.formModalProps,
+                    false
+                  )
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-modal",
+              {
+                attrs: {
+                  active: _vm.isDeleteModalActive,
+                  "has-modal-card": "",
+                  "can-cancel": false
+                },
+                on: {
+                  "update:active": function($event) {
+                    _vm.isDeleteModalActive = $event
+                  }
+                }
+              },
+              [
+                _c(
+                  "delete-confirmation",
+                  _vm._b(
+                    { on: { confirmed: _vm.onConfirmed } },
+                    "delete-confirmation",
+                    _vm.deleteModalProps,
+                    false
+                  )
+                )
+              ],
+              1
             )
           ],
           1
         ),
         _vm._v(" "),
         _c(
-          "b-modal",
-          {
-            attrs: {
-              active: _vm.isDeleteModalActive,
-              "has-modal-card": "",
-              "can-cancel": false
-            },
-            on: {
-              "update:active": function($event) {
-                _vm.isDeleteModalActive = $event
-              }
-            }
-          },
-          [
-            _c(
-              "delete-confirmation",
-              _vm._b(
-                { on: { confirmed: _vm.onConfirmed } },
-                "delete-confirmation",
-                _vm.deleteModalProps,
-                false
-              )
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column" }, [
-        _c(
           "div",
-          { staticClass: "table-container" },
           [
             _c(
               "b-table",
@@ -22806,7 +23022,6 @@ var render = function() {
       _c("div", { staticClass: "column" }, [
         _c(
           "div",
-          { staticClass: "table-container" },
           [
             _c(
               "b-table",
@@ -23059,7 +23274,6 @@ var render = function() {
       _c("div", { staticClass: "column" }, [
         _c(
           "div",
-          { staticClass: "table-container" },
           [
             _c(
               "b-table",
@@ -23312,7 +23526,6 @@ var render = function() {
       _c("div", { staticClass: "column" }, [
         _c(
           "div",
-          { staticClass: "table-container" },
           [
             _c(
               "b-table",
@@ -36563,7 +36776,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************!*\
   !*** ./resources/js/network/api.js ***!
   \*************************************/
-/*! exports provided: readUnitKerjaCollection, createUnitKerja, updateUnitKerja, deleteUnitKerja, readSatuanCollection, createSatuan, updateSatuan, deleteSatuan, readKelompokKegiatanCollection, createKelompokKegiatan, updateKelompokKegiatan, deleteKelompokKegiatan, readKelompokBarangCollection, createKelompokBarang, updateKelompokBarang, deleteKelompokBarang, readBarangCollection, createBarang, updateBarang, deleteBarang, readPerusahaanCollection, createPerusahaan, updatePerusahaan, deletePerusahaan, readVolumeDpaCollection, createVolumeDpa, updateVolumeDpa, deleteVolumeDpa, readBarangMasukCollection, createBarangMasuk, updateBarangMasuk, deleteBarangMasuk, readBarangMasuk */
+/*! exports provided: readUnitKerjaCollection, createUnitKerja, updateUnitKerja, deleteUnitKerja, readSatuanCollection, createSatuan, updateSatuan, deleteSatuan, readKelompokKegiatanCollection, createKelompokKegiatan, updateKelompokKegiatan, deleteKelompokKegiatan, readKelompokBarangCollection, createKelompokBarang, updateKelompokBarang, deleteKelompokBarang, readBarangCollection, createBarang, updateBarang, deleteBarang, readPerusahaanCollection, createPerusahaan, updatePerusahaan, deletePerusahaan, readVolumeDpaCollection, createVolumeDpa, updateVolumeDpa, deleteVolumeDpa, readBarangMasukCollection, createBarangMasuk, updateBarangMasuk, deleteBarangMasuk, readBarangMasuk, readBarangMasukDetilCollection, createBarangMasukDetil, updateBarangMasukDetil, deleteBarangMasukDetil, readBarangMasukDetil */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36601,6 +36814,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateBarangMasuk", function() { return updateBarangMasuk; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteBarangMasuk", function() { return deleteBarangMasuk; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readBarangMasuk", function() { return readBarangMasuk; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readBarangMasukDetilCollection", function() { return readBarangMasukDetilCollection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createBarangMasukDetil", function() { return createBarangMasukDetil; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateBarangMasukDetil", function() { return updateBarangMasukDetil; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteBarangMasukDetil", function() { return deleteBarangMasukDetil; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readBarangMasukDetil", function() { return readBarangMasukDetil; });
 /* harmony import */ var _request__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./request */ "./resources/js/network/request.js");
 
 var readUnitKerjaCollection = function readUnitKerjaCollection(params) {
@@ -36725,6 +36943,24 @@ var deleteBarangMasuk = function deleteBarangMasuk(id) {
 };
 var readBarangMasuk = function readBarangMasuk(id) {
   return _request__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/barang_masuk/".concat(id));
+};
+var readBarangMasukDetilCollection = function readBarangMasukDetilCollection(params) {
+  var config = {
+    params: params
+  };
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].get('/api/barang_masuk_detil', config);
+};
+var createBarangMasukDetil = function createBarangMasukDetil(submission) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/barang_masuk_detil', submission);
+};
+var updateBarangMasukDetil = function updateBarangMasukDetil(id, submission) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].put("/api/barang_masuk_detil/".concat(id), submission);
+};
+var deleteBarangMasukDetil = function deleteBarangMasukDetil(id) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("/api/barang_masuk_detil/".concat(id));
+};
+var readBarangMasukDetil = function readBarangMasukDetil(id) {
+  return _request__WEBPACK_IMPORTED_MODULE_0__["default"].get("/api/barang_masuk_detil/".concat(id));
 };
 
 /***/ }),

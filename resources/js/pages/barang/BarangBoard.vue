@@ -47,7 +47,7 @@
         <div class="columns">
             <div class="column">
 
-                <div class="table-container">
+                <div>
                     <b-table
                         :data="tableData"
 

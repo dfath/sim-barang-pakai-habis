@@ -15,9 +15,13 @@ class CreateBarangMasukView extends Migration
     public function up()
     {
         DB::statement("
-        CREATE VIEW barang_masuk_view AS
+        CREATE VIEW barang_masuk_detil_view AS
         (
-            SELECT bm.bukti_transaksi,
+            SELECT
+                bmd.id,
+                bmd.barang_masuk_id,
+                bmd.volume_dpa_id,
+                bm.bukti_transaksi,
                 bm.jenis_bukti,
                 bm.tahun_anggaran,
                 bm.tanggal_perolehan,
@@ -26,6 +30,7 @@ class CreateBarangMasukView extends Migration
                 bm.perusahaan_id,
                 bmd.volume,
                 vd.harga_satuan,
+                vd.volume as volume_dpa,
                 (bmd.volume * vd.harga_satuan) AS total,
                 p.nama AS nama_perusahaan,
                 b.nama AS nama_barang,
@@ -49,6 +54,6 @@ class CreateBarangMasukView extends Migration
      */
     public function down()
     {
-        DB::statement('DROP VIEW barang_masuk_view');
+        DB::statement('DROP VIEW barang_masuk_detil_view');
     }
 }

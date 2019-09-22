@@ -105,7 +105,7 @@
                     </div>
                 </div>
 
-                <div class="table-container">
+                <div>
                     <table class="table table is-striped is-fullwidth">
                         <thead>
                             <tr>

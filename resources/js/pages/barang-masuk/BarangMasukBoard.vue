@@ -52,7 +52,7 @@
 
                         <div class="field">
                             <div class="control">
-                                <b-button class="button is-info is-rounded is-fullwidth" @click="applyFilter">Cari</b-button>
+                                <b-button class="button is-info is-fullwidth" @click="applyFilter">Cari</b-button>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                     </barang-masuk-form>
                 </b-modal>
 
-                <div class="table-container">
+                <div>
                     <b-table
                         :data="tableData"
 
@@ -115,8 +115,10 @@
                                 {{ props.row.bukti_transaksi }}
                             </b-table-column>
 
-                            <b-table-column label="Aksi" width="90">
-                                <b-button tag="a" :href="`/barang-masuk/${props.row.id}`" type="is-danger" icon-right="pencil" size="is-small" />
+                            <b-table-column label="Aksi" width="120">
+                                <b-button type="is-danger" icon-right="pencil" size="is-small" />
+                                <b-button tag="a" :href="`/barang-masuk/${props.row.id}`" type="is-danger" icon-right="file-document-edit" size="is-small" />
+                                <b-button type="is-danger" icon-right="delete" size="is-small" />
                             </b-table-column>
 
                         </template>

@@ -2,49 +2,50 @@
     <div class="container is-fluid">
 
         <br/>
-        <!-- Main container -->
-        <div class="level">
-            <!-- Left side -->
-            <div class="level-left">
-                <div class="level-item">
-                <div class="field has-addons">
-                    <p class="control">
-                        <b-input v-model="filter.nama"></b-input>
-                    </p>
-                    <p class="control">
-                        <b-button class="button is-info" @click="applyFilter">Cari</b-button>
-                    </p>
-                </div>
-                </div>
-            </div>
-
-            <!-- Right side -->
-            <div class="level-right">
-                <p class="level-item">
-                    <b-button type="is-info" @click="openCreateFormModal()">Tambah</b-button>
-                </p>
-            </div>
-
-            <b-modal :active.sync="isFormModalActive" has-modal-card>
-                <perusahaan-form
-                    v-bind="formModalProps"
-                    v-on:submitted="onSubmitted">
-                </perusahaan-form>
-            </b-modal>
-
-            <b-modal :active.sync="isDeleteModalActive" has-modal-card :can-cancel="false">
-                <delete-confirmation
-                    v-bind="deleteModalProps"
-                    v-on:confirmed="onConfirmed">
-                </delete-confirmation>
-            </b-modal>
-
-        </div>
-
         <div class="columns">
             <div class="column">
 
-                <div class="table-container">
+
+                <!-- Main container -->
+                <div class="level">
+                    <!-- Left side -->
+                    <div class="level-left">
+                        <div class="level-item">
+                        <div class="field has-addons">
+                            <p class="control">
+                                <b-input v-model="filter.nama"></b-input>
+                            </p>
+                            <p class="control">
+                                <b-button class="button is-info" @click="applyFilter">Cari</b-button>
+                            </p>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                        <p class="level-item">
+                            <b-button type="is-info" @click="openCreateFormModal()">Tambah</b-button>
+                        </p>
+                    </div>
+
+                    <b-modal :active.sync="isFormModalActive" has-modal-card>
+                        <perusahaan-form
+                            v-bind="formModalProps"
+                            v-on:submitted="onSubmitted">
+                        </perusahaan-form>
+                    </b-modal>
+
+                    <b-modal :active.sync="isDeleteModalActive" has-modal-card :can-cancel="false">
+                        <delete-confirmation
+                            v-bind="deleteModalProps"
+                            v-on:confirmed="onConfirmed">
+                        </delete-confirmation>
+                    </b-modal>
+
+                </div>
+
+                <div>
                     <b-table
                         :data="tableData"
 

@@ -110,7 +110,21 @@ class BarangMasukController extends BaseController
     public function show($id)
     {
         try {
-            return new BarangMasukResource(BarangMasuk::findOrFail($id));
+
+            $query = DB::table('barang_masuk');
+            $query->select('barang_masuk.*');
+            // perusahaan
+            $query->leftJoin('perusahaan', 'barang_masuk.perusahaan_id', '=', 'perusahaan.id');
+            $query->addSelect('perusahaan.nama as nama_perusahaan');
+            // kelompok kegiatan
+            $query->leftJoin('kelompok_kegiatan', 'barang_masuk.kelompok_kegiatan_id', '=', 'kelompok_kegiatan.id');
+            $query->addSelect('kelompok_kegiatan.nama as nama_kelompok_kegiatan');
+            // kelompok barang
+            $query->leftJoin('kelompok_barang', 'barang_masuk.kelompok_barang_id', '=', 'kelompok_barang.id');
+            $query->addSelect('kelompok_barang.nama as nama_kelompok_barang');
+            $query->whereRaw('barang_masuk.id = ?', [$id]);
+
+            return new BarangMasukResource($query->first());
         } catch (Throwable $th) {
             return $this->errorNotFound();
         }

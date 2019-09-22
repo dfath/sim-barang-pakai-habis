@@ -3,30 +3,107 @@
         <br/>
         <div class="columns">
 
-            <div class="column is-three-quarters">
-                <barang-masuk-form
-                    v-if="barangMasuk.tahunAnggaran"
-                    v-bind="barangMasuk"
-                    :perusahaanCollection="reference.perusahaanCollection"
-                    :kelompokKegiatanCollection="reference.kelompokKegiatanCollection"
-                    :kelompokBarangCollection="reference.kelompokBarangCollection"
-                    :isModal=false
-                    v-on:submitted="onBarangMasukSubmitted">
-                </barang-masuk-form>
+            <div class="column is-half">
+                <table class="table is-fullwidth">
+                    <tbody>
+                        <tr>
+                            <td>Tahun Anggaran</td>
+                            <td>{{ barangMasukData.tahun_anggaran }}</td>
+                        </tr>
+                        <tr>
+                            <td>Kelompok Kegiatan</td>
+                            <td>{{ barangMasukData.nama_kelompok_kegiatan }}</td>
+                        </tr>
+                        <tr>
+                            <td>Kelompok Barang</td>
+                            <td>{{ barangMasukData.nama_kelompok_barang }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nama Perusahaan</td>
+                            <td>{{ barangMasukData.nama_perusahaan }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Perolehan</td>
+                            <td>{{ barangMasukData.tanggal_perolehan }}</td>
+                        </tr>
+                        <tr>
+                            <td>Jenis Bukti</td>
+                            <td>{{ barangMasukData.jenis_bukti }}</td>
+                        </tr>
+                        <tr>
+                            <td>Bukti Transaksi</td>
+                            <td>{{ barangMasukData.bukti_transaksi }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
         </div>
+
+        <div class="columns">
+
+            <div class="column is-four-fifths">
+
+                <div class="level">
+                    <div class="level-left" />
+                    <div class="level-right">
+                        <div class="level-item">
+                            <b-button type="is-info" >Tambah</b-button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <b-table
+                        :data="barangMasukDetilData"
+
+                        striped
+                        :loading="barangMasukDetil.isLoading">
+
+                        <b-notification v-if="!barangMasukDetil.isLoading" :closable=false slot="empty">
+                            Data tidak ditemukan.
+                        </b-notification>
+
+                        <template slot-scope="props">
+
+                            <b-table-column field="nama_barang" label="Nama Barang">
+                                {{ props.row.nama_barang }}
+                            </b-table-column>
+
+                            <b-table-column field="volume" label="Volume">
+                                {{ props.row.volume }}
+                            </b-table-column>
+
+                            <b-table-column field="harga_satuan" label="Harga Satuan">
+                                {{ props.row.harga_satuan }}
+                            </b-table-column>
+
+                            <b-table-column field="total" label="Total">
+                                {{ props.row.total }}
+                            </b-table-column>
+
+                            <b-table-column label="Aksi" width="90">
+                                <b-button type="is-danger" icon-right="pencil" size="is-small" />
+                                <b-button type="is-danger" icon-right="delete" size="is-small" />
+                            </b-table-column>
+
+                        </template>
+
+                    </b-table>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 </template>
 
 <script>
-import { readPerusahaanCollection, readKelompokKegiatanCollection, readKelompokBarangCollection, readBarangMasukCollection, updateBarangMasuk, readBarangMasuk } from '../../network/api';
-import BarangMasukForm from '../../components/barang-masuk/BarangMasukForm';
-import { years } from '../../utils';
+import { readBarangMasuk, readBarangMasukDetilCollection, updateBarangMasukDetil, readBarangMasukDetil, deleteBarangMasukDetil, createBarangMasukDetil } from '../../network/api';
 
 export default {
     components: {
-        BarangMasukForm,
     },
     props: {
         id: Number
@@ -34,68 +111,23 @@ export default {
     data() {
         return {
             barangMasuk: {
-                id: this.id,
-                perusahaanId: null,
-                kelompokKegiatanId: null,
-                kelompokBarangId: null,
-                tahunAnggaran: null,
-                tanggalPerolehan: null,
-                jenisBukti: null,
-                buktiTransaksi: null,
-                isLoading: false,
-                message: null,
+                isLoading: false
             },
+            barangMasukData: {},
             barangMasukDetil: {
                 isLoading: false
             },
-            reference: {
-                kelompokKegiatanCollection: [],
-                kelompokBarangCollection: [],
-                perusahaanCollection: [],
-            },
-            years: years()
+            barangMasukDetilData: []
         }
     },
     computed: {
     },
     methods: {
-        loadReference() {
-            readKelompokKegiatanCollection({all: true})
-                .then(res => {
-                    this.reference.kelompokKegiatanCollection = res.data;
-                })
-                .catch(err => {
-                    throw err;
-                });
-            readKelompokBarangCollection({all: true})
-                .then(res => {
-                    this.reference.kelompokBarangCollection = res.data;
-                })
-                .catch(err => {
-                    throw err;
-                });
-            readPerusahaanCollection({all: true})
-                .then(res => {
-                    this.reference.perusahaanCollection = res.data;
-                })
-                .catch(err => {
-                    throw err;
-                });
-        },
         loadBarangMasuk() {
             this.barangMasuk.isLoading = true;
-            readBarangMasuk(this.barangMasuk.id)
+            readBarangMasuk(this.id)
                 .then(res => {
-
-                    this.barangMasuk.id = res.data.id;
-                    this.barangMasuk.perusahaanId = res.data.perusahaan_id;
-                    this.barangMasuk.kelompokKegiatanId = res.data.kelompok_kegiatan_id;
-                    this.barangMasuk.kelompokBarangId = res.data.kelompok_barang_id;
-                    this.barangMasuk.tahunAnggaran = res.data.tahun_anggaran;
-                    this.barangMasuk.tanggalPerolehan = new Date(res.data.tanggal_perolehan);
-                    this.barangMasuk.jenisBukti = res.data.jenis_bukti;
-                    this.barangMasuk.buktiTransaksi = res.data.bukti_transaksi;
-
+                    this.barangMasukData = {...this.barangMasukData, ...res.data};
                 })
                 .catch(err => {
                     throw err;
@@ -104,27 +136,27 @@ export default {
                     this.barangMasuk.isLoading = false;
                 });
         },
-        onBarangMasukSubmitted(submission) {
-            this.barangMasuk.isLoading = true;
-            updateBarangMasuk(submission.id, submission)
+        loadBarangMasukDetil() {
+            this.barangMasukDetil.isLoading = true;
+            const filter = {
+                all: true,
+                barang_masuk_id: this.id,
+            };
+            readBarangMasukDetilCollection(filter)
                 .then(res => {
-                    this.$buefy.notification.open({
-                        message: `Berhasil mengubah data ${res.data.bukti_transaksi}`,
-                        type: 'is-success'
-                    });
+                    this.barangMasukDetilData = res.data;
                 })
                 .catch(err => {
-                    const message = err.response.data.error.message;
-                    this.barangMasuk.message = `Gagal mengubah data ${submission.bukti_transaksi}. ${message}`;
+                    throw err;
                 })
                 .finally(() => {
-                    this.barangMasuk.isLoading = false;
+                    this.barangMasukDetil.isLoading = false;
                 });
-        }
+        },
     },
     mounted() {
-        this.loadReference();
         this.loadBarangMasuk();
+        this.loadBarangMasukDetil();
     }
 }
 </script>

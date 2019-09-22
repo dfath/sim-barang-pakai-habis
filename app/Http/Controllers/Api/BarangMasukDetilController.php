@@ -29,12 +29,16 @@ class BarangMasukDetilController extends BaseController
         ];
         $filter = $request->only($fields);
 
-        $query = DB::table('barang_masuk_detil');
+        $query = DB::table('barang_masuk_detil_view');
+        $query->select('barang_masuk_detil_view.*');
+
         foreach ($filter as $key => $value) {
             $query->whereRaw($whereRaws[$key], [$value]);
         }
 
-        return new BarangMasukDetilResourceCollection($query->paginate());
+        $data = $request->input('all') ? $query->get() : $query->paginate();
+
+        return new BarangMasukDetilResourceCollection($data);
     }
 
     /**

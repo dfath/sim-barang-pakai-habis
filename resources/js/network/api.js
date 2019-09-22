@@ -155,3 +155,26 @@ export const deleteBarangMasuk = (id) => {
 export const readBarangMasuk = (id) => {
     return request.get(`/api/barang_masuk/${id}`);
 };
+
+export const readBarangMasukDetilCollection = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/barang_masuk_detil', config);
+};
+
+export const createBarangMasukDetil = (submission) => {
+    return request.post('/api/barang_masuk_detil', submission);
+};
+
+export const updateBarangMasukDetil = (id, submission) => {
+    return request.put(`/api/barang_masuk_detil/${id}`, submission);
+};
+
+export const deleteBarangMasukDetil = (id) => {
+    return request.delete(`/api/barang_masuk_detil/${id}`);
+};
+
+export const readBarangMasukDetil = (id) => {
+    return request.get(`/api/barang_masuk_detil/${id}`);
+};
