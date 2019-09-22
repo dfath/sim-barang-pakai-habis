@@ -3433,6 +3433,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3476,6 +3490,12 @@ __webpack_require__.r(__webpack_exports__);
         isLoading: false,
         message: null
       },
+      isDeleteModalActive: false,
+      deleteModalProps: {
+        id: null,
+        nama: null,
+        isLoading: false
+      },
       years: Object(_utils__WEBPACK_IMPORTED_MODULE_2__["years"])()
     };
   },
@@ -3500,6 +3520,9 @@ __webpack_require__.r(__webpack_exports__);
         bukti_transaksi: this.filter.buktiTransaksi,
         page: this.filter.page
       };
+    },
+    isCreateTypeFormModal: function isCreateTypeFormModal() {
+      return this.formModalProps.id === null;
     }
   },
   methods: {
@@ -3560,7 +3583,30 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.isFormModalActive = true;
     },
-    onSubmitted: function onSubmitted(submission) {
+    openUpdateFormModal: function openUpdateFormModal(item) {
+      this.formModalProps = {
+        id: item.id,
+        perusahaanId: item.perusahaan_id,
+        kelompokKegiatanId: item.kelompok_kegiatan_id,
+        kelompokBarangId: item.kelompok_barang_id,
+        tahunAnggaran: item.tahun_anggaran,
+        tanggalPerolehan: new Date(item.tanggal_perolehan),
+        jenisBukti: item.jenis_bukti,
+        buktiTransaksi: item.bukti_transaksi,
+        isLoading: false,
+        message: null
+      };
+      this.isFormModalActive = true;
+    },
+    openDeleteConfirmationModal: function openDeleteConfirmationModal(item) {
+      this.deleteModalProps = {
+        id: item.id,
+        nama: item.nama,
+        isLoading: false
+      };
+      this.isDeleteModalActive = true;
+    },
+    onSubmitCreate: function onSubmitCreate(submission) {
       var _this3 = this;
 
       this.formModalProps.isLoading = true;
@@ -3571,11 +3617,61 @@ __webpack_require__.r(__webpack_exports__);
           message: "Berhasil menambahkan data ".concat(res.data.bukti_transaksi),
           type: 'is-success'
         });
+
+        window.location.pathname = "/barang-masuk/".concat(res.data.id);
       })["catch"](function (err) {
         var message = err.response.data.error.message;
         _this3.formModalProps.message = "Gagal menambahkan data ".concat(submission.bukti_transaksi, ". ").concat(message);
       })["finally"](function () {
         _this3.formModalProps.isLoading = false;
+      });
+      this.applyFilter();
+    },
+    onSubmitUpdate: function onSubmitUpdate(submission) {
+      var _this4 = this;
+
+      this.formModalProps.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["updateBarangMasuk"])(submission.id, submission).then(function (res) {
+        _this4.isFormModalActive = false;
+
+        _this4.$buefy.notification.open({
+          message: "Berhasil mengubah data ".concat(res.data.nama),
+          type: 'is-success'
+        });
+      })["catch"](function (err) {
+        var message = err.response.data.error.message;
+        _this4.formModalProps.message = "Gagal mengubah data ".concat(submission.nama, ". ").concat(message);
+      })["finally"](function () {
+        _this4.formModalProps.isLoading = false;
+      });
+      this.applyFilter();
+    },
+    onSubmitted: function onSubmitted(submission) {
+      if (this.isCreateTypeFormModal) {
+        this.onSubmitCreate(submission);
+      } else {
+        this.onSubmitUpdate(submission);
+      }
+    },
+    onConfirmed: function onConfirmed(submission) {
+      var _this5 = this;
+
+      this.deleteModalProps.isLoading = true;
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["deleteBarangMasuk"])(submission.id).then(function (res) {
+        _this5.$buefy.notification.open({
+          message: "Berhasil menghapus data ".concat(submission.nama),
+          type: 'is-success'
+        });
+      })["catch"](function (err) {
+        var message = err.response.data.error.message;
+
+        _this5.$buefy.notification.open({
+          message: "Gagal menghapus data ".concat(submission.nama, ". ").concat(message),
+          type: 'is-danger'
+        });
+      })["finally"](function () {
+        _this5.isDeleteModalActive = false;
+        _this5.deleteModalProps.isLoading = false;
       });
       this.applyFilter();
     }
@@ -21134,31 +21230,97 @@ var render = function() {
   return _c("div", { staticClass: "container is-fluid" }, [
     _c("br"),
     _vm._v(" "),
-    _c("div", { staticClass: "level" }, [
-      _c("div", { staticClass: "level-left" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "level-right" }, [
+    _c(
+      "div",
+      { staticClass: "level" },
+      [
+        _c("div", { staticClass: "level-left" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "level-right" }, [
+          _c(
+            "div",
+            { staticClass: "level-item" },
+            [
+              _c(
+                "b-button",
+                {
+                  attrs: { type: "is-info" },
+                  on: {
+                    click: function($event) {
+                      return _vm.openCreateFormModal()
+                    }
+                  }
+                },
+                [_vm._v("Tambah")]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
         _c(
-          "div",
-          { staticClass: "level-item" },
+          "b-modal",
+          {
+            attrs: { active: _vm.isFormModalActive, "has-modal-card": "" },
+            on: {
+              "update:active": function($event) {
+                _vm.isFormModalActive = $event
+              }
+            }
+          },
           [
             _c(
-              "b-button",
-              {
-                attrs: { type: "is-info" },
-                on: {
-                  click: function($event) {
-                    return _vm.openCreateFormModal()
-                  }
-                }
-              },
-              [_vm._v("Tambah")]
+              "barang-masuk-form",
+              _vm._b(
+                {
+                  attrs: {
+                    perusahaanCollection: _vm.reference.perusahaanCollection,
+                    kelompokKegiatanCollection:
+                      _vm.reference.kelompokKegiatanCollection,
+                    kelompokBarangCollection:
+                      _vm.reference.kelompokBarangCollection
+                  },
+                  on: { submitted: _vm.onSubmitted }
+                },
+                "barang-masuk-form",
+                _vm.formModalProps,
+                false
+              )
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-modal",
+          {
+            attrs: {
+              active: _vm.isDeleteModalActive,
+              "has-modal-card": "",
+              "can-cancel": false
+            },
+            on: {
+              "update:active": function($event) {
+                _vm.isDeleteModalActive = $event
+              }
+            }
+          },
+          [
+            _c(
+              "delete-confirmation",
+              _vm._b(
+                { on: { confirmed: _vm.onConfirmed } },
+                "delete-confirmation",
+                _vm.deleteModalProps,
+                false
+              )
             )
           ],
           1
         )
-      ])
-    ]),
+      ],
+      1
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "columns" }, [
       _c("div", { staticClass: "column is-3" }, [
@@ -21314,231 +21476,206 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "column is-9" },
-        [
-          _c(
-            "b-modal",
-            {
-              attrs: { active: _vm.isFormModalActive, "has-modal-card": "" },
-              on: {
-                "update:active": function($event) {
-                  _vm.isFormModalActive = $event
-                }
-              }
-            },
-            [
-              _c(
-                "barang-masuk-form",
-                _vm._b(
-                  {
-                    attrs: {
-                      perusahaanCollection: _vm.reference.perusahaanCollection,
-                      kelompokKegiatanCollection:
-                        _vm.reference.kelompokKegiatanCollection,
-                      kelompokBarangCollection:
-                        _vm.reference.kelompokBarangCollection
-                    },
-                    on: { submitted: _vm.onSubmitted }
-                  },
-                  "barang-masuk-form",
-                  _vm.formModalProps,
-                  false
-                )
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            [
-              _c(
-                "b-table",
-                {
-                  attrs: {
-                    data: _vm.tableData,
-                    striped: "",
-                    paginated: "",
-                    "backend-pagination": "",
-                    loading: _vm.filter.isLoading,
-                    total: _vm.tableTotal,
-                    "per-page": _vm.tablePerPage,
-                    "aria-next-label": "Next page",
-                    "aria-previous-label": "Previous page",
-                    "aria-page-label": "Page",
-                    "aria-current-label": "Current page"
-                  },
-                  on: { "page-change": _vm.onPageChange },
-                  scopedSlots: _vm._u([
-                    {
-                      key: "default",
-                      fn: function(props) {
-                        return [
-                          _c(
-                            "b-table-column",
-                            {
-                              attrs: {
-                                field: "tahun_anggaran",
-                                label: "Tahun Anggaran"
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.tahun_anggaran) +
-                                  "\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-table-column",
-                            {
-                              attrs: {
-                                field: "nama_kelompok_kegiatan",
-                                label: "Kelompok Kegiatan"
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.nama_kelompok_barang) +
-                                  "\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-table-column",
-                            {
-                              attrs: {
-                                field: "nama_kelompok_barang",
-                                label: "Kelompok Barang"
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.nama_kelompok_barang) +
-                                  "\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-table-column",
-                            {
-                              attrs: {
-                                field: "nama_perusahaan",
-                                label: "Nama Perusahaan"
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.nama_perusahaan) +
-                                  "\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-table-column",
-                            {
-                              attrs: {
-                                field: "teks_tanggal_perolehan",
-                                label: "Tanggal Perolehan"
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.teks_tanggal_perolehan) +
-                                  "\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-table-column",
-                            {
-                              attrs: {
-                                field: "bukti_transaksi",
-                                label: "Bukti Transaksi"
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(props.row.bukti_transaksi) +
-                                  "\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-table-column",
-                            { attrs: { label: "Aksi", width: "120" } },
-                            [
-                              _c("b-button", {
-                                attrs: {
-                                  type: "is-danger",
-                                  "icon-right": "pencil",
-                                  size: "is-small"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("b-button", {
-                                attrs: {
-                                  tag: "a",
-                                  href: "/barang-masuk/" + props.row.id,
-                                  type: "is-danger",
-                                  "icon-right": "file-document-edit",
-                                  size: "is-small"
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("b-button", {
-                                attrs: {
-                                  type: "is-danger",
-                                  "icon-right": "delete",
-                                  size: "is-small"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ]
-                      }
-                    }
-                  ])
+      _c("div", { staticClass: "column is-9" }, [
+        _c(
+          "div",
+          [
+            _c(
+              "b-table",
+              {
+                attrs: {
+                  data: _vm.tableData,
+                  striped: "",
+                  paginated: "",
+                  "backend-pagination": "",
+                  loading: _vm.filter.isLoading,
+                  total: _vm.tableTotal,
+                  "per-page": _vm.tablePerPage,
+                  "aria-next-label": "Next page",
+                  "aria-previous-label": "Previous page",
+                  "aria-page-label": "Page",
+                  "aria-current-label": "Current page"
                 },
-                [
-                  !_vm.filter.isLoading
-                    ? _c(
-                        "b-notification",
-                        {
-                          attrs: { slot: "empty", closable: false },
-                          slot: "empty"
-                        },
-                        [
-                          _vm._v(
-                            "\n                        Data tidak ditemukan.\n                    "
-                          )
-                        ]
-                      )
-                    : _vm._e()
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
+                on: { "page-change": _vm.onPageChange },
+                scopedSlots: _vm._u([
+                  {
+                    key: "default",
+                    fn: function(props) {
+                      return [
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "tahun_anggaran",
+                              label: "Tahun Anggaran"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.tahun_anggaran) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "nama_kelompok_kegiatan",
+                              label: "Kelompok Kegiatan"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.nama_kelompok_barang) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "nama_kelompok_barang",
+                              label: "Kelompok Barang"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.nama_kelompok_barang) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "nama_perusahaan",
+                              label: "Nama Perusahaan"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.nama_perusahaan) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "teks_tanggal_perolehan",
+                              label: "Tanggal Perolehan"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.teks_tanggal_perolehan) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          {
+                            attrs: {
+                              field: "bukti_transaksi",
+                              label: "Bukti Transaksi"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(props.row.bukti_transaksi) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-table-column",
+                          { attrs: { label: "Aksi", width: "120" } },
+                          [
+                            _c("b-button", {
+                              attrs: {
+                                type: "is-danger",
+                                "icon-right": "pencil",
+                                size: "is-small"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.openUpdateFormModal(props.row)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("b-button", {
+                              attrs: {
+                                tag: "a",
+                                href: "/barang-masuk/" + props.row.id,
+                                type: "is-danger",
+                                "icon-right": "file-document-edit",
+                                size: "is-small"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("b-button", {
+                              attrs: {
+                                type: "is-danger",
+                                "icon-right": "delete",
+                                size: "is-small"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.openDeleteConfirmationModal({
+                                    id: props.row.id,
+                                    nama: props.row.bukti_transaksi
+                                  })
+                                }
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]
+                    }
+                  }
+                ])
+              },
+              [
+                !_vm.filter.isLoading
+                  ? _c(
+                      "b-notification",
+                      {
+                        attrs: { slot: "empty", closable: false },
+                        slot: "empty"
+                      },
+                      [
+                        _vm._v(
+                          "\n                        Data tidak ditemukan.\n                    "
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ])
     ])
   ])
 }
@@ -21622,7 +21759,7 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column is-four-fifths" }, [
+      _c("div", { staticClass: "column" }, [
         _c("div", { staticClass: "level" }, [
           _c("div", { staticClass: "level-left" }),
           _vm._v(" "),

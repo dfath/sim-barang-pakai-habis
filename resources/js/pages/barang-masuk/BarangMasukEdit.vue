@@ -42,7 +42,7 @@
 
         <div class="columns">
 
-            <div class="column is-four-fifths">
+            <div class="column">
 
                 <div class="level">
                     <div class="level-left" />

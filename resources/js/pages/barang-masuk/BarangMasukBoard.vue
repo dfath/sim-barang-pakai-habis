@@ -4,10 +4,28 @@
         <div class="level">
             <div class="level-left" />
             <div class="level-right">
-                 <div class="level-item">
+                <div class="level-item">
                     <b-button type="is-info" @click="openCreateFormModal()">Tambah</b-button>
-                 </div>
+                </div>
             </div>
+
+            <b-modal :active.sync="isFormModalActive" has-modal-card>
+                <barang-masuk-form
+                    v-bind="formModalProps"
+                    :perusahaanCollection="reference.perusahaanCollection"
+                    :kelompokKegiatanCollection="reference.kelompokKegiatanCollection"
+                    :kelompokBarangCollection="reference.kelompokBarangCollection"
+                    v-on:submitted="onSubmitted">
+                </barang-masuk-form>
+            </b-modal>
+
+            <b-modal :active.sync="isDeleteModalActive" has-modal-card :can-cancel="false">
+                <delete-confirmation
+                    v-bind="deleteModalProps"
+                    v-on:confirmed="onConfirmed">
+                </delete-confirmation>
+            </b-modal>
+
         </div>
 
         <div class="columns">
@@ -59,15 +77,6 @@
                 </form>
             </div>
             <div class="column is-9">
-                <b-modal :active.sync="isFormModalActive" has-modal-card>
-                    <barang-masuk-form
-                        v-bind="formModalProps"
-                        :perusahaanCollection="reference.perusahaanCollection"
-                        :kelompokKegiatanCollection="reference.kelompokKegiatanCollection"
-                        :kelompokBarangCollection="reference.kelompokBarangCollection"
-                        v-on:submitted="onSubmitted">
-                    </barang-masuk-form>
-                </b-modal>
 
                 <div>
                     <b-table
@@ -116,9 +125,14 @@
                             </b-table-column>
 
                             <b-table-column label="Aksi" width="120">
-                                <b-button type="is-danger" icon-right="pencil" size="is-small" />
+                                <b-button type="is-danger" icon-right="pencil" size="is-small"
+                                    @click="openUpdateFormModal(props.row)"/>
                                 <b-button tag="a" :href="`/barang-masuk/${props.row.id}`" type="is-danger" icon-right="file-document-edit" size="is-small" />
-                                <b-button type="is-danger" icon-right="delete" size="is-small" />
+                                <b-button type="is-danger" icon-right="delete" size="is-small"
+                                    @click="openDeleteConfirmationModal({
+                                        id: props.row.id,
+                                        nama: props.row.bukti_transaksi
+                                    })"/>
                             </b-table-column>
 
                         </template>
@@ -131,7 +145,7 @@
 </template>
 
 <script>
-import { readPerusahaanCollection, readKelompokKegiatanCollection, readKelompokBarangCollection, readBarangMasukCollection, createBarangMasuk } from '../../network/api';
+import { readPerusahaanCollection, readKelompokKegiatanCollection, readKelompokBarangCollection, readBarangMasukCollection, createBarangMasuk, deleteBarangMasuk, updateBarangMasuk } from '../../network/api';
 import BarangMasukForm from '../../components/barang-masuk/BarangMasukForm';
 import { years } from '../../utils';
 
@@ -178,6 +192,12 @@ export default {
                 isLoading: false,
                 message: null,
             },
+            isDeleteModalActive: false,
+            deleteModalProps: {
+                id: null,
+                nama: null,
+                isLoading: false
+            },
             years: years()
         }
     },
@@ -202,6 +222,9 @@ export default {
                 bukti_transaksi: this.filter.buktiTransaksi,
                 page: this.filter.page,
             }
+        },
+        isCreateTypeFormModal() {
+            return this.formModalProps.id === null;
         }
     },
     methods: {
@@ -261,7 +284,30 @@ export default {
             };
             this.isFormModalActive = true;
         },
-        onSubmitted(submission) {
+        openUpdateFormModal(item) {
+            this.formModalProps = {
+                id: item.id,
+                perusahaanId: item.perusahaan_id,
+                kelompokKegiatanId: item.kelompok_kegiatan_id,
+                kelompokBarangId: item.kelompok_barang_id,
+                tahunAnggaran: item.tahun_anggaran,
+                tanggalPerolehan: new Date(item.tanggal_perolehan),
+                jenisBukti: item.jenis_bukti,
+                buktiTransaksi: item.bukti_transaksi,
+                isLoading: false,
+                message: null
+            };
+            this.isFormModalActive = true;
+        },
+        openDeleteConfirmationModal(item) {
+            this.deleteModalProps = {
+                id: item.id,
+                nama: item.nama,
+                isLoading: false
+            };
+            this.isDeleteModalActive = true;
+        },
+        onSubmitCreate(submission) {
             this.formModalProps.isLoading = true;
             createBarangMasuk(submission)
                 .then(res => {
@@ -270,6 +316,7 @@ export default {
                         message: `Berhasil menambahkan data ${res.data.bukti_transaksi}`,
                         type: 'is-success'
                     });
+                    window.location.pathname = `/barang-masuk/${res.data.id}`;
                 })
                 .catch(err => {
                     const message = err.response.data.error.message;
@@ -280,6 +327,54 @@ export default {
                 });
             this.applyFilter();
         },
+        onSubmitUpdate(submission) {
+            this.formModalProps.isLoading = true;
+            updateBarangMasuk(submission.id, submission)
+                .then(res => {
+                    this.isFormModalActive = false;
+                    this.$buefy.notification.open({
+                        message: `Berhasil mengubah data ${res.data.nama}`,
+                        type: 'is-success'
+                    });
+                })
+                .catch(err => {
+                    const message = err.response.data.error.message;
+                    this.formModalProps.message = `Gagal mengubah data ${submission.nama}. ${message}`;
+                })
+                .finally(() => {
+                    this.formModalProps.isLoading = false;
+                });
+            this.applyFilter();
+        },
+        onSubmitted(submission) {
+            if (this.isCreateTypeFormModal) {
+                this.onSubmitCreate(submission);
+            } else {
+                this.onSubmitUpdate(submission);
+            }
+        },
+        onConfirmed(submission) {
+            this.deleteModalProps.isLoading = true;
+            deleteBarangMasuk(submission.id)
+                .then(res => {
+                    this.$buefy.notification.open({
+                        message: `Berhasil menghapus data ${submission.nama}`,
+                        type: 'is-success'
+                    })
+                })
+                .catch(err => {
+                    const message = err.response.data.error.message;
+                    this.$buefy.notification.open({
+                        message: `Gagal menghapus data ${submission.nama}. ${message}`,
+                        type: 'is-danger'
+                    })
+                })
+                .finally(() => {
+                    this.isDeleteModalActive = false;
+                    this.deleteModalProps.isLoading = false;
+                });
+            this.applyFilter();
+        }
     },
     mounted() {
         this.loadReference();
