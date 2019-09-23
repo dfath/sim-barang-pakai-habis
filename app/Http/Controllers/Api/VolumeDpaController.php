@@ -39,8 +39,8 @@ class VolumeDpaController extends BaseController
             'volume_max' => 'volume_max <= ?',
             'harga_satuan_min' => 'harga_satuan_min >= ?',
             'harga_satuan_max' => 'harga_satuan_max <= ?',
-            'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
-            'kelompok_barang_id' => 'kelompok_barang_id = ?',
+            'kelompok_kegiatan_id' => 'barang.kelompok_kegiatan_id = ?',
+            'kelompok_barang_id' => 'barang.kelompok_barang_id = ?',
         ];
         $textFieldMaps = [
             'nama_barang' => 'barang.nama',

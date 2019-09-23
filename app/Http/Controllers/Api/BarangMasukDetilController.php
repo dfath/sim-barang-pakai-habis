@@ -19,21 +19,21 @@ class BarangMasukDetilController extends BaseController
      */
     public function index(Request $request)
     {
-        $fields = [
+        $numberFields = [
             'barang_masuk_id',
             'volume_dpa_id'
         ];
-        $whereRaws = [
+        $numberWhereRaws = [
             'barang_masuk_id' => 'barang_masuk_id = ?',
             'volume_dpa_id' => 'volume_dpa_id = ?'
         ];
-        $filter = $request->only($fields);
+        $numberFilter = $request->only($numberFields);
 
         $query = DB::table('barang_masuk_detil_view');
         $query->select('barang_masuk_detil_view.*');
 
-        foreach ($filter as $key => $value) {
-            $query->whereRaw($whereRaws[$key], [$value]);
+        foreach ($numberFilter as $key => $value) {
+            $query->whereRaw($numberWhereRaws[$key], [$value]);
         }
 
         $data = $request->input('all') ? $query->get() : $query->paginate();
@@ -49,13 +49,14 @@ class BarangMasukDetilController extends BaseController
      */
     public function store(Request $request)
     {
-        $input = [
-            'barang_masuk_id' => $request->input('barang_masuk_id'),
-            'volume_dpa_id' => $request->input('volume_dpa_id'),
-            'volume' => $request->input('volume')
-        ];
         try {
-            $query = BarangMasukDetil::create($input);
+            $query = BarangMasukDetil::updateOrCreate([
+                'barang_masuk_id' => $request->input('barang_masuk_id'),
+                'volume_dpa_id' => $request->input('volume_dpa_id')
+            ],
+            [
+                'volume' => $request->input('volume')
+            ]);
 
             return new BarangMasukDetilResource($query);
 

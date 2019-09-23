@@ -20,6 +20,7 @@ class CreateBarangMasukDetil extends Migration
             $table->foreign('barang_masuk_id')->references('id')->on('barang_masuk');
             $table->foreign('volume_dpa_id')->references('id')->on('volume_dpa');
             $table->integer('volume');
+            $table->unique(['barang_masuk_id', 'volume_dpa_id']);
             $table->timestamps();
         });
     }

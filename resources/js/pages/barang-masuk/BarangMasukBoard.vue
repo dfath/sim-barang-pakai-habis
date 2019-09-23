@@ -333,13 +333,13 @@ export default {
                 .then(res => {
                     this.isFormModalActive = false;
                     this.$buefy.notification.open({
-                        message: `Berhasil mengubah data ${res.data.nama}`,
+                        message: `Berhasil mengubah data ${res.data.bukti_transaksi}`,
                         type: 'is-success'
                     });
                 })
                 .catch(err => {
                     const message = err.response.data.error.message;
-                    this.formModalProps.message = `Gagal mengubah data ${submission.nama}. ${message}`;
+                    this.formModalProps.message = `Gagal mengubah data ${submission.bukti_transaksi}. ${message}`;
                 })
                 .finally(() => {
                     this.formModalProps.isLoading = false;

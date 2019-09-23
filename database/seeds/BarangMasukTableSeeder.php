@@ -25,7 +25,7 @@ class BarangMasukTableSeeder extends Seeder
                 'jenis_bukti' => $jenisBukti[rand(0,1)],
                 'bukti_transaksi' => Str::random(10),
             ]);
-            for ($j=1; $j <= 10; $j++) {
+            for ($j=1; $j <= 1; $j++) {
                 DB::table('barang_masuk_detil')->insert([
                     'barang_masuk_id' => $i,
                     'volume_dpa_id' => rand(1, 179),

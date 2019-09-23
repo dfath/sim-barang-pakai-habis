@@ -7,14 +7,26 @@
             <!-- Left side -->
             <div class="level-left">
                 <div class="level-item">
-                <div class="field has-addons">
                     <p class="control">
-                        <b-input v-model="filter.namaBarang"></b-input>
-                    </p>
-                    <p class="control">
-                        <b-button class="button is-info" @click="applyFilter">Cari</b-button>
+                        <b-select expanded placeholder="Pilih tahun anggaran" v-model="filter.tahunAnggaran">
+                            <option
+                                v-for="option in years"
+                                :value="option"
+                                :key="option">
+                                {{ option }}
+                            </option>
+                        </b-select>
                     </p>
                 </div>
+                <div class="level-item">
+                    <div class="field has-addons">
+                        <p class="control">
+                            <b-input v-model="filter.namaBarang"></b-input>
+                        </p>
+                        <p class="control">
+                            <b-button class="button is-info" @click="applyFilter">Cari</b-button>
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -118,6 +130,7 @@
 <script>
 import { readKelompokKegiatanCollection, readKelompokBarangCollection, readVolumeDpaCollection, createVolumeDpa, updateVolumeDpa, deleteVolumeDpa } from '../../network/api';
 import VolumeDpaForm from '../../components/volume-dpa/VolumeDpaForm';
+import { years } from '../../utils';
 
 export default {
     components: {
@@ -126,7 +139,7 @@ export default {
     data() {
         return {
             filter: {
-                tahunAnggaran: null,
+                tahunAnggaran: new Date().getFullYear(),
                 namaBarang: null,
                 page: 1,
                 isLoading: false,
@@ -157,7 +170,8 @@ export default {
                 id: null,
                 nama: null,
                 isLoading: false
-            }
+            },
+            years: years()
         }
     },
     computed: {
@@ -173,6 +187,7 @@ export default {
         filterParams() {
             return {
                 nama_barang: this.filter.namaBarang,
+                tahun_anggaran: this.filter.tahunAnggaran,
                 page: this.filter.page,
             }
         },

@@ -1,7 +1,7 @@
 <template>
     <div class="modal-card" style="width: auto">
         <header class="modal-card-head">
-            <p class="modal-card-title">Volume DPA</p>
+            <p class="modal-card-title">Barang Masuk Detil</p>
         </header>
         <section class="modal-card-body">
 
@@ -20,7 +20,7 @@
                     @select="onSelectBarang">
                     <template slot-scope="props">
                         <div>
-                            {{ props.option.nama }}
+                            {{ props.option.nama_barang }}
                         </div>
                     </template>
 
@@ -28,30 +28,10 @@
                 </b-autocomplete>
             </b-field>
 
-            <b-field label="Tahun Anggaran">
-                <b-select expanded placeholder="Pilih tahun anggaran" v-model="submission.tahun_anggaran" required>
-                    <option
-                        v-for="option in years"
-                        :value="option"
-                        :key="option">
-                        {{ option }}
-                    </option>
-                </b-select>
-            </b-field>
-
             <b-field label="Volume">
                 <b-numberinput
                     v-model="submission.volume"
-                    min=0
-                    required>
-                </b-numberinput>
-            </b-field>
-
-            <b-field label="Harga satuan">
-                <b-numberinput
-                    v-model="submission.harga_satuan"
-                    min=0
-                    step=1000
+                    min=1
                     required>
                 </b-numberinput>
             </b-field>
@@ -64,17 +44,18 @@
 </template>
 
 <script>
-import { readBarangCollection } from '../../network/api';
-import { years } from '../../utils';
+import { readVolumeDpaCollection } from '../../network/api';
 
 export default {
     props: {
         id: Number,
-        barangId: Number,
-        namaBarang: String,
-        tahunAnggaran: Number,
+        barangMasukId: Number,
+        volumeDpaId: Number,
         volume: Number,
-        hargaSatuan: Number,
+        tahunAnggaran: Number,
+        kelompokBarangId: Number,
+        kelompokKegiatanId: Number,
+        namaBarang: String,
         isLoading: Boolean,
         message: String
     },
@@ -85,12 +66,10 @@ export default {
             barangCollection: [],
             submission: {
                 id: this.id,
-                barang_id: this.barangId,
-                tahun_anggaran: this.tahunAnggaran,
-                volume: this.volume,
-                harga_satuan: this.hargaSatuan,
+                barang_masuk_id: this.barangMasukId,
+                volume_dpa_id: this.volumeDpaId,
+                volume: this.volume
             },
-            years: years(),
         };
     },
     computed: {
@@ -107,7 +86,14 @@ export default {
         },
         fetchBarang(nama) {
             this.isFetching = true;
-            readBarangCollection({nama:nama})
+            const filter = {
+                nama_barang: nama,
+                kelompok_barang_id: this.kelompokBarangId,
+                kelompok_kegiatan_id: this.kelompokKegiatanId,
+                tahun_anggaran: this.tahunAnggaran,
+            };
+            console.log(filter);
+            readVolumeDpaCollection(filter)
                 .then(res => {
                     this.barangCollection = res.data;
                 })
@@ -120,8 +106,8 @@ export default {
         },
         onSelectBarang(option) {
             if(option) {
-                this.labelBarang = option.nama;
-                this.submission.barang_id = option.id;
+                this.labelBarang = option.nama_barang;
+                this.submission.volume_dpa_id = option.id;
             }
         }
     }
