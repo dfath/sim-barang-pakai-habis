@@ -20,6 +20,7 @@ class CreateInstansiTable extends Migration
             $table->text('alamat_instansi');
             $table->text('kepala_opd');
             $table->text('pengelola');
+            $table->timestamps();
         });
     }
 

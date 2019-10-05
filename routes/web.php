@@ -41,4 +41,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/barang-keluar/board', 'BarangKeluarController@index')->name('barang-keluar-board');
 
+    // Route::get('/instansi', 'InstansiController@index')->name('instansi-board');
+
+    Route::match(['get', 'post'], '/instansi', 'InstansiController@index')->name('instansi-board');
+
 });
