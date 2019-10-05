@@ -134,8 +134,9 @@ export default {
             return this.isCreateAction ? 'Tambah' : 'Ubah';
         },
         finalSubmission() {
+            const tanggal = new Date(this.submission.tanggal_perolehan);
             const date = {
-                tanggal_perolehan: new Date(this.submission.tanggal_perolehan).toISOString().split('T')[0],
+                tanggal_perolehan: `${tanggal.getFullYear()}-${tanggal.getMonth() + 1}-${tanggal.getDate()}`,
             };
             return {...this.submission, ...date};
         },

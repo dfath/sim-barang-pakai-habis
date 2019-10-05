@@ -92,7 +92,6 @@ export default {
                 kelompok_kegiatan_id: this.kelompokKegiatanId,
                 tahun_anggaran: this.tahunAnggaran,
             };
-            console.log(filter);
             readVolumeDpaCollection(filter)
                 .then(res => {
                     this.barangCollection = res.data;

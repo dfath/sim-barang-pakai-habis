@@ -39,4 +39,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/volume-dpa/board', 'VolumeDpaController@index')->name('volume-dpa-board');
 
+    Route::get('/barang-keluar/board', 'BarangKeluarController@index')->name('barang-keluar-board');
+
 });

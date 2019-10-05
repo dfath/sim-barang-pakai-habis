@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BarangKeluarResource extends JsonResource
+class StokBarangResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,17 +16,14 @@ class BarangKeluarResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'barang_id' => $this->barang_id,
-            'unit_kerja_id' => $this->unit_kerja_id,
-            'volume' => $this->volume,
-            'tanggal' => $this->tanggal,
-            'teks_tanggal' => date('d M Y', strtotime($this->tanggal)),
-            'nama_barang' => $this->nama_barang,
-            'nama_unit_kerja' => $this->nama_unit_kerja,
             'kelompok_kegiatan_id' => $this->kelompok_kegiatan_id,
-            'nama_kelompok_kegiatan' => $this->nama_kelompok_kegiatan,
             'kelompok_barang_id' => $this->kelompok_barang_id,
+            'satuan_id' => $this->satuan_id,
+            'nama' => $this->nama,
+            'nama_satuan' => $this->nama_satuan,
+            'nama_kelompok_kegiatan' => $this->nama_kelompok_kegiatan,
             'nama_kelompok_barang' => $this->nama_kelompok_barang,
+            'stok' => $this->stok,
         ];
     }
 }

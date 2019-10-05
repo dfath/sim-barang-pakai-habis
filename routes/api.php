@@ -42,6 +42,8 @@ Route::middleware('auth:api')->group(function () {
         'show', 'update'
     ]);
 
+    Route::get('/stok_barang', 'Api\StokBarangController@index');
+
 });
 
 

@@ -19,23 +19,53 @@ class BarangKeluarController extends BaseController
      */
     public function index(Request $request)
     {
-        $fields = [
+        $numberFields = [
             'barang_id',
             'unit_kerja_id',
             'volume',
             'tanggal'
         ];
-        $whereRaws = [
+        $textFields = [
+            'nama_unit_kerja',
+            'nama_barang',
+        ];
+        $numberWhereRaws = [
             'barang_id' => 'barang_id = ?',
             'unit_kerja_id' => 'unit_kerja_id = ?',
             'volume' => 'volume = ?',
             'tanggal' => 'tanggal = ?'
         ];
-        $filter = $request->only($fields);
+        $textFieldMaps = [
+            'nama_unit_kerja' => 'unit_kerja.nama',
+            'nama_barang' => 'barang.nama',
+        ];
+
+        $numberFilter = $request->only($numberFields);
+        $textFilter = $request->only($textFields);
 
         $query = DB::table('barang_keluar');
-        foreach ($filter as $key => $value) {
-            $query->whereRaw($whereRaws[$key], [$value]);
+        $query->select('barang_keluar.*');
+        // unit kerja
+        $query->leftJoin('unit_kerja', 'barang_keluar.unit_kerja_id', '=', 'unit_kerja.id');
+        $query->addSelect('unit_kerja.nama as nama_unit_kerja');
+        // barang
+        $query->leftJoin('barang', 'barang_keluar.barang_id', '=', 'barang.id');
+        $query->addSelect('barang.nama as nama_barang');
+        // kelompok kegiatan
+        $query->leftJoin('kelompok_kegiatan', 'barang.kelompok_kegiatan_id', '=', 'kelompok_kegiatan.id');
+        $query->addSelect('kelompok_kegiatan.id as kelompok_kegiatan_id');
+        $query->addSelect('kelompok_kegiatan.nama as nama_kelompok_kegiatan');
+        // kelompok barang
+        $query->leftJoin('kelompok_barang', 'barang.kelompok_barang_id', '=', 'kelompok_barang.id');
+        $query->addSelect('kelompok_barang.id as kelompok_barang_id');
+        $query->addSelect('kelompok_barang.nama as nama_kelompok_barang');
+
+        foreach ($numberFilter as $key => $value) {
+            $query->whereRaw($numberWhereRaws[$key], [$value]);
+        }
+
+        foreach ($textFilter as $key => $value) {
+            $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
         return new BarangKeluarResourceCollection($query->paginate());
