@@ -40,27 +40,18 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/home', 'HomeController@index')->name('home');
-
     Route::get('/barang-masuk/board', 'BarangMasukController@index')->name('barang-masuk-board');
-
+    Route::get('/barang-masuk/laporan', 'BarangMasukController@laporan')->name('barang-masuk-laporan');
     Route::get('/barang-masuk/{id}', 'BarangMasukController@edit')->name('barang-masuk-edit')->where('id', '[0-9]+');
-
     Route::get('/unit-kerja/board', 'UnitKerjaController@index')->name('unit-kerja-board');
-
     Route::get('/satuan/board', 'SatuanController@index')->name('satuan-board');
-
     Route::get('/kelompok-kegiatan/board', 'KelompokKegiatanController@index')->name('kelompok-kegiatan-board');
-
     Route::get('/kelompok-barang/board', 'KelompokBarangController@index')->name('kelompok-barang-board');
-
     Route::get('/barang/board', 'BarangController@index')->name('barang-board');
-
     Route::get('/perusahaan/board', 'PerusahaanController@index')->name('perusahaan-board');
-
     Route::get('/volume-dpa/board', 'VolumeDpaController@index')->name('volume-dpa-board');
-
     Route::get('/barang-keluar/board', 'BarangKeluarController@index')->name('barang-keluar-board');
-
+    Route::get('/barang-keluar/laporan', 'BarangKeluarController@laporan')->name('barang-keluar-laporan');
     Route::match(['get', 'post'], '/instansi', 'InstansiController@index')->name('instansi-board');
 
 });

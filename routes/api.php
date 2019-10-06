@@ -20,6 +20,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('/barang_masuk', 'Api\BarangMasukController');
 
+    Route::get('/barang-masuk/laporan', 'Api\BarangMasukController@laporan')->name('api-barang-masuk-laporan');
+
     Route::apiResource('/barang_masuk_detil', 'Api\BarangMasukDetilController');
 
     Route::apiResource('/barang_keluar', 'Api\BarangKeluarController');

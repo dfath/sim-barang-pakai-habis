@@ -17,12 +17,24 @@
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
                 @if (Auth::user())
-                        <a class="navbar-item" href="/home">Dashboard</a>
-                    @if (auth()->user()->can('barang keluar'))
-                        <a class="navbar-item" href="/barang-keluar/board">Barang Keluar</a>
+                    <a class="navbar-item" href="/home">Dashboard</a>
+                    @if (auth()->user()->can('barang keluar') || auth()->user()->can('laporan barang keluar'))
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">Barang Keluar</a>
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item" href="/barang-keluar/board">Barang Keluar</a>
+                                <a class="navbar-item" href="/barang-keluar/laporan">Laporan Barang Keluar</a>
+                            </div>
+                        </div>
                     @endif
-                    @if (auth()->user()->can('barang masuk'))
-                        <a class="navbar-item" href="/barang-masuk/board">Barang Masuk</a>
+                    @if (auth()->user()->can('barang masuk') || auth()->user()->can('laporan barang masuk'))
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">Barang Masuk</a>
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item" href="/barang-masuk/board">Barang Masuk</a>
+                                <a class="navbar-item" href="/barang-masuk/laporan">Laporan Barang Masuk</a>
+                            </div>
+                        </div>
                     @endif
                     @if (auth()->user()->can('master'))
                         <div class="navbar-item has-dropdown is-hoverable">

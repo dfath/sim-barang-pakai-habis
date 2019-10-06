@@ -36,4 +36,14 @@ class BarangMasukController extends Controller
         /** @todo cek jika $id exists & valid */
         return view('barang-masuk.edit', ['id'=>$id]);
     }
+
+    /**
+     * laporan barang masuk
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function laporan()
+    {
+        return view('barang-masuk.laporan');
+    }
 }

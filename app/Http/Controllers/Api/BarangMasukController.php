@@ -7,11 +7,20 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Support\Facades\DB;
 use App\BarangMasuk;
+use App\Repositories\BarangMasukRepository;
 use App\Http\Resources\BarangMasukResource;
 use App\Http\Resources\BarangMasukResourceCollection;
 
 class BarangMasukController extends BaseController
 {
+
+    protected $barangMasukRepository;
+
+    public function __construct(BarangMasukRepository $barangMasukRepository)
+    {
+        $this->barangMasukRepository = $barangMasukRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -179,5 +188,65 @@ class BarangMasukController extends BaseController
             return $this->errorBadRequest();
         }
 
+    }
+
+    /**
+     * Laporan barang masuk.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function laporan(Request $request)
+    {
+        $numberFields = [
+            'kelompok_kegiatan_id',
+            'kelompok_barang_id',
+            'tahun_anggaran',
+            'tanggal_perolehan_mulai',
+            'tanggal_perolehan_selesai',
+        ];
+        $numberWhereRaws = [
+            'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
+            'kelompok_barang_id' => 'kelompok_kegiatan_id = ?',
+            'tahun_anggaran' => 'tahun_anggaran = ?',
+            'tanggal_perolehan_mulai' => 'tanggal_perolehan >= ?',
+            'tanggal_perolehan_selesai' => 'tanggal_perolehan <= ?',
+        ];
+
+        $numberFilter = $request->only($numberFields);
+
+        if (!$request->has(['tanggal_perolehan_mulai', 'tanggal_perolehan_selesai'])) {
+            return $this->errorBadRequest('Paramater interval tanggal tidak ada!');
+        }
+
+        $query = DB::table('barang_masuk_detil_view');
+        $query->select('barang_id', 'nama_barang', 'tahun_anggaran', 'volume_dpa');
+
+        foreach ($numberFilter as $key => $value) {
+            $query->whereRaw($numberWhereRaws[$key], [$value]);
+        }
+
+        $query->groupBy('barang_id', 'nama_barang', 'tahun_anggaran', 'volume_dpa');
+
+        $list = $query->get();
+        $result = array();
+
+        foreach ($list as $key => $value) {
+            $rekap = $this->barangMasukRepository->hitungBarangMasukPerTanggal(
+                $value->barang_id,
+                $value->tahun_anggaran,
+                $request->get('tanggal_perolehan_mulai'),
+                $request->get('tanggal_perolehan_selesai')
+            );
+            $result[] = array(
+                'barang_id' => $value->barang_id,
+                'nama_barang' => $value->nama_barang,
+                'tahun_anggaran' => $value->tahun_anggaran,
+                'volume_dpa' => $value->volume_dpa,
+                'total_harga' => $rekap->total_harga,
+                'total_volume' => intval($rekap->total_volume),
+            );
+        }
+
+        return array('data' => $result);
     }
 }

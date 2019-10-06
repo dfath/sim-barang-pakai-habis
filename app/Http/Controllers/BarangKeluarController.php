@@ -15,4 +15,14 @@ class BarangKeluarController extends Controller
     {
         return view('barang-keluar.board');
     }
+
+    /**
+     * laporan barang keluar
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function laporan()
+    {
+        return view('barang-keluar.laporan');
+    }
 }

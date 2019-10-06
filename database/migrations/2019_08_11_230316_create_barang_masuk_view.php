@@ -30,6 +30,7 @@ class CreateBarangMasukView extends Migration
                 bm.perusahaan_id,
                 bmd.volume,
                 vd.harga_satuan,
+                vd.barang_id,
                 vd.volume as volume_dpa,
                 (bmd.volume * vd.harga_satuan) AS total,
                 p.nama AS nama_perusahaan,
