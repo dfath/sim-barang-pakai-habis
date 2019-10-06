@@ -87,11 +87,6 @@
                                         <button type="submit" class="button is-primary">Login</button>
                                     </div>
 
-                                    <div class="control">
-                                        <a href="{{ route('password.request') }}">
-                                            Forgot Your Password?
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
