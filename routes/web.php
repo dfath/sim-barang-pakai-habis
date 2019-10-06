@@ -19,6 +19,20 @@ Auth::routes();
 
 Route::middleware('auth')->group(function () {
 
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::resource('/role', 'RoleController')->except([
+            'create', 'show', 'edit', 'update'
+        ]);
+        Route::resource('/users', 'UserController')->except([
+            'show'
+        ]);
+        Route::get('/users/roles/{id}', 'UserController@roles')->name('users.roles');
+        Route::put('/users/roles/{id}', 'UserController@setRole')->name('users.set_role');
+        Route::post('/users/permission', 'UserController@addPermission')->name('users.add_permission');
+        Route::get('/users/role-permission', 'UserController@rolePermission')->name('users.roles_permission');
+        Route::put('/users/permission/{role}', 'UserController@setRolePermission')->name('users.setRolePermission');
+    });
+
     Route::get('/home', 'HomeController@index')->name('home');
 
     Route::get('/barang-masuk/board', 'BarangMasukController@index')->name('barang-masuk-board');
@@ -40,8 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/volume-dpa/board', 'VolumeDpaController@index')->name('volume-dpa-board');
 
     Route::get('/barang-keluar/board', 'BarangKeluarController@index')->name('barang-keluar-board');
-
-    // Route::get('/instansi', 'InstansiController@index')->name('instansi-board');
 
     Route::match(['get', 'post'], '/instansi', 'InstansiController@index')->name('instansi-board');
 
