@@ -1,4 +1,4 @@
-<nav class="navbar has-shadow">
+<nav class="navbar is-light">
     <div class="container">
         <div class="navbar-brand">
 

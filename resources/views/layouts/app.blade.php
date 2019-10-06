@@ -15,7 +15,9 @@
     </head>
     <body>
         <div id="app">
-            @include('components.nav')
+            @if (Auth::user())
+                @include('components.nav')
+            @endif
             @yield('content')
         </div>
 
