@@ -213,7 +213,6 @@ export default {
             this.isFormModalActive = true;
         },
         openUpdateFormModal(item) {
-            console.log(item);
             this.formModalProps = {
                 id: item.id,
                 barangMasukId: this.id,
