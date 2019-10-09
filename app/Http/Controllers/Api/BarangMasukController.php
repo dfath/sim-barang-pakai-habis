@@ -231,7 +231,7 @@ class BarangMasukController extends BaseController
         $result = array();
 
         foreach ($list as $key => $value) {
-            $rekap = $this->barangMasukRepository->hitungBarangMasukPerTanggal(
+            $rekap = $this->barangMasukRepository->volumeDpaPerTanggal(
                 $value->barang_id,
                 $value->tahun_anggaran,
                 $request->get('tanggal_perolehan_mulai'),

@@ -14,14 +14,14 @@ class BarangMasukRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testHitungBarangMasukPerTanggal()
+    public function testVolumeDpaPerTanggal()
     {
-        $barang_id = "78";
+        $barang_id = 78;
         $tahun_anggaran = 2019;
         $tanggal_mulai = "2018-12-17";
         $tanggal_selesai = "2019-06-18";
         $service = new BarangMasukRepository;
-        $result = $service->hitungBarangMasukPerTanggal($barang_id, $tahun_anggaran, $tanggal_mulai, $tanggal_selesai);
+        $result = $service->volumeDpaPerTanggal($barang_id, $tahun_anggaran, $tanggal_mulai, $tanggal_selesai);
 
         $this->assertTrue(property_exists($result, 'total_volume'));
         $this->assertTrue(property_exists($result, 'total_harga'));
@@ -32,12 +32,13 @@ class BarangMasukRepositoryTest extends TestCase
      *
      * @return void
      */
-    public function testListBarangMasukPerTanggal()
+    public function testVolumeBarangMasukPerTanggal()
     {
-        $tanggal_mulai = "2018-12-17";
-        $tanggal_selesai = "2019-06-18";
+        $barang_id = 68;
+        $tanggal_mulai = "2017-12-17";
+        $tanggal_selesai = date('Y-m-d');
         $service = new BarangMasukRepository;
-        $result = $service->listBarangMasukPerTanggal($tanggal_mulai, $tanggal_selesai);
+        $result = $service->volumeBarangMasukPerTanggal($barang_id, $tanggal_mulai, $tanggal_selesai);
 
         $this->assertTrue(count($result) > 0);
     }

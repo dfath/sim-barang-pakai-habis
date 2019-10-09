@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\StokBarangService;
 use Throwable;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -12,6 +13,15 @@ use App\Http\Resources\BarangKeluarResourceCollection;
 
 class BarangKeluarController extends BaseController
 {
+    private $stokBarangService;
+
+    public function __construct(
+        StokBarangService $stokBarangService
+    )
+    {
+        $this->stokBarangService = $stokBarangService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -85,6 +95,13 @@ class BarangKeluarController extends BaseController
             'volume' => $request->input('volume'),
             'tanggal' => $request->input('tanggal')
         ];
+
+        // cek stok barang
+        $stok = $this->stokBarangService->hitung($input['barang_id'], $input['tanggal'])->stok;
+        if ($stok < $input['volume']) {
+            return $this->errorBadRequest('Stok barang tidak mencukupi!');
+        }
+
         try {
             $query = BarangKeluar::create($input);
 
@@ -155,6 +172,52 @@ class BarangKeluarController extends BaseController
 
         } catch (Throwable $th) {
             return $this->errorBadRequest();
+        }
+
+    }
+
+    /**
+     * Laporan barang keluar.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function laporan(Request $request)
+    {
+        $numberFields = [
+            'barang_id',
+            'unit_kerja_id',
+            'volume',
+            'tanggal_mulai',
+            'tanggal_selesai',
+            'kelompok_kegiatan_id',
+            'kelompok_barang_id'
+        ];
+
+        $numberWhereRaws = [
+            'barang_id' => 'barang_id = ?',
+            'unit_kerja_id' => 'unit_kerja_id = ?',
+            'volume' => 'volume = ?',
+            'tanggal_mulai' => 'tanggal >= ?',
+            'kelompok_kegiatan_id' => 'kelompok_kegiatan_id <= ?',
+            'kelompok_barang_id' => 'kelompok_barang_id = ?',
+        ];
+
+        $numberFilter = $request->only($numberFields);
+
+        $query = DB::table('barang_keluar');
+        $query->select('barang_keluar.*');
+        // unit kerja
+        $query->leftJoin('unit_kerja', 'barang_keluar.unit_kerja_id', '=', 'unit_kerja.id');
+        // barang
+        $query->leftJoin('barang', 'barang_keluar.barang_id', '=', 'barang.id');
+        $query->addSelect('barang.nama as nama_barang');
+        // kelompok kegiatan
+        $query->leftJoin('kelompok_kegiatan', 'barang.kelompok_kegiatan_id', '=', 'kelompok_kegiatan.id');
+        // kelompok barang
+        $query->leftJoin('kelompok_barang', 'barang.kelompok_barang_id', '=', 'kelompok_barang.id');
+
+        foreach ($numberFilter as $key => $value) {
+            $query->whereRaw($numberWhereRaws[$key], [$value]);
         }
 
     }

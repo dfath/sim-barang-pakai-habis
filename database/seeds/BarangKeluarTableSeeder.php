@@ -17,7 +17,7 @@ class BarangKeluarTableSeeder extends Seeder
                 'barang_id' => rand(1, 179),
                 'unit_kerja_id' => rand(1, 5),
                 'volume' => rand(1, 2),
-                'tanggal' => date("Y-m-d", mktime(0, 0, 0, rand(1, 12), rand(1, 29), 2019)),
+                'tanggal' => date("Y-m-d", mktime(0, 0, 0, rand(1, date('n')), rand(1, date('j')), 2019)),
             ]);
         }
     }

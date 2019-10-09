@@ -18,13 +18,15 @@ Route::middleware('auth:api')->group(function () {
         return $request->user();
     });
 
-    Route::apiResource('/barang_masuk', 'Api\BarangMasukController');
+    Route::get('/laporan/barang_masuk', 'Api\BarangMasukController@laporan')->name('api-barang-masuk-laporan');
 
-    Route::get('/barang-masuk/laporan', 'Api\BarangMasukController@laporan')->name('api-barang-masuk-laporan');
+    Route::apiResource('/barang_masuk', 'Api\BarangMasukController');
 
     Route::apiResource('/barang_masuk_detil', 'Api\BarangMasukDetilController');
 
     Route::apiResource('/barang_keluar', 'Api\BarangKeluarController');
+
+    Route::get('/laporan/barang_keluar', 'Api\BarangKeluarController@laporan')->name('api-barang-keluar-laporan');
 
     Route::apiResource('/kelompok_kegiatan', 'Api\KelompokKegiatanController');
 

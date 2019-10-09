@@ -16,7 +16,7 @@ class BarangMasukRepository
      * @param string $tanggal_selesai
      * @return object
      */
-    public function hitungBarangMasukPerTanggal($barang_id, $tahun_anggaran, $tanggal_mulai, $tanggal_selesai)
+    public function volumeDpaPerTanggal($barang_id, $tahun_anggaran, $tanggal_mulai, $tanggal_selesai)
     {
         $query = DB::table('barang_masuk_detil_view');
         $query->select(DB::raw('COALESCE( SUM(volume), 0) as total_volume, COALESCE(SUM(total), 0) as total_harga'));
@@ -35,13 +35,16 @@ class BarangMasukRepository
      * @param string $tanggal_selesai
      * @return object
      */
-    public function listBarangMasukPerTanggal($tanggal_mulai, $tanggal_selesai)
+    public function volumeBarangMasukPerTanggal($barang_id, $tanggal_mulai, $tanggal_selesai)
     {
         $query = DB::table('barang_masuk_detil_view');
-        $query->select('barang_id', 'nama_barang', 'tahun_anggaran', 'volume_dpa');
+        $query->select('barang_id', 'tahun_anggaran', 'volume_dpa', 'harga_satuan');
+        $query->addSelect(DB::raw('COALESCE( SUM(volume), 0) as total_volume, COALESCE(SUM(total), 0) as total_harga'));
+        $query->whereRaw('barang_id = ?', [$barang_id]);
         $query->whereRaw('tanggal_perolehan >= ?', [$tanggal_mulai]);
         $query->whereRaw('tanggal_perolehan <= ?', [$tanggal_selesai]);
-        $query->groupBy('barang_id', 'nama_barang', 'tahun_anggaran', 'volume_dpa');
+        $query->groupBy('barang_id', 'tahun_anggaran', 'volume_dpa', 'harga_satuan');
+        $query->orderBy('tahun_anggaran');
 
         return $query->get();
     }

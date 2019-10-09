@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\StokBarangService;
 use Throwable;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -11,6 +12,15 @@ use App\Http\Resources\StokBarangResourceCollection;
 
 class StokBarangController extends BaseController
 {
+    private $stokBarangService;
+
+    public function __construct(
+        StokBarangService $stokBarangService
+    )
+    {
+        $this->stokBarangService = $stokBarangService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -66,7 +76,16 @@ class StokBarangController extends BaseController
             $query->where($textFieldMaps[$key], 'like', "%$value%");
         }
 
-        return new StokBarangResourceCollection($query->paginate());
+        $tanggal = ($request->has('tanggal')) ? $request->input('tanggal') : date('Y-m-d');
+        $service = $this->stokBarangService;
+
+        $pages = $query->paginate();
+        $pages->getCollection()->transform(function ($value) use($service, $tanggal) {
+            $value->stok = $service->hitung($value->id, $tanggal)->stok;
+            return $value;
+        });
+
+        return new StokBarangResourceCollection($pages);
     }
 
 }
