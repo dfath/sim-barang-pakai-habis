@@ -44,7 +44,7 @@ class BarangMasukRepository
         $query->whereRaw('tanggal_perolehan >= ?', [$tanggal_mulai]);
         $query->whereRaw('tanggal_perolehan <= ?', [$tanggal_selesai]);
         $query->groupBy('barang_id', 'tahun_anggaran', 'volume_dpa', 'harga_satuan');
-        $query->orderBy('tahun_anggaran');
+        $query->orderBy('tahun_anggaran', 'asc'); // fifo
 
         return $query->get();
     }

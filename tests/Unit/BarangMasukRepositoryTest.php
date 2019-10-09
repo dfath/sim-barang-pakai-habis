@@ -34,7 +34,7 @@ class BarangMasukRepositoryTest extends TestCase
      */
     public function testVolumeBarangMasukPerTanggal()
     {
-        $barang_id = 68;
+        $barang_id = 1;
         $tanggal_mulai = "2017-12-17";
         $tanggal_selesai = date('Y-m-d');
         $service = new BarangMasukRepository;
