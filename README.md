@@ -28,6 +28,10 @@ composer -v
 node -v
 npm -v
 ```
+- Clone source code ke docroot
+```sh
+git clone https://github.com/dfath/sim-barang-pakai-habis.git
+```
 - Install package php
 ```sh
 composer install
