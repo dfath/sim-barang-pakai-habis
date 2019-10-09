@@ -44,8 +44,6 @@ class StokBarangServiceTest extends TestCase
 
         $query->addSelect(DB::raw('100 as stok'));
 
-        // $query->whereRaw('barang.kelompok_kegiatan_id = ?', [1]);
-
         $pages = $query->paginate(500);
 
         $barangMasuk = new BarangMasukRepository;
