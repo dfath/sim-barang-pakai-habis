@@ -17,9 +17,6 @@ Vue.use(Buefy);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// Vue.component('example-input', require('./components/ExampleInput.vue').default);
-// Vue.component('range-date-picker', require('./components/RangeDatePicker.vue').default);
 Vue.component('passport-clients', require('./components/passport/Clients.vue').default);
 Vue.component('delete-confirmation', require('./components/DeleteConfirmation.vue').default);
 Vue.component('passport-authorized-clients', require('./components/passport/AuthorizedClients.vue').default);

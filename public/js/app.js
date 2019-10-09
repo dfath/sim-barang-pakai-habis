@@ -39611,9 +39611,6 @@ Vue.use(Buefy);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// Vue.component('example-input', require('./components/ExampleInput.vue').default);
-// Vue.component('range-date-picker', require('./components/RangeDatePicker.vue').default);
 
 Vue.component('passport-clients', __webpack_require__(/*! ./components/passport/Clients.vue */ "./resources/js/components/passport/Clients.vue")["default"]);
 Vue.component('delete-confirmation', __webpack_require__(/*! ./components/DeleteConfirmation.vue */ "./resources/js/components/DeleteConfirmation.vue")["default"]);
