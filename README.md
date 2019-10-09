@@ -32,7 +32,7 @@ npm -v
 ```sh
 composer install
 ```
-- Install packacge js
+- Install package js
 ```sh
 npm install
 ```
@@ -43,13 +43,14 @@ create database sim_barang_habis_pakai
 ```
 - Isi configurasi mysql pada file .env
 salin data dari file .env.example jika belum ada
+```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=sim_barang_habis_pakai
 DB_USERNAME=root
 DB_PASSWORD=
-
+```
 - Jalankan migrasi database
 ```sh
 php artisan migration:refresh --force
@@ -63,6 +64,7 @@ php artisan db:seed
 php artisan serve
 ```
 - Login dengan menggunakan akun berikut:
+```
 admin@example.com
 admin
 
@@ -70,9 +72,10 @@ pengelola@example.com
 pengelola
 
 kepala@example.com
-kepalas
+kepala
+```
 
-### Refereces
+### References
 - https://laravel.com/docs/5.8/homestead
 - https://laravel.com/docs/5.8/deployment
 
