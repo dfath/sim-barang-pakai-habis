@@ -51,8 +51,13 @@
                         <div class="field">
                             <div class="control">
                                 <b-button class="button is-link" @click="applyFilter">Tampilkan</b-button>
-                                <a class="button is-link" target="__blank" :href="filterQs('/barang-keluar/cetak')">Cetak</a>
-                                <a class="button is-link" target="__blank" :href="filterQs('/barang-keluar/ekspor')">Ekspor</a>
+                                <a class="button is-link" target="__blank" :href="filterQs('/barang-keluar/laporan-excel')">
+                                    <b-icon
+                                        icon="file-excel"
+                                        size="is-small">
+                                    </b-icon>
+                                    <span>Ekspor Excel</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -182,7 +187,7 @@ export default {
             return formatNumber(num);
         },
         filterQs(baseUrl) {
-            return `${baseUrl}?${qs.stringify(this.filterParams)}`;
+            return `${baseUrl}?${qs.stringify(this.filterParams, { skipNulls: true })}`;
         }
     },
     mounted() {

@@ -51,8 +51,13 @@
                         <div class="field">
                             <div class="control">
                                 <b-button class="button is-link" @click="applyFilter">Tampilkan</b-button>
-                                <a class="button is-link">Cetak</a>
-                                <a class="button is-link">Export</a>
+                                <a class="button is-link" target="__blank" :href="filterQs('/barang-masuk/laporan-excel')">
+                                    <b-icon
+                                        icon="file-excel"
+                                        size="is-small">
+                                    </b-icon>
+                                    <span>Ekspor Excel</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -109,6 +114,7 @@
 </template>
 
 <script>
+import qs from 'qs';
 import { laporanBarangMasuk, readKelompokKegiatanCollection, readKelompokBarangCollection } from '../../network/api';
 import { years, formatNumber } from '../../utils';
 
@@ -176,6 +182,9 @@ export default {
         },
         currency(num) {
             return formatNumber(num);
+        },
+        filterQs(baseUrl) {
+            return `${baseUrl}?${qs.stringify(this.filterParams, { skipNulls: true })}`;
         }
     },
     mounted() {

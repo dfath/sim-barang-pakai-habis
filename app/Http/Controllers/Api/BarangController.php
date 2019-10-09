@@ -32,7 +32,7 @@ class BarangController extends BaseController
         ];
         $numberWhereRaws = [
             'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
-            'kelompok_barang_id' => 'kelompok_kegiatan_id = ?',
+            'kelompok_barang_id' => 'kelompok_barang_id = ?',
             'satuan_id' => 'satuan_id = ?',
         ];
         $textFieldMaps = [

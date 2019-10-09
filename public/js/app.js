@@ -4065,6 +4065,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -4139,7 +4144,9 @@ __webpack_require__.r(__webpack_exports__);
       return Object(_utils__WEBPACK_IMPORTED_MODULE_2__["formatNumber"])(num);
     },
     filterQs: function filterQs(baseUrl) {
-      return "".concat(baseUrl, "?").concat(qs__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(this.filterParams));
+      return "".concat(baseUrl, "?").concat(qs__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(this.filterParams, {
+        skipNulls: true
+      }));
     }
   },
   mounted: function mounted() {
@@ -4880,8 +4887,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _network_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../network/api */ "./resources/js/network/api.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils */ "./resources/js/utils/index.js");
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! qs */ "./node_modules/qs/lib/index.js");
+/* harmony import */ var qs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(qs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _network_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../network/api */ "./resources/js/network/api.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils */ "./resources/js/utils/index.js");
 //
 //
 //
@@ -4992,6 +5001,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5009,7 +5024,7 @@ __webpack_require__.r(__webpack_exports__);
         kelompokBarangCollection: []
       },
       tableData: [],
-      years: Object(_utils__WEBPACK_IMPORTED_MODULE_1__["years"])()
+      years: Object(_utils__WEBPACK_IMPORTED_MODULE_2__["years"])()
     };
   },
   computed: {
@@ -5027,14 +5042,14 @@ __webpack_require__.r(__webpack_exports__);
     loadReference: function loadReference() {
       var _this = this;
 
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokKegiatanCollection"])({
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_1__["readKelompokKegiatanCollection"])({
         all: true
       }).then(function (res) {
         _this.reference.kelompokKegiatanCollection = res.data;
       })["catch"](function (err) {
         throw err;
       });
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["readKelompokBarangCollection"])({
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_1__["readKelompokBarangCollection"])({
         all: true
       }).then(function (res) {
         _this.reference.kelompokBarangCollection = res.data;
@@ -5046,7 +5061,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.filter.isLoading = true;
-      Object(_network_api__WEBPACK_IMPORTED_MODULE_0__["laporanBarangMasuk"])(this.filterParams).then(function (res) {
+      Object(_network_api__WEBPACK_IMPORTED_MODULE_1__["laporanBarangMasuk"])(this.filterParams).then(function (res) {
         _this2.tableData = res.data;
       })["catch"](function (err) {
         throw err;
@@ -5055,7 +5070,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     currency: function currency(num) {
-      return Object(_utils__WEBPACK_IMPORTED_MODULE_1__["formatNumber"])(num);
+      return Object(_utils__WEBPACK_IMPORTED_MODULE_2__["formatNumber"])(num);
+    },
+    filterQs: function filterQs(baseUrl) {
+      return "".concat(baseUrl, "?").concat(qs__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(this.filterParams, {
+        skipNulls: true
+      }));
     }
   },
   mounted: function mounted() {
@@ -24215,22 +24235,17 @@ var render = function() {
                         staticClass: "button is-link",
                         attrs: {
                           target: "__blank",
-                          href: _vm.filterQs("/barang-keluar/cetak")
+                          href: _vm.filterQs("/barang-keluar/laporan-excel")
                         }
                       },
-                      [_vm._v("Cetak")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "button is-link",
-                        attrs: {
-                          target: "__blank",
-                          href: _vm.filterQs("/barang-keluar/ekspor")
-                        }
-                      },
-                      [_vm._v("Ekspor")]
+                      [
+                        _c("b-icon", {
+                          attrs: { icon: "file-excel", size: "is-small" }
+                        }),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("Ekspor Excel")])
+                      ],
+                      1
                     )
                   ],
                   1
@@ -25326,13 +25341,24 @@ var render = function() {
                       [_vm._v("Tampilkan")]
                     ),
                     _vm._v(" "),
-                    _c("a", { staticClass: "button is-link" }, [
-                      _vm._v("Cetak")
-                    ]),
-                    _vm._v(" "),
-                    _c("a", { staticClass: "button is-link" }, [
-                      _vm._v("Export")
-                    ])
+                    _c(
+                      "a",
+                      {
+                        staticClass: "button is-link",
+                        attrs: {
+                          target: "__blank",
+                          href: _vm.filterQs("/barang-masuk/laporan-excel")
+                        }
+                      },
+                      [
+                        _c("b-icon", {
+                          attrs: { icon: "file-excel", size: "is-small" }
+                        }),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("Ekspor Excel")])
+                      ],
+                      1
+                    )
                   ],
                   1
                 )

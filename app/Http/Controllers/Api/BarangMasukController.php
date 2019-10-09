@@ -44,7 +44,7 @@ class BarangMasukController extends BaseController
         ];
         $numberWhereRaws = [
             'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
-            'kelompok_barang_id' => 'kelompok_kegiatan_id = ?',
+            'kelompok_barang_id' => 'kelompok_barang_id = ?',
             'perusahaan_id' => 'perusahaan_id = ?',
             'tahun_anggaran' => 'tahun_anggaran = ?',
             'tanggal_perolehan_mulai' => 'tanggal_perolehan >= ?',
@@ -206,7 +206,7 @@ class BarangMasukController extends BaseController
         ];
         $numberWhereRaws = [
             'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
-            'kelompok_barang_id' => 'kelompok_kegiatan_id = ?',
+            'kelompok_barang_id' => 'kelompok_barang_id = ?',
             'tahun_anggaran' => 'tahun_anggaran = ?',
             'tanggal_perolehan_mulai' => 'tanggal_perolehan >= ?',
             'tanggal_perolehan_selesai' => 'tanggal_perolehan <= ?',
