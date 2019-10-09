@@ -70,6 +70,7 @@ class StokBarangService
         $result->stok = $stok;
         $result->totalHargaStok = $totalHargaStok;
         $result->totalHargaBarangMasuk = $totalHargaBarangMasuk;
+        $result->totalHargaBarangKeluar = $totalHargaBarangMasuk - $totalHargaStok;
         $result->totalVolumeBarangMasuk = $totalVolumeBarangMasuk;
         $result->totalVolumeBarangKeluar = $totalVolumeBarangKeluar;
 

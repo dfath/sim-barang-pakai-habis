@@ -238,6 +238,7 @@ class BarangMasukController extends BaseController
                 $request->get('tanggal_perolehan_selesai')
             );
             $result[] = array(
+                'no' => $key + 1,
                 'barang_id' => $value->barang_id,
                 'nama_barang' => $value->nama_barang,
                 'tahun_anggaran' => $value->tahun_anggaran,

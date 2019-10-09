@@ -208,3 +208,17 @@ export const readStokBarangCollection = (params) => {
     };
     return request.get('/api/stok_barang', config);
 };
+
+export const laporanBarangMasuk = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/laporan/barang_masuk', config);
+};
+
+export const laporanBarangKeluar = (params) => {
+    const config = {
+        params,
+    };
+    return request.get('/api/laporan/barang_keluar', config);
+};

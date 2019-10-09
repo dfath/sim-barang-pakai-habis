@@ -22,7 +22,6 @@ class BarangKeluarRepositoryTest extends TestCase
         $service = new BarangKeluarRepository;
         $result = $service->volumeBarangKeluarPerTanggal($barang_id, $tanggal_mulai, $tanggal_selesai);
 
-        var_dump($result);
         $this->assertTrue(property_exists($result, 'total_volume'));
     }
 

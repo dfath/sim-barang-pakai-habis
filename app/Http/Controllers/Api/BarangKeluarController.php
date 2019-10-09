@@ -184,9 +184,7 @@ class BarangKeluarController extends BaseController
     public function laporan(Request $request)
     {
         $numberFields = [
-            'barang_id',
             'unit_kerja_id',
-            'volume',
             'tanggal_mulai',
             'tanggal_selesai',
             'kelompok_kegiatan_id',
@@ -194,31 +192,50 @@ class BarangKeluarController extends BaseController
         ];
 
         $numberWhereRaws = [
-            'barang_id' => 'barang_id = ?',
             'unit_kerja_id' => 'unit_kerja_id = ?',
-            'volume' => 'volume = ?',
             'tanggal_mulai' => 'tanggal >= ?',
-            'kelompok_kegiatan_id' => 'kelompok_kegiatan_id <= ?',
+            'tanggal_selesai' => 'tanggal <= ?',
+            'kelompok_kegiatan_id' => 'kelompok_kegiatan_id = ?',
             'kelompok_barang_id' => 'kelompok_barang_id = ?',
         ];
 
         $numberFilter = $request->only($numberFields);
 
+        if (!$request->has(['tanggal_mulai', 'tanggal_selesai'])) {
+            return $this->errorBadRequest('Paramater interval tanggal tidak ada!');
+        }
+
         $query = DB::table('barang_keluar');
-        $query->select('barang_keluar.*');
-        // unit kerja
-        $query->leftJoin('unit_kerja', 'barang_keluar.unit_kerja_id', '=', 'unit_kerja.id');
+        $query->select('barang_keluar.barang_id');
+        $query->addSelect(DB::raw('COALESCE( SUM(volume), 0) as total_volume'));
         // barang
         $query->leftJoin('barang', 'barang_keluar.barang_id', '=', 'barang.id');
         $query->addSelect('barang.nama as nama_barang');
-        // kelompok kegiatan
-        $query->leftJoin('kelompok_kegiatan', 'barang.kelompok_kegiatan_id', '=', 'kelompok_kegiatan.id');
-        // kelompok barang
-        $query->leftJoin('kelompok_barang', 'barang.kelompok_barang_id', '=', 'kelompok_barang.id');
 
         foreach ($numberFilter as $key => $value) {
             $query->whereRaw($numberWhereRaws[$key], [$value]);
         }
 
+        $query->groupBy('barang_id', 'nama_barang');
+
+        $list = $query->get();
+        $result = array();
+
+        foreach ($list as $key => $value) {
+            $stokMulai = $this->stokBarangService->hitung($value->barang_id, $request->get('tanggal_mulai'));
+
+            $stokSelesai = $this->stokBarangService->hitung($value->barang_id, $request->get('tanggal_selesai'));
+
+            $result[] = array(
+                'no' => $key + 1,
+                'barang_id' => $value->barang_id,
+                'nama_barang' => $value->nama_barang,
+                'sisa' => $stokSelesai->stok,
+                'total_harga' => $stokSelesai->totalHargaBarangKeluar - $stokMulai->totalHargaBarangKeluar,
+                'total_volume' => intval($value->total_volume)
+            );
+        }
+
+        return array('data' => $result);
     }
 }

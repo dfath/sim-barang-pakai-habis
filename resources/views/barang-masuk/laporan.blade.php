@@ -12,4 +12,6 @@
         </div>
     </section>
 
+    <barang-masuk-laporan/>
+
 @endsection

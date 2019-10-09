@@ -34,6 +34,8 @@ Vue.component('barang-board', require('./pages/barang/BarangBoard.vue').default)
 Vue.component('perusahaan-board', require('./pages/perusahaan/PerusahaanBoard.vue').default);
 Vue.component('volume-dpa-board', require('./pages/volume-dpa/VolumeDpaBoard.vue').default);
 Vue.component('barang-keluar-board', require('./pages/barang-keluar/BarangKeluarBoard.vue').default);
+Vue.component('barang-masuk-laporan', require('./pages/barang-masuk/BarangMasukLaporan.vue').default);
+Vue.component('barang-keluar-laporan', require('./pages/barang-keluar/BarangKeluarLaporan.vue').default);
 
 const app = new Vue({
     el: '#app'
